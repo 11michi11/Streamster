@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: search-service
+  data:
+    mongodb:
+      #     change to your computer ip
+      host: 10.10.11.252
+      port: 27017
+      database: filmMaster
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+      preferTokenInfo: true
+      token-info-uri: http://localhost:8080/user-service/oauth/check_token
+    client:
+      client-id: my-trusted-client
+      client-secret: secret
+
+server:
+  servlet:
+    context-path: /search-service

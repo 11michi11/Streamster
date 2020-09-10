@@ -1,0 +1,8 @@
+rootProject.name = 'streamster'
+
+include 'ApiGateway'
+include 'RecommendationService'
+include 'ListsService'
+include 'UserService'
+include 'SearchService'
+include 'discovery'
