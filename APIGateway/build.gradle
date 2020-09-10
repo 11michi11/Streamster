@@ -15,24 +15,14 @@ configurations {
 	}
 }
 
+def dockerPassword = hasProperty('gcloudToken') ? gcloudToken : file('../keyfile.json').text
 
 jib {
 	to {
 		image = 'gcr.io/streamster-289010/api-gateway:latest'
 		auth {
 			username = '_json_key'
-			password = '{\n' +
-					'  "type": "service_account",\n' +
-					'  "project_id": "streamster-289010",\n' +
-					'  "private_key_id": "17ca1589f323b929d894b4cccdb55073212bc0bf",\n' +
-					'  "private_key": "-----BEGIN PRIVATE KEY-----\\nMIIEuwIBADANBgkqhkiG9w0BAQEFAASCBKUwggShAgEAAoIBAQDGZkCfFOkcVfdh\\nXuViVY+IRX+EL+lf6pgElPScl66JfepzWrIkT1nn04YiLsiA4xTgu/Yj2naydXT/\\nYpSrNUtdrMyE408OqAJjNru4mhzXqSAbBQj0SnHKcZda5l5rUmiwjYAAv6za99b/\\ncDZrwsIWZboqWucGfNxbG5kxvt9ejFL7UYtdKJgeGT1PzfIMOn/eCAnevEHgGedL\\nfjhc+PqvHvJIqgSD3q+NPG6+7wmpAgIDv8rbsokSD67Wth9wJjwSS1BPvbEoMJOP\\nPIbyMq41lBs3ceuUmVxQL+X9HNc4txTXYei6/6OHmB1b/76O84j/qBKv5wPclGs0\\nOqBtLr1ZAgMBAAECgf9BPARDfaMO2uiPiGq9l1etsJK2t1cLX4RcluqKeQiKoAkj\\npM6uSBxOF0VWnmT1YoIBSWX4o/yJvghnCjyX9UFMRWUTmZCFFF+BZjdgAeYGtmie\\necLxkDwAgX9vnalHrVd+6Qfaal8LujIw2CFzJunQzRVJZMC4NJXzEkAGe09qADJZ\\niT2c1qPwCDugpT9D1Ufixt1bvP/fqI/GGFQRVJUfC6kDdqCv+D2otm+h2ir2D8Vj\\nR+rDImeoWKXJLE4Gcth5r4ZyJGa9csEQx5/9pv6fb29fcAe0F6ygLnVzD/IGAz10\\nHF3VK4n3VXuPN5FCPHIxCIi+FQilv8j1O1qu7gECgYEA5ebvELcGgfgRmwR7kerU\\ncXLrmu4wFnhJOcKZyHlFKA74JoUs4VdKBy5CGLkIcwy65oJVOmDQ21C8BB7NMI4q\\nsPuMhbDcbFQFx5bIPA+ZfdsnG98Cst1t9YPaZPkoa+iHxd0t1jePfzMZ+Ptd+xWG\\n5Q2/HisMV1OeJZlTI2VvL1kCgYEA3OvWAD26hYhFTzzdg+jkDeeNaljHTHFycV8N\\n8aMzU/N5MexSgpeQ2KPaMHqRz/lT295SS52ftO0xlrNI/Xx4LDQ6CbUawfSiVjsb\\ncJxDA0QOsZ207yS9OPi4FrRccln36n1bKvCCP3B6pfTRu/HZMxr0NK/9pRHfIq9O\\nPyuIPgECgYEAnH9rVXGBmI+JTIDsrROxsdiM0VY6ndEb55m0nWcP0IkAGxikyHBn\\nECRJEhNC0S5lO+yUn7yv79sxYYymGNtt7DQQICGYqpU3qfnWLCxiS+4W3T4d1Cwv\\nYeVzkTCad3o+kk5RmXUQ1YGvuHFENFsfDGUjKCIdsIRXLzkEAyBVY2ECgYA/dF3b\\nY9+XSzTdNZZKtTIL7F5qFWXpRwygE7VlmoK7sks1U7O/Xtlz4FxjYFFRc0Pq+0iX\\n/4ZH6Xk81/I3HPFHgRjKgQJWg3W9Xuzaw4dcAMhXq/y0U9El9AqsOtHy5nSXHbp5\\n8ur2XdBcqp0zZpwEWdGa8JHiP+ffhorrCg3wAQKBgBj9V4l04c0ejhgbidCeTdJc\\nrFcRzn3uSd/iQjjEx9CgtGG+U9/w2sN7aeEHESFTZhGTos8rbeOQFfukdn9hLR2a\\nsLGNcc8p24XRgKeWogzyToZauSeiZNi992BfBZ604J/wuQSkVteGMSXS1IY88G1C\\ny/YyFXlouSlmdJ8jiDpb\\n-----END PRIVATE KEY-----\\n",\n' +
-					'  "client_email": "teamcity@streamster-289010.iam.gserviceaccount.com",\n' +
-					'  "client_id": "109730709065297659368",\n' +
-					'  "auth_uri": "https://accounts.google.com/o/oauth2/auth",\n' +
-					'  "token_uri": "https://oauth2.googleapis.com/token",\n' +
-					'  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",\n' +
-					'  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/teamcity%40streamster-289010.iam.gserviceaccount.com"\n' +
-					'}'
+			password = dockerPassword
 		}
 	}
 	container {

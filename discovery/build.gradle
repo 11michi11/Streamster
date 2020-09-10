@@ -14,10 +14,7 @@ repositories {
 }
 def dockerPassword = hasProperty('gcloudToken') ? gcloudToken : file('../keyfile.json').text
 
-//def dockerPassword = gcloudToken
-
 jib {
-	println dockerPassword
 	to {
 		image = 'gcr.io/streamster-289010/discovery:latest'
 		auth {
