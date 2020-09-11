@@ -1,6 +1,6 @@
 rootProject.name = 'streamster'
 
-include 'ApiGateway'
+include 'APIGateway'
 include 'RecommendationService'
 include 'ListsService'
 include 'UserService'
