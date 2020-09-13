@@ -15,13 +15,18 @@ configurations {
 	}
 }
 
+def dockerPassword = hasProperty('gcloudToken') ? gcloudToken : file('../keyfile.json').text
+
 jib {
 	to {
-		image = 'user-service:latest'
+		image = 'gcr.io/streamster-289010/user-service:latest'
+		auth {
+			username = '_json_key'
+			password = dockerPassword
+		}
 	}
 	container {
 		environment = [EUREKA_SERVER: 'discovery']
-		mainClass = 'com.filmmaster.userservice.UserServiceApplication'
 	}
 }
 
