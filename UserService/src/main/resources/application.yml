@@ -3,18 +3,11 @@ spring:
     name: user-service
   data:
     mongodb:
-      #     change to your computer ip
-      host: 10.10.11.252
-      port: 27017
-      database: filmMaster
+      uri: mongodb+srv://streamster:22noRhzBxqErEMTc@streamster.mysoh.gcp.mongodb.net/streamster
 server:
   servlet:
     context-path: /user-service
-  port: 8090
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8761}/eureka/
+  port: 8080
 swagger:
   config:
     refreshrate: 60000

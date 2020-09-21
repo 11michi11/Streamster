@@ -3,44 +3,33 @@ spring:
     name: api-gateway
   data:
     mongodb:
-      host: localhost
-      port: 27017
-      database: testdb
+      uri: mongodb+srv://streamster:22noRhzBxqErEMTc@streamster.mysoh.gcp.mongodb.net/streamster
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
       routes:
         - id: user-service-route
-          uri: lb://user-service
+          uri: https://user-service-ayoqp7z2fq-lz.a.run.app/user-service
           predicates:
             - Path=/user-service/**
           filters:
             - DedupeResponseHeader=Access-Control-Allow-Origin
-        - id: search-service-route
-          uri: lb://search-service
-          predicates:
-            - Path=/search-service/**
-          filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin
-        - id: lists-service-route
-          uri: lb://lists-service
-          predicates:
-            - Path=/lists-service/**
-          filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin
-        - id: lists-service-route
-          uri: lb://recommendation-service
-          predicates:
-            - Path=/recommendation-service/**
-          filters:
-            - DedupeResponseHeader=Access-Control-Allow-Origin
+#        - id: search-service-route
+#          uri: lb://search-service
+#          predicates:
+#            - Path=/search-service/**
+#          filters:
+#            - DedupeResponseHeader=Access-Control-Allow-Origin
+#        - id: lists-service-route
+#          uri: lb://lists-service
+#          predicates:
+#            - Path=/lists-service/**
+#          filters:
+#            - DedupeResponseHeader=Access-Control-Allow-Origin
+#        - id: lists-service-route
+#          uri: lb://recommendation-service
+#          predicates:
+#            - Path=/recommendation-service/**
+#          filters:
+#            - DedupeResponseHeader=Access-Control-Allow-Origin
 server:
   port: 8080
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVER:http://localhost:8761}/eureka/
-    eureka-service-url-poll-interval-seconds: 10
-    filter-only-up-instances: true
