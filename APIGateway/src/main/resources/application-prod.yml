@@ -1,11 +1,14 @@
 spring:
   application:
     name: api-gateway
+  data:
+    mongodb:
+      uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
   cloud:
     gateway:
       routes:
         - id: user-service-route
-          uri: http://localhost:8090/user-service
+          uri: https://user-service-ayoqp7z2fq-lz.a.run.app/user-service
           predicates:
             - Path=/user-service/**
           filters:

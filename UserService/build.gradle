@@ -25,6 +25,9 @@ jib {
 			password = dockerPassword
 		}
 	}
+	container{
+		jvmFlags = ['-Dspring.profiles.active=prod']
+	}
 }
 
 repositories {
