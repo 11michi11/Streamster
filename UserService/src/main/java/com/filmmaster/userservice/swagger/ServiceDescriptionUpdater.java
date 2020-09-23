@@ -7,8 +7,6 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
@@ -26,8 +24,7 @@ public class ServiceDescriptionUpdater {
     private static final String DEFAULT_SWAGGER_URL = "/v2/api-docs";
     private static final String KEY_SWAGGER_URL = "swagger_url";
 
-    @Autowired
-    private DiscoveryClient discoveryClient;
+    private static final List<String> INSTANCES = List.of();
 
     private final RestTemplate template;
 
@@ -42,35 +39,26 @@ public class ServiceDescriptionUpdater {
     public void refreshSwaggerConfigurations() {
         logger.debug("Starting Service Definition Context refresh");
 
-        discoveryClient.getServices().forEach(serviceId -> {
-            logger.debug("Attempting service definition refresh for Service : {} ", serviceId);
-            List<ServiceInstance> serviceInstances = discoveryClient.getInstances(serviceId);
-            if (serviceInstances == null || serviceInstances.isEmpty()) { //Should not be the case kept for failsafe
-                logger.info("No instances available for service : {} ", serviceId);
-            } else if (serviceId.equals("api-gateway")) {
-                logger.info(serviceId + " is excluded");
+        INSTANCES.forEach(serviceURL -> {
+            logger.debug("Attempting service definition refresh for Service : {} ", serviceURL);
+            String swaggerURL = getSwaggerURL(serviceURL);
+
+            Optional<Object> jsonData = getSwaggerDefinitionForAPI(serviceURL, swaggerURL);
+
+            if (jsonData.isPresent()) {
+                String content = getJSON(jsonData.get());
+                definitionContext.addServiceDefinition(serviceURL, content);
             } else {
-                ServiceInstance instance = serviceInstances.get(0);
-                String swaggerURL = getSwaggerURL(instance);
-
-                Optional<Object> jsonData = getSwaggerDefinitionForAPI(serviceId, swaggerURL);
-
-                if (jsonData.isPresent()) {
-                    String content = getJSON(serviceId, jsonData.get());
-                    definitionContext.addServiceDefinition(serviceId, content);
-                } else {
-                    logger.error("Skipping service id : {} Error : Could not get Swagger definition from API ", serviceId);
-                }
-
-                logger.info("Service Definition Context Refreshed at :  {}", LocalDate.now());
+                logger.error("Skipping service id : {} Error : Could not get Swagger definition from API ", serviceURL);
             }
+
+            logger.info("Service Definition Context Refreshed at :  {}", LocalDate.now());
         });
     }
 
-    private String getSwaggerURL(ServiceInstance instance) {
-        String instanceUrl = instance.getUri() + "/" + instance.getServiceId().toLowerCase();
-        String swaggerURL = instance.getMetadata().get(KEY_SWAGGER_URL);
-        return swaggerURL != null ? instanceUrl + swaggerURL : instanceUrl + DEFAULT_SWAGGER_URL;
+
+    private String getSwaggerURL(String instanceUrl) {
+        return instanceUrl + DEFAULT_SWAGGER_URL;
     }
 
     private Optional<Object> getSwaggerDefinitionForAPI(String serviceName, String url) {
@@ -85,7 +73,7 @@ public class ServiceDescriptionUpdater {
 
     }
 
-    public String getJSON(String serviceId, Object jsonData) {
+    public String getJSON(Object jsonData) {
         try {
             return new ObjectMapper().writeValueAsString(jsonData);
         } catch (JsonProcessingException e) {

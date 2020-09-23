@@ -7,7 +7,7 @@ spring:
 server:
   servlet:
     context-path: /user-service
-  port: 8090
+  port: 8080
 swagger:
   config:
     refreshrate: 60000
