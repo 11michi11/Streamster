@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.2.6.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+	id 'groovy'
 }
 
 group = 'com.streamster'
@@ -39,6 +40,18 @@ dependencies {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+	testCompile "org.codehaus.groovy:groovy:2.5.13"
+	testCompile platform("org.spockframework:spock-bom:2.0-M3-groovy-2.5")
+	testCompile "org.spockframework:spock-core"
+	testCompile group: 'org.spockframework', name: 'spock-spring', version: '2.0-M3-groovy-2.5'
+}
+
+tasks.withType(JavaCompile) {
+	options.compilerArgs += '--enable-preview'
+}
+
+tasks.withType(Test) {
+	jvmArgs += "--enable-preview"
 }
 
 dependencyManagement {
