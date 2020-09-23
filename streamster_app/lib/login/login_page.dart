@@ -1,6 +1,6 @@
-import 'package:film_master_app/authentication/authentication_bloc.dart';
-import 'package:film_master_app/common/common.dart';
-import 'package:film_master_app/home/header.dart';
+import 'package:streamster_app/authentication/authentication_bloc.dart';
+import 'package:streamster_app/common/common.dart';
+import 'package:streamster_app/home/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,11 +23,13 @@ class LoginPage extends StatelessWidget {
               authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
               userRepository: userRepository);
         },
-        child: Column(
-          children: [
-            Header(),
-            LoginForm(),
-          ],
+        child: Center(
+          child: Column(
+            children: [
+              Header(),
+              LoginForm(),
+            ],
+          ),
         ),
       ),
     );

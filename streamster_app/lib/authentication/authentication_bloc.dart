@@ -1,4 +1,4 @@
-import 'package:film_master_app/common/common.dart';
+import 'package:streamster_app/common/common.dart';
 import 'authentication_event.dart';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';

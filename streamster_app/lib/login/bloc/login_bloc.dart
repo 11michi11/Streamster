@@ -1,5 +1,5 @@
-import 'package:film_master_app/authentication/authentication.dart';
-import 'package:film_master_app/common/common.dart';
+import 'package:streamster_app/authentication/authentication.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 
