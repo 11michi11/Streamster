@@ -1,25 +1,24 @@
-import 'package:meta/meta.dart';
+
 import 'package:equatable/equatable.dart';
+import 'package:streamster_app/login/repository/login_repository.dart';
 
-abstract class LoginState extends Equatable {
-  const LoginState();
+class LoginState extends Equatable {
 
-  @override
-  List<Object> get props => [];
-}
+  final LoginStatus status;
 
-class LoginInitial extends LoginState {}
+  const LoginState._({
+    this.status = LoginStatus.unknown,
+  });
 
-class LoginInProgress extends LoginState {}
+  const LoginState.unknown() : this._();
 
-class LoginFailure extends LoginState {
-  final String error;
+  const LoginState.inProgress() : this._(status: LoginStatus.inProgress);
 
-  const LoginFailure({@required this.error});
+  const LoginState.authenticated() : this._(status: LoginStatus.authenticated);
 
-  @override
-  List<Object> get props => [error];
+  const LoginState.unauthenticated() : this._(status: LoginStatus.unauthenticated);
 
   @override
-  String toString() => 'LoginFailure { error: $error }';
+  List<Object> get props => [status];
+
 }

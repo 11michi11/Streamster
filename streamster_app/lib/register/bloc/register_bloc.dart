@@ -1,35 +1,35 @@
-import 'package:streamster_app/authentication/authentication.dart';
-import 'package:streamster_app/common/common.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:streamster_app/register/repository/register_repository.dart';
 
 import 'register_event.dart';
 import 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final UserRepository userRepository;
+  final RegisterRepository _registerRepository;
 
-  RegisterBloc({@required this.userRepository})
-      : assert(userRepository != null);
+  RegisterBloc({@required RegisterRepository registerRepository})
+      : assert(registerRepository != null),
+        _registerRepository = registerRepository,
+        super(const RegisterState.init());
 
-  RegisterState get initialState => RegisterInitial();
 
   @override
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
     if (event is RegisterButtonPressed) {
-      yield RegisterInProgress();
-      print(event.toString());
-      try {
-        await userRepository.register(
-          name: event.name,
+      yield RegisterState.inProgress();
+
+       var response = await _registerRepository.register(
+          firstName: event.firstName,
           email: event.email,
           password: event.password,
-        );
-
-        yield RegisterSuccess();
-      } catch (error) {
-        yield RegisterFailure(error: error.toString());
-      }
+       );
+       if(response == RegistrationStatus.success) {
+         yield RegisterState.success();
+      } else {
+         yield RegisterState.error("error");
+       }
     }
   }
 }

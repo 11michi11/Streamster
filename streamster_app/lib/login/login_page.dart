@@ -1,17 +1,15 @@
-import 'package:streamster_app/authentication/authentication_bloc.dart';
-import 'package:streamster_app/common/common.dart';
-import 'package:streamster_app/home/header.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/login_bloc.dart';
-import 'login_form.dart';
+import 'login_form_web.dart';
+import 'repository/login_repository.dart';
 
 class LoginPage extends StatelessWidget {
-  final UserRepository userRepository;
+  final LoginRepository loginRepository;
 
-  LoginPage({Key key, @required this.userRepository})
-      : assert(userRepository != null),
+  LoginPage({Key key, @required this.loginRepository})
+      : assert(loginRepository != null),
         super(key: key);
 
   @override
@@ -20,16 +18,10 @@ class LoginPage extends StatelessWidget {
       body: BlocProvider(
         create: (context) {
           return LoginBloc(
-              authenticationBloc: BlocProvider.of<AuthenticationBloc>(context),
-              userRepository: userRepository);
+              loginRepository: loginRepository);
         },
         child: Center(
-          child: Column(
-            children: [
-              Header(),
-              LoginForm(),
-            ],
-          ),
+          child: LoginFormForWeb(),
         ),
       ),
     );
