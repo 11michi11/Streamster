@@ -2,10 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/login_bloc.dart';
-import 'bloc/login_event.dart';
-import 'bloc/login_state.dart';
-import 'repository/login_repository.dart';
+import '../bloc/login_bloc.dart';
+import '../bloc/login_event.dart';
+import '../bloc/login_state.dart';
+import '../repository/login_repository.dart';
 
 class LoginFormForWeb extends StatefulWidget {
   @override

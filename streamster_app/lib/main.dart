@@ -5,7 +5,7 @@ import 'package:streamster_app/register/repository/register_repository.dart';
 import 'common/common.dart';
 import 'login/login.dart';
 import 'register/bloc/register_bloc.dart';
-import 'register/register_page.dart';
+import 'register/view/register_page.dart';
 
 void main() {
   final loginRepository = LoginRepository();

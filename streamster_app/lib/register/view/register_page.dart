@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/register/repository/register_repository.dart';
 
-import 'bloc/register_bloc.dart';
+import '../bloc/register_bloc.dart';
 import 'register_form_web.dart';
 
 class RegisterPage extends StatelessWidget {

@@ -4,13 +4,13 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'bloc/register_bloc.dart';
-import 'bloc/register_event.dart';
-import 'bloc/register_state.dart';
+import '../bloc/register_bloc.dart';
+import '../bloc/register_event.dart';
+import '../bloc/register_state.dart';
 
 import 'package:universal_html/prefer_universal/html.dart' as html;
 
-import 'repository/register_repository.dart';
+import '../repository/register_repository.dart';
 
 class RegisterFormForWeb extends StatefulWidget {
   @override
