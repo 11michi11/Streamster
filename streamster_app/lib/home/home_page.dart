@@ -1,6 +1,5 @@
-import 'package:streamster_app/authentication/authentication.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -11,10 +10,7 @@ class HomePage extends StatelessWidget {
         child: Center(
           child: RaisedButton(
             child: Text('logout'),
-            onPressed: () {
-              BlocProvider.of<AuthenticationBloc>(context)
-                  .add(AuthenticationLoggedOut());
-            },
+            onPressed: () {},
           ),
         ),
       ),

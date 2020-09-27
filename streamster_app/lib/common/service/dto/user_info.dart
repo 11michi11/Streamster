@@ -1,14 +1,18 @@
 class UserInfo {
-  String name;
+  String firstName;
+  String lastName;
   String email;
   String password;
+  String avatar;
 
-  UserInfo(this.name, this.email, this.password);
+  UserInfo(this.firstName, this.lastName, this.email, this.password, this.avatar);
 
   Map toJson() =>
       {
-        'name': name,
+        'firstName': firstName,
+        'lastName': lastName,
         'email': email,
         'password': password,
+        'avatar': avatar
       };
 }

@@ -1,17 +1,16 @@
-import 'package:streamster_app/authentication/authentication_bloc.dart';
-import 'package:streamster_app/common/common.dart';
-import 'package:streamster_app/home/header.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/register/repository/register_repository.dart';
 
 import 'bloc/register_bloc.dart';
-import 'register_form.dart';
+import 'register_form_web.dart';
 
 class RegisterPage extends StatelessWidget {
-  final UserRepository userRepository;
+  final RegisterRepository registerRepository;
 
-  RegisterPage({Key key, @required this.userRepository})
-      : assert(userRepository != null),
+  RegisterPage({Key key, @required this.registerRepository})
+      : assert(registerRepository != null),
         super(key: key);
 
   @override
@@ -19,13 +18,11 @@ class RegisterPage extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) {
-          return RegisterBloc(userRepository: userRepository);
+          return RegisterBloc(registerRepository: registerRepository);
         },
-        child: Column(
-          children: [
-            Header(),
-            RegisterForm(),
-          ],
+        child: Center(
+          child:
+            RegisterFormForWeb(),
         ),
       ),
     );

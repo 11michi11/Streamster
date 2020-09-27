@@ -1,37 +1,34 @@
-import 'package:streamster_app/authentication/authentication.dart';
-import 'package:streamster_app/common/common.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:streamster_app/login/repository/login_repository.dart';
 
 import 'login_event.dart';
 import 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  final UserRepository userRepository;
-  final AuthenticationBloc authenticationBloc;
+  final LoginRepository _loginRepository;
 
-  LoginBloc({@required this.userRepository, @required this.authenticationBloc})
-      : assert(userRepository != null),
-        assert(authenticationBloc != null);
+  LoginBloc({@required LoginRepository loginRepository})
+      : assert(loginRepository != null),
+        _loginRepository = loginRepository,
+        super(const LoginState.unknown());
 
-  LoginState get initialState => LoginInitial();
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginButtonPressed) {
-      yield LoginInProgress();
+      yield LoginState.inProgress();
 
-      try {
-        await userRepository.login(
+       var response =  await _loginRepository.login(
           username: event.username,
           password: event.password,
-        );
+       );
 
-        authenticationBloc.add(AuthenticationLoggedIn());
-        yield LoginInitial();
-      } catch (error) {
-        yield LoginFailure(error: error.toString());
-      }
+       //TODO - check the response
+       yield LoginState.authenticated();
     }
   }
+
+
 }
