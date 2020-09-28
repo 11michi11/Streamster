@@ -6,21 +6,25 @@ abstract class RegisterEvent extends Equatable {
 }
 
 class RegisterButtonPressed extends RegisterEvent {
-  final String name;
+  final String firstName;
+  final String lastName;
   final String email;
   final String password;
+  final String image;
 
   const RegisterButtonPressed({
-    @required this.name,
+    @required this.firstName,
+    @required this.lastName,
     @required this.email,
     @required this.password,
+    @required this.image
   });
 
   @override
-  List<Object> get props => [name, email, password];
+  List<Object> get props => [firstName, lastName, email, password, image];
 
   @override
   String toString() {
-    return 'RegisterButtonPressed{name: $name, email: $email, password: $password}';
+    return 'RegisterButtonPressed{first name: $firstName, last name: $lastName, email: $email, password: $password}';
   }
 }

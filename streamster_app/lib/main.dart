@@ -1,29 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'authentication/authentication.dart';
-import 'authentication/authentication_state.dart';
+import 'package:streamster_app/login/repository/login_repository.dart';
+import 'package:streamster_app/register/repository/register_repository.dart';
 import 'common/common.dart';
-import 'home/home.dart';
 import 'login/login.dart';
-import 'register/register_page.dart';
-import 'splash/splash.dart';
+import 'register/bloc/register_bloc.dart';
+import 'register/view/register_page.dart';
 
 void main() {
+  final loginRepository = LoginRepository();
   final userRepository = UserRepository();
-  runApp(BlocProvider<AuthenticationBloc>(
-    create: (context) {
-      return AuthenticationBloc(userRepository: userRepository)
-        ..add(AuthenticationStarted());
-    },
-    child: App(userRepository: userRepository),
-  ));
+  final registerRepository = RegisterRepository();
+
+  runApp(
+    MultiBlocProvider(providers: [
+      BlocProvider<LoginBloc>(
+        create: (context) {
+          return LoginBloc(loginRepository: loginRepository);
+        },
+      ),
+      BlocProvider<RegisterBloc>(
+        create: (context) {
+          return RegisterBloc(registerRepository: registerRepository);
+        },
+      ),
+    ], child: App(userRepository: userRepository, loginRepository: loginRepository, registerRepository: registerRepository,)),
+  );
 }
 
 class App extends StatelessWidget {
   final UserRepository userRepository;
+  final LoginRepository loginRepository;
+  final RegisterRepository registerRepository;
 
-  App({Key key, @required this.userRepository}) : super(key: key);
+  App(
+      {Key key,
+      @required this.userRepository,
+      @required this.loginRepository,
+      @required this.registerRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +49,11 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        '/login': (context) => LoginPage(userRepository: userRepository),
-        '/register': (context) => RegisterPage(userRepository: userRepository),
+        '/login': (context) => LoginPage(loginRepository: loginRepository),
+        '/register': (context) =>
+            RegisterPage(registerRepository: registerRepository),
       },
       initialRoute: '/login',
     );
   }
 }
-

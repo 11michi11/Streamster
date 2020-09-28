@@ -1,26 +1,26 @@
-import 'package:meta/meta.dart';
 import 'package:equatable/equatable.dart';
+import 'package:streamster_app/register/repository/register_repository.dart';
 
-abstract class RegisterState extends Equatable {
-  const RegisterState();
+class RegisterState extends Equatable {
 
-  @override
-  List<Object> get props => [];
-}
-
-class RegisterInitial extends RegisterState {}
-
-class RegisterInProgress extends RegisterState {}
-
-class RegisterSuccess extends RegisterState {}
-
-class RegisterFailure extends RegisterState {
+  final RegistrationStatus status;
   final String error;
 
-  const RegisterFailure({@required this.error});
+  const RegisterState._({
+    this.status = RegistrationStatus.init,
+    this.error
+  });
+
+  const RegisterState.init() : this._();
+
+  const RegisterState.inProgress() : this._(status: RegistrationStatus.inProgress);
+
+  const RegisterState.success() : this._(status: RegistrationStatus.success);
+
+  const RegisterState.error(String message) : this._(status: RegistrationStatus.error, error: message);
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [status, error];
 
   @override
   String toString() => 'RegisterFailure { error: $error }';

@@ -23,9 +23,11 @@ environment:
 dependencies:
   oauth2: ^1.6.1
   http: ^0.12.1
-  flutter_bloc: ^4.0.0
+  flutter_bloc: ^6.0.0
   meta: ^1.1.6
   equatable: ^1.0.0
+  image_picker: ^0.6.7
+  universal_html: ^1.2.1
   flutter:
     sdk: flutter
 
@@ -49,13 +51,19 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   fonts:
-    - family: Dreamwood
+#    - family: Dreamwood
+#      fonts:
+#        - asset: fonts/Dreamwood-Regular.ttf
+    - family: BalooTammudu
       fonts:
-        - asset: fonts/Dreamwood-Regular.ttf
+        - asset: fonts/BalooTammuduRegular.ttf
+    - family: BalooTammuduBold
+      fonts:
+        - asset: fonts/BalooTammuduBold.ttf
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
-  #   - images/a_dot_ham.jpeg
+  assets:
+    - images/book.jpg
+    - images/book1.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
