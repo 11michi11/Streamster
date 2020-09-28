@@ -6,7 +6,7 @@ class RestClient {
   final clientId = "my-trusted-client";
   final clientSecret = "secret";
   //static final baseUrl = "http://localhost:8080";
-  static final baseUrl = 'https://apigateway-ayoqp7z2fq-lz.a.run.app:8080';
+  static final baseUrl = 'https://apigateway-ayoqp7z2fq-lz.a.run.app';
   static final authUrl = Uri.parse("$baseUrl/user-service/oauth/token");
   static final registerUrl = Uri.parse("$baseUrl/user-service/user/register");
   var client;
