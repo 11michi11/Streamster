@@ -22,18 +22,19 @@ class UserControllerTest extends Specification {
     @Autowired(required = true)
     private UserController userController;
 
-//    @WithMockUser(username = "user@email.com",authorities =["ADMIN"])
-//    def "test updateSystemRoleAsAdmin"() {
-//        given:
-//            User user = new User("userId","Peter","Price", "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S","student@email.com", null, SystemRoleType.STUDENT, Collections.emptyList());
-//            UserRepository userRepository = Stub(UserRepository.class)
-//            userRepository.findById("userId") >> {return user}
-//            userRepository.save(user)
-//        when:
-//            ResponseEntity response = userController.updateSystemRole("userId",SystemRoleType.TEACHER)
-//        then:
-//            response.getStatusCode() == HttpStatus.OK
-//    }
+    @WithMockUser(username = "user@email.com", authorities = ["ADMIN"])
+    def "test updateSystemRoleAsAdmin"() {
+        given:
+        User user = new User("userId", "Peter", "Price", "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S", "student@email.com", null, SystemRoleType.STUDENT, Collections.emptyList());
+        UserRepository userRepository = Stub(UserRepository.class)
+        userRepository.findById("userId") >> Optional.of(user)
+        UserService userService = new UserService(userRepository)
+        userController = new UserController(userService)
+        when:
+        ResponseEntity response = userController.updateSystemRole("userId", SystemRoleType.TEACHER)
+        then:
+        response.getStatusCode() == HttpStatus.OK
+    }
 //
 //    @WithMockUser(username = "user@email.com",authorities =["STUDENT"])
 //    def "test updateSystemRoleAsNotAdmin"() {
