@@ -14,8 +14,6 @@ class LoginFormForWeb extends StatefulWidget {
 
 class _LoginFormForWebState extends State<LoginFormForWeb> {
 
-  String tag = 'LoginForm |';
-
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
