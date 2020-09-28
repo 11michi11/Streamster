@@ -8,15 +8,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfo {
+public class RegistrationDTO {
 
-    String email;
-    String name;
-    String password;
+    private String firstName;
+    private String lastName;
+    private String password;
+    private String email;
+    private String avatar;
 
-    public UserInfo encryptPassword() {
+    public RegistrationDTO encryptPassword() {
         String password = new BCryptPasswordEncoder().encode(this.password);
-        return new UserInfo(email, name, password);
+        return new RegistrationDTO(firstName, lastName, password, email, avatar);
     }
 
 }
