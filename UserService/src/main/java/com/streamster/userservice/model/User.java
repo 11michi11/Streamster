@@ -26,7 +26,8 @@ public class User {
     private SystemRoleType systemRole;
     private List<GroupRole> groupRoles;
 
-    public User(String firstName, String lastName, String password, String email, String avatar, SystemRoleType systemRole, List<GroupRole> groupRoles) {
+    public User(String firstName, String lastName, String password, String email, String avatar,
+                SystemRoleType systemRole, List<GroupRole> groupRoles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -37,7 +38,8 @@ public class User {
     }
 
     public static User fromRegistrationDTO(RegistrationDTO dto) {
-        return new User(dto.getFirstName(),dto.getLastName(),dto.getPassword(),dto.getEmail(),dto.getAvatar(),SystemRoleType.STUDENT, Collections.emptyList());
+        return new User(dto.getFirstName(),dto.getLastName(),dto.getPassword(),dto.getEmail(),dto.getAvatar(),
+                SystemRoleType.STUDENT, Collections.emptyList());
     }
 
 }
