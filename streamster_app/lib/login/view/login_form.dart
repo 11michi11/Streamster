@@ -84,7 +84,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
             fontSize: 25.0));
   }
 
-  Widget textField(String fieldName) {
+  Widget customTextField(String fieldName) {
     return Container(
         width: 150.0,
         child: Padding(
@@ -115,8 +115,8 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  textField("Email :"),
-                  SizedBox(
+                  customTextField("Email :"),
+                  Container(
                     width: 190.0,
                     child: TextField(
                         controller: _usernameController,
@@ -130,8 +130,8 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  textField("Password :"),
-                  SizedBox(
+                  customTextField("Password :"),
+                  Container(
                     width: 190.0,
                     child: TextField(
                         obscureText: true,
@@ -146,6 +146,9 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
             ],
           ),
         ),
+        Container(child:
+        state.status == LoginStatus.inProgress ?
+        CircularProgressIndicator() : null),
         loginButton(state),
         createAccountButton()
       ],
@@ -186,7 +189,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
                                     color: Colors.brown,
                                     fontSize: 20.0)),
                           )),
-                      SizedBox(
+                      Container(
                         width: 235,
                         child: TextField(
                             controller: _usernameController,
@@ -212,7 +215,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
                                     color: Colors.brown,
                                     fontSize: 20.0)),
                           )),
-                      SizedBox(
+                      Container(
                         width: 235,
                         child: TextField(
                             obscureText: true,
@@ -228,6 +231,9 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
                 ],
               ),
             ),
+            Container(child:
+            state.status == LoginStatus.inProgress ?
+            CircularProgressIndicator() : null),
             loginButton(state),
             createAccountButton()
           ],
@@ -256,9 +262,11 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
 
   void handleState(LoginState state) {
     if (state.status == LoginStatus.authenticated) {
+      Navigator.of(context).pushNamed('/admin');
+    } else if(state.status == LoginStatus.unauthenticated) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('authenticated'),
-        backgroundColor: Colors.green,
+        content: Text('authentication failed'),
+        backgroundColor: Colors.red,
       ));
     }
   }

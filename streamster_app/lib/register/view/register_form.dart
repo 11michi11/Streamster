@@ -31,7 +31,7 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
   onRegisterButtonPressed(String avatar) {
     print('$tag register btn was pressed');
 
-    BlocProvider.of<RegisterBloc>(context).add(RegisterButtonPressed(
+    BlocProvider.of<RegisterBloc>(context).add(RegisterUser(
         firstName: _firstNameController.text,
         lastName: _lastNameController.text,
         email: _emailController.text,
