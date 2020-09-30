@@ -6,6 +6,8 @@ import 'dart:convert' as convert;
 enum RegistrationStatus { init, success, error, inProgress }
 
 class RegisterRepository {
+
+  String tag = 'RegisterRepository | ';
   RestClient client;
 
   RegisterRepository() {
@@ -15,7 +17,7 @@ class RegisterRepository {
   Future<RegistrationStatus> register({String firstName, String lastName, String email, String password, String avatar}) async {
 
     var user = UserInfo(firstName, lastName, email, password, avatar);
-    print(user.toJson().toString());
+    print('$tag registering: ' + user.firstName);
 
     var response = await http.post(RestClient.registerUrl,
         headers: {'Content-Type': 'application/json'},

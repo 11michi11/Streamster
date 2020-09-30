@@ -5,7 +5,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:streamster_app/login/bloc/login_state.dart';
 
 import '../bloc/register_bloc.dart';
 import '../bloc/register_event.dart';
@@ -28,29 +27,30 @@ class _RegisterFormState extends State<RegisterForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
 
-  onRegisterButtonPressed(String avatar) {
-
-    if(!isEmpty()) {
-      if (validateEmail(_emailController.text)) {
-        print('$tag registering : first name ' + _firstNameController.text + ' last name ' + _lastNameController.text );
-        if (validatePassword(_passwordController.text)) {
-          BlocProvider.of<RegisterBloc>(context).add(RegisterUser(
-              firstName: _firstNameController.text,
-              lastName: _lastNameController.text,
-              email: _emailController.text,
-              password: _passwordController.text,
-              image: avatar));
+  onRegisterButtonPressed(String avatar, int imageSize) {
+    if(validateImageSize(imageSize)) {
+      if(!isEmpty()) {
+        if (validateEmail(_emailController.text)) {
+          print('$tag registering : first name ' + _firstNameController.text + ' last name ' + _lastNameController.text );
+          if (validatePassword(_passwordController.text)) {
+            BlocProvider.of<RegisterBloc>(context).add(RegisterUser(
+                firstName: _firstNameController.text,
+                lastName: _lastNameController.text,
+                email: _emailController.text,
+                password: _passwordController.text,
+                image: avatar));
+          } else {
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text('Invalid password'),
+              backgroundColor: Colors.red,
+            ));
+          }
         } else {
           Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text('Invalid password'),
+            content: Text('Invalid email'),
             backgroundColor: Colors.red,
           ));
         }
-      } else {
-        Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text('Invalid email'),
-          backgroundColor: Colors.red,
-        ));
       }
     }
   }
@@ -72,6 +72,23 @@ class _RegisterFormState extends State<RegisterForm> {
     return RegExp(
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
         .hasMatch(password);
+  }
+
+  bool validateImageSize(int image) {
+
+    if(image == null) {
+      print('$tag registration without image');
+      return true;
+    }
+    else if (image <= 15000000) {
+      return true;
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('This image is too big. Maximum size is 15MB'),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
   }
 
   bool isEmpty() {
@@ -122,7 +139,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcQhOaaBAY_yOcJXbL4jW0I_Y5sePbzagqN2aA&usqp=CAU"))));
   }
 
-  Widget registerButton(RegisterState state, String image) {
+  Widget registerButton(RegisterState state, String image, int imageSize) {
     return Container(
       margin: EdgeInsets.only(bottom: 50.0),
       child: ButtonTheme(
@@ -135,7 +152,7 @@ class _RegisterFormState extends State<RegisterForm> {
           color: Colors.white,
           onPressed: () {
             if (state.status != RegistrationStatus.inProgress) {
-              onRegisterButtonPressed(image);
+              onRegisterButtonPressed(image, imageSize);
             }
           },
           child: Padding(
@@ -164,6 +181,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
   File _androidImage;
   String _androidImageEncoded;
+  int _androidImageSize;
   final picker = ImagePicker();
 
   Future pickImageAndroid() async {
@@ -172,9 +190,11 @@ class _RegisterFormState extends State<RegisterForm> {
     setState(() {
       if (pickedFile != null) {
         _androidImage = File(pickedFile.path);
-
         /* Encode image to String base64 */
         List<int> imageBytes = _androidImage.readAsBytesSync();
+        _androidImageSize = imageBytes.length;
+        print('$tag image lenght: ${imageBytes.length}');
+
         String base64Image = base64Encode(imageBytes);
         _androidImageEncoded = base64Image;
       }
@@ -324,7 +344,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     ],),
                 ],),
             ],),
-          registerButton(state, _androidImageEncoded)
+          registerButton(state, _androidImageEncoded, _androidImageSize)
         ],
       ),
     );
@@ -335,6 +355,7 @@ class _RegisterFormState extends State<RegisterForm> {
   String imageError;
   String encodedImageWeb;
   Uint8List imageDataWeb;
+  int imageWebSize;
 
   pickImageWeb() {
     final html.InputElement input = html.document.createElement('input');
@@ -355,6 +376,7 @@ class _RegisterFormState extends State<RegisterForm> {
             imageError = err.toString();
           }));
       reader.onLoad.first.then((res) {
+
         final encoded = reader.result as String;
         final stripped =
         encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
@@ -362,6 +384,8 @@ class _RegisterFormState extends State<RegisterForm> {
 
         setState(() {
           imageDataWeb = base64.decode(stripped);
+          imageWebSize = imageDataWeb.lengthInBytes;
+          print('$tag image length ${imageDataWeb.lengthInBytes.toString()}');
           imageError = null;
         });
       });
@@ -370,6 +394,7 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   Widget showImageWeb(data) {
+
     return Container(
         width: 100.0,
         height: 100.0,
@@ -416,8 +441,8 @@ class _RegisterFormState extends State<RegisterForm> {
                         },
                         child: Container(
                           margin: EdgeInsets.only(right: 50.0),
-                          width: 100.0,
-                          height: 100.0,
+                          width: 120.0,
+                          height: 120.0,
                           child: imageDataWeb != null
                               ? showImageWeb(imageDataWeb)
                               : defaultImage(),
@@ -432,66 +457,65 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                   ],
                 ),
-                Column(
-                  // text fields for name and surname
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                            width: 150.0,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: Text("Name: ",
-                                  style: TextStyle(
-                                      fontFamily: 'BalooTammudu',
-                                      color: Colors.brown,
-                                      fontSize: 20.0)),
-                            )),
-                        SizedBox(
-                          width: 235,
-                          child: TextField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                  hintStyle:
-                                  TextStyle(fontFamily: 'BalooTammudu'),
-                                  contentPadding: EdgeInsets.only(top: 10.0),
-                                  hintText: 'Enter your first name')),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Container(
-                            width: 150.0,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 20.0),
-                              child: Text("Surname: ",
-                                  style: TextStyle(
-                                      fontFamily: 'BalooTammudu',
-                                      color: Colors.brown,
-                                      fontSize: 20.0)),
-                            )),
-                        SizedBox(
-                          width: 235,
-                          child: TextField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                  hintStyle:
-                                  TextStyle(fontFamily: 'BalooTammudu'),
-                                  contentPadding: EdgeInsets.only(top: 10.0),
-                                  hintText: 'Enter your last name')),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
               ],
             ),
             Container(
-              // text fields for email and password
+              // text fields for name, surname, email and password
               margin: EdgeInsets.only(bottom: 35.0),
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: 150.0,
+                          margin: EdgeInsets.only(right: 20.0),
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text("Name: ",
+                                style: TextStyle(
+                                    fontFamily: 'BalooTammudu',
+                                    color: Colors.brown,
+                                    fontSize: 20.0)),
+                          )),
+                      SizedBox(
+                        width: 235,
+                        child: TextField(
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                                hintStyle:
+                                TextStyle(fontFamily: 'BalooTammudu'),
+                                contentPadding: EdgeInsets.only(top: 10.0),
+                                hintText: 'Enter your first name')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          margin: EdgeInsets.only(right: 20.0),
+                          width: 150.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text("Surname: ",
+                                style: TextStyle(
+                                    fontFamily: 'BalooTammudu',
+                                    color: Colors.brown,
+                                    fontSize: 20.0)),
+                          )),
+                      SizedBox(
+                        width: 235,
+                        child: TextField(
+                            controller: _lastNameController,
+                            decoration: InputDecoration(
+                                hintStyle:
+                                TextStyle(fontFamily: 'BalooTammudu'),
+                                contentPadding: EdgeInsets.only(top: 10.0),
+                                hintText: 'Enter your last name')),
+                      ),
+                    ],
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -545,7 +569,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       )
                     ],),
                 ],),),
-            registerButton(state, encodedImageWeb),
+            registerButton(state, encodedImageWeb, imageWebSize),
           ],
         ),
       ),

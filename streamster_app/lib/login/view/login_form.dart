@@ -250,7 +250,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > 700) {
+          if (constraints.maxWidth > 1000) {
             return webLayout(state);
           } else {
             return androidLayout(state);
