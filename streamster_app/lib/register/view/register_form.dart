@@ -15,12 +15,12 @@ import 'package:universal_html/prefer_universal/html.dart' as html;
 
 import '../repository/register_repository.dart';
 
-class RegisterFormForWeb extends StatefulWidget {
+class RegisterForm extends StatefulWidget {
   @override
-  State<RegisterFormForWeb> createState() => _RegisterFormForWebState();
+  State<RegisterForm> createState() => _RegisterFormState();
 }
 
-class _RegisterFormForWebState extends State<RegisterFormForWeb> {
+class _RegisterFormState extends State<RegisterForm> {
   final String tag = 'RegisterForm | ';
 
   final _firstNameController = TextEditingController();
@@ -29,17 +29,85 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
   final _passwordController = TextEditingController();
 
   onRegisterButtonPressed(String avatar) {
-    print('$tag register btn was pressed');
 
-    BlocProvider.of<RegisterBloc>(context).add(RegisterUser(
-        firstName: _firstNameController.text,
-        lastName: _lastNameController.text,
-        email: _emailController.text,
-        password: _passwordController.text,
-        image: avatar));
+    if(!isEmpty()) {
+      if (validateEmail(_emailController.text)) {
+        print('$tag registering : first name ' + _firstNameController.text + ' last name ' + _lastNameController.text );
+        if (validatePassword(_passwordController.text)) {
+          BlocProvider.of<RegisterBloc>(context).add(RegisterUser(
+              firstName: _firstNameController.text,
+              lastName: _lastNameController.text,
+              email: _emailController.text,
+              password: _passwordController.text,
+              image: avatar));
+        } else {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text('Invalid password'),
+            backgroundColor: Colors.red,
+          ));
+        }
+      } else {
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('Invalid email'),
+          backgroundColor: Colors.red,
+        ));
+      }
+    }
   }
 
-  /*  --------------------------------------------------------- COMMON WIDGETS ----------------------------------------------------------------------- */
+  /*    output:
+    Vignesh123! : true
+    vignesh123 : false
+    VIGNESH123! : false
+    vignesh@ : false
+    12345678? : false
+    */
+  bool validateEmail(String email) {
+    return RegExp(
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+  }
+
+  bool validatePassword(String password) {
+    return RegExp(
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+        .hasMatch(password);
+  }
+
+  bool isEmpty() {
+    if(_firstNameController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Name is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    }
+    else if(_lastNameController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Surname is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    }
+    else if(_emailController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Email is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    }
+    else if(_passwordController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Password is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+/*  --------------------------------------------------------- COMMON WIDGETS ----------------------------------------------------------------------- */
 
   Widget defaultImage() {
     return Container(
@@ -92,7 +160,7 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
     super.dispose();
   }
 
-  /*  --------------------------------------------------------- ANDROID LAYOUT ----------------------------------------------------------------------- */
+/*  --------------------------------------------------------- ANDROID LAYOUT ----------------------------------------------------------------------- */
 
   File _androidImage;
   String _androidImageEncoded;
@@ -124,139 +192,145 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
   }
 
   Widget androidLayout(RegisterState state) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 60.0),
-          child: Text("Register to Streamster",
-              style: TextStyle(
-                  fontFamily: 'BalooTammuduBold',
-                  color: Colors.brown,
-                  fontSize: 25.0)),
-        ),
-        Column(
-          children: [
-            FlatButton(
-                onPressed: () {
-                  pickImageAndroid();
-                },
-                child: Container(
-                  width: 125.0,
-                  height: 125.0,
-                  child: _androidImage != null
-                      ? showImageAndroid(_androidImage)
-                      : defaultImage(),
-                )),
-            Text("upload image",
+    return Container(
+      color: Colors.white,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          Container(
+            margin: EdgeInsets.only(top: 60.0),
+            child: Text("Register to Streamster",
                 style: TextStyle(
                     fontFamily: 'BalooTammuduBold',
                     color: Colors.brown,
-                    fontSize: 10.0)),
-          ],
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Container(
-                        width: 150.0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text("Name: ",
-                              style: TextStyle(
-                                  fontFamily: 'BalooTammudu',
-                                  color: Colors.brown,
-                                  fontSize: 20.0)),
-                        )),
-                    SizedBox(
-                      width: 200,
-                      child: TextField(
-                          controller: _firstNameController,
-                          decoration: InputDecoration(
-                              hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                              contentPadding: EdgeInsets.only(top: 10.0),
-                              hintText: 'Enter your first name')),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                        width: 150.0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text("Surname: ",
-                              style: TextStyle(
-                                  fontFamily: 'BalooTammudu',
-                                  color: Colors.brown,
-                                  fontSize: 20.0)),
-                        )),
-                    SizedBox(
-                      width: 200,
-                      child: TextField(
-                          controller: _lastNameController,
-                          decoration: InputDecoration(
-                              hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                              contentPadding: EdgeInsets.only(top: 10.0),
-                              hintText: 'Enter your last name')),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                        width: 150.0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text("Email: ",
-                              style: TextStyle(
-                                  fontFamily: 'BalooTammudu',
-                                  color: Colors.brown,
-                                  fontSize: 20.0)),
-                        )),
-                    SizedBox(
-                      width: 200,
-                      child: TextField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                              hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                              contentPadding: EdgeInsets.only(top: 10.0),
-                              hintText: 'Enter your email')),
-                    )
-                  ],
-                ),
-                Row(
-                  children: [
-                    Container(
-                        width: 150.0,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text("Password: ",
-                              style: TextStyle(
-                                  fontFamily: 'BalooTammudu',
-                                  color: Colors.brown,
-                                  fontSize: 20.0)),
-                        )),
-                    SizedBox(
-                      width: 200,
-                      child: TextField(
-                          obscureText: true,
-                          controller: _passwordController,
-                          decoration: InputDecoration(
-                              hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                              contentPadding: EdgeInsets.only(top: 10.0),
-                              hintText: 'Enter your password')),
-                    )],),],),],),
-        registerButton(state, _androidImageEncoded)
-      ],
+                    fontSize: 25.0)),
+          ),
+          Column(
+            children: [
+              FlatButton(
+                  onPressed: () {
+                    pickImageAndroid();
+                  },
+                  child: Container(
+                    width: 125.0,
+                    height: 125.0,
+                    child: _androidImage != null
+                        ? showImageAndroid(_androidImage)
+                        : defaultImage(),
+                  )),
+              Text("upload image",
+                  style: TextStyle(
+                      fontFamily: 'BalooTammuduBold',
+                      color: Colors.brown,
+                      fontSize: 10.0)),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                          width: 150.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text("Name: ",
+                                style: TextStyle(
+                                    fontFamily: 'BalooTammudu',
+                                    color: Colors.brown,
+                                    fontSize: 20.0)),
+                          )),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                                hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
+                                contentPadding: EdgeInsets.only(top: 10.0),
+                                hintText: 'Enter your first name')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          width: 150.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text("Surname: ",
+                                style: TextStyle(
+                                    fontFamily: 'BalooTammudu',
+                                    color: Colors.brown,
+                                    fontSize: 20.0)),
+                          )),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                            controller: _lastNameController,
+                            decoration: InputDecoration(
+                                hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
+                                contentPadding: EdgeInsets.only(top: 10.0),
+                                hintText: 'Enter your last name')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          width: 150.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text("Email: ",
+                                style: TextStyle(
+                                    fontFamily: 'BalooTammudu',
+                                    color: Colors.brown,
+                                    fontSize: 20.0)),
+                          )),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                                hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
+                                contentPadding: EdgeInsets.only(top: 10.0),
+                                hintText: 'Enter your email')),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Container(
+                          width: 150.0,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text("Password: ",
+                                style: TextStyle(
+                                    fontFamily: 'BalooTammudu',
+                                    color: Colors.brown,
+                                    fontSize: 20.0)),
+                          )),
+                      SizedBox(
+                        width: 200,
+                        child: TextField(
+                            obscureText: true,
+                            controller: _passwordController,
+                            decoration: InputDecoration(
+                                hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
+                                contentPadding: EdgeInsets.only(top: 10.0),
+                                hintText: 'Enter your password')),
+                      )
+                    ],),
+                ],),
+            ],),
+          registerButton(state, _androidImageEncoded)
+        ],
+      ),
     );
   }
 
-  /*  --------------------------------------------------------- WEB LAYOUT ----------------------------------------------------------------------- */
+/*  --------------------------------------------------------- WEB LAYOUT ----------------------------------------------------------------------- */
 
   String imageError;
   String encodedImageWeb;
@@ -275,14 +349,15 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
       }
       final reader = html.FileReader();
       reader.readAsDataUrl(input.files[0]);
-      reader.onError.listen((err) => setState(() {
+      reader.onError.listen((err) =>
+          setState(() {
             print("error: ${err.toString()}");
             imageError = err.toString();
           }));
       reader.onLoad.first.then((res) {
         final encoded = reader.result as String;
         final stripped =
-            encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
+        encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
         encodedImageWeb = stripped;
 
         setState(() {
@@ -302,13 +377,19 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
             border: Border.all(color: Colors.brown),
             shape: BoxShape.circle,
             image:
-                DecorationImage(fit: BoxFit.fill, image: MemoryImage(data))));
+            DecorationImage(fit: BoxFit.fill, image: MemoryImage(data))));
   }
 
   Widget webLayout(RegisterState state) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.50,
-      height: MediaQuery.of(context).size.height,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width * 0.50,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height,
       margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
       child: Card(
         child: Column(
@@ -372,7 +453,7 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
                               controller: _firstNameController,
                               decoration: InputDecoration(
                                   hintStyle:
-                                      TextStyle(fontFamily: 'BalooTammudu'),
+                                  TextStyle(fontFamily: 'BalooTammudu'),
                                   contentPadding: EdgeInsets.only(top: 10.0),
                                   hintText: 'Enter your first name')),
                         ),
@@ -396,7 +477,7 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
                               controller: _lastNameController,
                               decoration: InputDecoration(
                                   hintStyle:
-                                      TextStyle(fontFamily: 'BalooTammudu'),
+                                  TextStyle(fontFamily: 'BalooTammudu'),
                                   contentPadding: EdgeInsets.only(top: 10.0),
                                   hintText: 'Enter your last name')),
                         ),
@@ -431,7 +512,7 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
                             controller: _emailController,
                             decoration: InputDecoration(
                                 hintStyle:
-                                    TextStyle(fontFamily: 'BalooTammudu'),
+                                TextStyle(fontFamily: 'BalooTammudu'),
                                 contentPadding: EdgeInsets.only(top: 10.0),
                                 hintText: 'Enter your email')),
                       )
@@ -458,10 +539,12 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
                             controller: _passwordController,
                             decoration: InputDecoration(
                                 hintStyle:
-                                    TextStyle(fontFamily: 'BalooTammudu'),
+                                TextStyle(fontFamily: 'BalooTammudu'),
                                 contentPadding: EdgeInsets.only(top: 10.0),
                                 hintText: 'Enter your password')),
-                      )],),],),),
+                      )
+                    ],),
+                ],),),
             registerButton(state, encodedImageWeb),
           ],
         ),
@@ -469,7 +552,7 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
     );
   }
 
-  /*  -------------------------------------------------------------------------------------------------------------------------------- */
+/*  -------------------------------------------------------------------------------------------------------------------------------- */
 
   @override
   Widget build(BuildContext context) {
@@ -478,9 +561,9 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
         handleState(state);
       },
       child:
-          BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
+      BlocBuilder<RegisterBloc, RegisterState>(builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > 700) {
+          if (constraints.maxWidth > 1100) {
             return webLayout(state);
           } else {
             return androidLayout(state);
@@ -501,6 +584,7 @@ class _RegisterFormForWebState extends State<RegisterFormForWeb> {
         content: Text('success'),
         backgroundColor: Colors.green,
       ));
+      Navigator.of(context).pushNamed('/login');
     }
   }
 }

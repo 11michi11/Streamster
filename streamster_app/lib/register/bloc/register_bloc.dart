@@ -23,8 +23,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
        var response = await _registerRepository.register(
           firstName: event.firstName,
+          lastName: event.lastName,
           email: event.email,
           password: event.password,
+         avatar: event.image
        );
        if(response == RegistrationStatus.success) {
          yield RegisterState.success();

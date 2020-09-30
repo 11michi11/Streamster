@@ -16,6 +16,7 @@ class RestClient {
     client = await oauth2.resourceOwnerPasswordGrant(
         authUrl, username, password,
         identifier: clientId, secret: clientSecret);
+    
   }
 
 }
