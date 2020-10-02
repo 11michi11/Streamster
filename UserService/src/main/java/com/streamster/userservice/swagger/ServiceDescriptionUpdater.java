@@ -2,13 +2,19 @@ package com.streamster.userservice.swagger;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import com.streamster.userservice.ServicesConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -24,16 +30,19 @@ public class ServiceDescriptionUpdater {
     private static final String DEFAULT_SWAGGER_URL = "/v2/api-docs";
     private static final String KEY_SWAGGER_URL = "swagger_url";
 
-    private static final List<String> INSTANCES = List.of();
-
+    private final List<String> INSTANCES;
+    private final Map<String, String> INSTANCES_NAMES;
     private final RestTemplate template;
+    private final ServiceDefinitionsContext definitionContext;
+    private final ServicesConfig servicesConfig;
 
-    public ServiceDescriptionUpdater() {
+    public ServiceDescriptionUpdater(ServiceDefinitionsContext definitionContext, ServicesConfig servicesConfig) {
+        INSTANCES = servicesConfig.getAllServices();
+        INSTANCES_NAMES = servicesConfig.getAllServicesAsMap();
         this.template = new RestTemplate();
+        this.definitionContext = definitionContext;
+        this.servicesConfig = servicesConfig;
     }
-
-    @Autowired
-    private ServiceDefinitionsContext definitionContext;
 
     @Scheduled(fixedDelayString = "${swagger.config.refreshrate}")
     public void refreshSwaggerConfigurations() {
@@ -47,7 +56,7 @@ public class ServiceDescriptionUpdater {
 
             if (jsonData.isPresent()) {
                 String content = getJSON(jsonData.get());
-                definitionContext.addServiceDefinition(serviceURL, content);
+                definitionContext.addServiceDefinition(INSTANCES_NAMES.get(serviceURL), content);
             } else {
                 logger.error("Skipping service id : {} Error : Could not get Swagger definition from API ", serviceURL);
             }

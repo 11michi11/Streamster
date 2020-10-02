@@ -3,7 +3,7 @@ spring:
     name: recommendation-service
   data:
     mongodb:
-      uri: mongodb+srv://streamster:22noRhzBxqErEMTc@streamster.mysoh.gcp.mongodb.net/streamster
+      uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
 security:
   oauth2:
     resource:
@@ -17,3 +17,4 @@ security:
 server:
   servlet:
     context-path: /recommendation-service
+  port: 8092
