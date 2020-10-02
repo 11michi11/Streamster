@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  get_it: ^5.0.1
   oauth2: ^1.6.1
   http: ^0.12.1
   flutter_bloc: ^6.0.0
@@ -62,6 +63,8 @@ flutter:
         - asset: fonts/BalooTammuduBold.ttf
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/config/dev.json
+    - assets/config/prod.json
     - images/book.jpg
     - images/book1.jpg
     - images/book2.jpg
