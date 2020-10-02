@@ -7,13 +7,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.NoSuchElementException;
+
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseBody
-    @ExceptionHandler(value = {ObjectNotFoundException.class})
+    @ExceptionHandler(value = {NoSuchElementException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String objectNotFoundExceptionHandler(ObjectNotFoundException ex){
+    String noSuchElementExceptionHandler(NoSuchElementException ex) {
         return ex.getMessage();
     }
 }

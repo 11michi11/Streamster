@@ -1,10 +1,11 @@
 package com.streamster.userservice.service;
 
-import com.streamster.userservice.controller.advice.ObjectNotFoundException;
 import com.streamster.userservice.model.SystemRoleType;
 import com.streamster.userservice.model.User;
 import com.streamster.userservice.repository.UserRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.NoSuchElementException;
 
 @Component
 public class UserService {
@@ -21,7 +22,7 @@ public class UserService {
 
     public void updateSystemRole(String userId, SystemRoleType role) throws NullPointerException {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ObjectNotFoundException("Cannot be found user with id: " + userId));
+                .orElseThrow(() -> new NoSuchElementException("User with id: " + userId + "cannot be found"));
         user.setSystemRole(role);
         this.userRepository.save(user);
     }
