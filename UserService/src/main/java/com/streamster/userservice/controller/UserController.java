@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).ADMIN)")
-    @GetMapping("/all")
+    @GetMapping()
     ResponseEntity<List<UserView>> getAllUsers() {
         List<User> users = userRepository.findAll();
         return new ResponseEntity<>(users.stream().map(User::toUserView).collect(Collectors.toList()), HttpStatus.OK);
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).ADMIN)")
-    @PutMapping("/updateSystemRole/{userId}")
+    @PutMapping("/{userId}/updateSystemRole")
     ResponseEntity<String> updateSystemRole(@PathVariable String userId, @RequestParam SystemRoleType role) {
         userService.updateSystemRole(userId,role);
         return new ResponseEntity<>("The role has been updated", HttpStatus.OK);
