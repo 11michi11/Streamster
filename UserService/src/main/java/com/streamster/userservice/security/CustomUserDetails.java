@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(
                 byEmail.getEmail(), byEmail.getPassword(), true, true, true, true,
-                AuthorityUtils.createAuthorityList("ROLE_TRUSTED_CLIENT")
+                AuthorityUtils.createAuthorityList(byEmail.getSystemRole().toString())
         );
 
     }

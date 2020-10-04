@@ -1,6 +1,7 @@
 package com.streamster.userservice.security;
 
 
+import com.streamster.userservice.model.SystemRoleType;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,7 +35,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory()
                 .withClient("my-trusted-client")
                 .authorizedGrantTypes("client_credentials", "password", "authorization_code")
-                .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
+                .authorities(SystemRoleType.getAllRoles())
                 .scopes("read", "write", "trust")
                 .resourceIds("oauth2-resource")
                 .accessTokenValiditySeconds(5000)
