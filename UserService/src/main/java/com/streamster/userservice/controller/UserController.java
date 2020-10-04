@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).ADMIN)")
-    @GetMapping()
+    @GetMapping
     ResponseEntity<List<UserView>> getAllUsers() {
         List<User> users = userRepository.findAll();
         return new ResponseEntity<>(users.stream().map(User::toUserView).collect(Collectors.toList()), HttpStatus.OK);
