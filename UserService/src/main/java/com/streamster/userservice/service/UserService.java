@@ -22,8 +22,13 @@ public class UserService {
 
     public void updateSystemRole(String userId, SystemRoleType role) throws NullPointerException {
         User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("User with id: " + userId + "cannot be found"));
+                .orElseThrow(() -> new NoSuchElementException("User with id: " + userId + " cannot be found"));
         user.setSystemRole(role);
         this.userRepository.save(user);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
     }
 }
