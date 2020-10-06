@@ -10,7 +10,9 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +26,9 @@ public class User {
 
     @Id
     private String id;
+    @NotNull
     private String firstName;
+    @NotNull
     private String lastName;
 
     // (?=.*?[A-Z]) -- at least one uppercase letter
@@ -32,6 +36,7 @@ public class User {
     // (?=.*?[0-9]) -- at least one digit
     // .{8,} -- minimum length = 8
     @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")
+    @NotNull
     private String password;
     @Indexed
     @Email

@@ -1,126 +1,102 @@
 package com.streamster.userservice.controller
 
-import com.streamster.userservice.UserServiceApplication
-import com.streamster.userservice.model.SystemRoleType
-import com.streamster.userservice.model.User
 import com.streamster.userservice.repository.UserRepository
 import com.streamster.userservice.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
+import org.springframework.http.MediaType
+import org.springframework.security.test.context.support.WithAnonymousUser
 import org.springframework.security.test.context.support.WithMockUser
-import org.springframework.test.context.ContextConfiguration
+import org.springframework.test.context.web.WebAppConfiguration
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.web.context.WebApplicationContext
 import spock.lang.Specification
+import spock.mock.DetachedMockFactory
 
-@ContextConfiguration
-@SpringBootTest(classes = UserServiceApplication.class)
+import static groovy.json.JsonOutput.toJson
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
+
+@WebMvcTest(controllers = [UserController])
+@WebAppConfiguration
 class UserControllerTest extends Specification {
 
-    @Autowired(required = true)
-    private UserController userController;
+    MockMvc mvc
 
-    @WithMockUser(username = "user@email.com", authorities = ["ADMIN"])
-    def "test updateSystemRoleAsAdmin"() {
-        given:
-            User user = new User("userId", "Peter", "Price",
-                    "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S", "student@email.com",
-                    null, SystemRoleType.STUDENT, Collections.emptyList());
-            UserRepository userRepository = Stub(UserRepository.class)
-            userRepository.findById("userId") >> Optional.of(user)
-            UserService userService = new UserService(userRepository)
-            userController = new UserController(userService, userRepository)
-        when:
-            ResponseEntity response = userController.updateSystemRole("userId", SystemRoleType.TEACHER)
-        then:
-            response.getStatusCode() == HttpStatus.OK
+    @Autowired
+    UserService userService
+
+    @Autowired
+    WebApplicationContext context
+
+    void setup() {
+        mvc = webAppContextSetup(context).apply(springSecurity()).build()
     }
 
-//    @WithMockUser(username = "user@email.com",authorities =["STUDENT"])
-//    def "test updateSystemRoleAsNotAdmin"() {
-//        given:
-//            User user = new User("userId", "Peter", "Price",
-//                    "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S", "student@email.com",
-//                    null, SystemRoleType.STUDENT, Collections.emptyList());
-//            UserRepository userRepository = Stub(UserRepository.class)
-//            userRepository.findById("userId") >> Optional.of(user)
-//            UserService userService = new UserService(userRepository)
-//            userController = new UserController(userService)
-//        when:
-//            ResponseEntity response = userController.updateSystemRole("userId",SystemRoleType.TEACHER)
-//        then:
-//            response.getStatusCode() == HttpStatus.UNAUTHORIZED
-//    }
-//    @WithAnonymousUser
-//    def "test updateSystemRoleAsAnonymousUser"() {
-//        given:
-//            User user = new User("userId", "Peter", "Price",
-//                    "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S", "student@email.com",
-//                    null, SystemRoleType.STUDENT, Collections.emptyList());
-//            UserRepository userRepository = Stub(UserRepository.class)
-//            userRepository.findById("userId") >> Optional.of(user)
-//            UserService userService = new UserService(userRepository)
-//            userController = new UserController(userService)
-//        when:
-//            ResponseEntity response = userController.updateSystemRole("userId",SystemRoleType.TEACHER)
-//        then:
-//            response.getStatusCode() == HttpStatus.UNAUTHORIZED
-//    }
-//
-//    @WithAnonymousUser .. maybe not needed, just without annotation
-//    def "test registerAsAnonymousUser"() {
-//        given:
-//        User user = new User("userId", "Peter", "Price",
-//                "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S", "student@email.com",
-//                null, SystemRoleType.STUDENT, Collections.emptyList());
-//        UserRepository userRepository = Stub(UserRepository.class)
-//        userRepository.findById("userId") >> Optional.of(user)
-//        UserService userService = new UserService(userRepository)
-//        userController = new UserController(userService)
-//        when:
-//        ResponseEntity response = userController.updateSystemRole("userId",SystemRoleType.TEACHER)
-//        then:
-//        response.getStatusCode() == HttpStatus.UNAUTHORIZED
-//    }
-//
-//    @WithMockUser(username = "user@email.com",authorities =["STUDENT"])
-//    def "test getCurrentUser"() {
-//        given:
-//            User user = new User("userId", "Peter", "Price",
-//                    "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S", "student@email.com",
-//                    null, SystemRoleType.STUDENT, Collections.emptyList());
-//            UserRepository userRepository = Stub(UserRepository.class)
-//            userRepository.findByEmail("student@email.com") >> Optional.of(user)
-//            UserService userService = new UserService(userRepository)
-//            userController = new UserController(userService)
-//            Principal principal = new Principal; ??
-//        when:
-//            ResponseEntity response = userController.getUserDetails()
-//        then:
-//            response.getStatusCode() == HttpStatus.OK
-//            response.getBody().getFirstName() == user.getFirstName();
-//            response.getBody().getLastName() == user.getLastName();
-//            response.getBody().getEmail() == user.getEmail();
-//            response.getBody().getSystemRole() == user.getSystemRole();
-//            response.getBody().getGroupRoles() == user.getGroupRoles();
-//              or having equals with Lombok and just say response.getBody.equals(User.toUserView(user))
-//    }
+    @WithMockUser(authorities = ['ADMIN'])
+    def "test updateSystemRole as admin"() {
+        when:
+        def results = mvc.perform(put("/users/userId/updateSystemRole?role=TEACHER"))
+        then:
+        results.andExpect(status().is2xxSuccessful())
+    }
 
-//    @WithAnonymousUser .. maybe not needed, just without annotation
-//    def "test getCurrentUserAsAnnonymousUser"() {
-//        given:
-//            User user = new User("userId", "Peter", "Price",
-//                    "\$2a\$10\$jISxsn9IeIhHvRlIb9LP7OQqV5Q0YCgB6Z34aesXjb.AAm.B89n7S", "student@email.com",
-//                    null, SystemRoleType.STUDENT, Collections.emptyList());
-//            UserRepository userRepository = Stub(UserRepository.class)
-//            userRepository.findByEmail("student@email.com") >> Optional.of(user)
-//            UserService userService = new UserService(userRepository)
-//            userController = new UserController(userService)
-//            Principal principal = new Principal; ??
-//        when:
-//            ResponseEntity response = userController.getUserDetails()
-//        then:
-//            response.getStatusCode() == HttpStatus.UNAUTHORIZED
-//    }
+    @WithMockUser(authorities = ['STUDENT'])
+    def "test updateSystemRole as student"() {
+        when:
+        def results = mvc.perform(get("/users/userId/updateSystemRole?role=TEACHER"))
+        then:
+        results.andExpect(status().is4xxClientError())
+    }
 
+    @WithMockUser(authorities = ['TEACHER'])
+    def "test updateSystemRole as teacher"() {
+        when:
+        def results = mvc.perform(get("/users/userId/updateSystemRole?role=TEACHER"))
+        then:
+        results.andExpect(status().is4xxClientError())
+    }
+
+    @WithAnonymousUser
+    def "test updateSystemRole as anonymous"() {
+        when:
+        def results = mvc.perform(get("/users/userId/updateSystemRole?role=TEACHER"))
+        then:
+        results.andExpect(status().is4xxClientError())
+    }
+
+    @WithAnonymousUser
+    def "test register validation"() {
+        given:
+        Map request = [
+                firstName: "John",
+                lastName : "Test",
+                password : "password",
+                email    : "correct@email.com",
+                avatar   : "avatar"
+        ]
+        when:
+        def results = mvc.perform(post("/users/register").contentType(MediaType.APPLICATION_JSON).content(toJson(request)))
+        then:
+        results.andExpect(status().is4xxClientError())
+    }
+
+    @TestConfiguration
+    static class StubConfig {
+        DetachedMockFactory detachedMockFactory = new DetachedMockFactory()
+
+        @Bean
+        UserService userService() {
+            return detachedMockFactory.Stub(UserService)
+        }
+
+        @Bean
+        UserRepository userRepository() {
+            return detachedMockFactory.Stub(UserRepository)
+        }
+    }
 }

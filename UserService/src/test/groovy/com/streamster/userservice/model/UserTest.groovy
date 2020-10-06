@@ -20,48 +20,39 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME
 
 @ContextConfiguration
 @SpringBootTest(classes = UserServiceApplication.class)
-//@DataJpaTest
 class UserTest extends Specification {
-
-//    @Autowired(required = true)
-//    private UserRepository userRepository
-//
-//    def "test fromUserInfo"() {
-//        when:
-//        Optional<User> user = userRepository.findByEmail("email")
-//        then:
-//        user.isEmpty()
-//
-//        print "Hello"
-//    }
 
     def "test invalidPassword"(String password) {
         when:
-//        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-//        Validator validator = validatorFactory.getValidator();
-        User user = new User("Peter","Price",password,"email@email.com",null,SystemRoleType.STUDENT,null)
-//        User user = User.fromRegistrationDTO("Peter","Price","password","email",null,SystemRoleType.STUDENT,null)
-//        Set<ConstraintViolation<User>> validationErrors = validator.validate(user);
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+        User user = new User("Peter", "Price", password, "email@email.com", null, SystemRoleType.STUDENT, null)
+        Set<ConstraintViolation<User>> validationErrors = validator.validate(user)
         then:
-//        validationErrors.isEmpty()
-        thrown(ConstraintViolationException.class)
+        !validationErrors.isEmpty()
 
         where:
-            password | _
-            "test@.com" | _
-            " " | _
-            null | _
+        password    | _
+        "test@.com" | _
+        " "         | _
+        null        | _
     }
 
     def "test invalidEmail"() {
         when:
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-        User user = new User("Peter","Price","Password123","email",null,SystemRoleType.STUDENT,null)
-//        User user = User.fromRegistrationDTO("Peter","Price","password","email",null,SystemRoleType.STUDENT,null)
-        Set<ConstraintViolation<User>> validationErrors = validator.validate(user);
+        Validator validator = validatorFactory.getValidator()
+        User user = new User("Peter", "Price", "Password123", "email", null, SystemRoleType.STUDENT, null)
+        Set<ConstraintViolation<User>> validationErrors = validator.validate(user)
         then:
         !validationErrors.isEmpty()
+    }
+
+    def "test invalidEmail constructor"() {
+        when:
+        User user = new User("Peter", "Price", null, "email", null, SystemRoleType.STUDENT, null)
+        then:
+        thrown(Exception)
     }
 
 //    def "test invalidFirStanem"() {
@@ -78,7 +69,7 @@ class UserTest extends Specification {
 
     def "test fromRegistrationDTO"() {
         when:
-        RegistrationDTO dto = new RegistrationDTO("Peter","Price","password","email",null)
+        RegistrationDTO dto = new RegistrationDTO("Peter", "Price", "password", "email", null)
         dto = dto.encryptPassword()
         User user = User.fromRegistrationDTO(dto)
         then:
