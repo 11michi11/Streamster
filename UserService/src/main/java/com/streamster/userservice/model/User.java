@@ -6,8 +6,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.validation.annotation.Validated;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,13 +19,22 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Validated
 public class User {
 
     @Id
     private String id;
     private String firstName;
     private String lastName;
+
+    // (?=.*?[A-Z]) -- at least one uppercase letter
+    // (?=.*?[a-z]) -- at least one lowercase letter
+    // (?=.*?[0-9]) -- at least one digit
+    // .{8,} -- minimum length = 8
+    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")
     private String password;
+    @Indexed
+    @Email
     private String email;
     private String avatar;
     private SystemRoleType systemRole;
