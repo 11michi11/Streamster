@@ -1,4 +1,4 @@
-package com.streamster.recommendationservice.security;
+package com.streamster.videoservice.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -42,6 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
+                        // TODO remove
+                        "/upload",
                         "/swagger-ui.html",
                         "/v2/api-docs",
                         "/v2/websockets.json",

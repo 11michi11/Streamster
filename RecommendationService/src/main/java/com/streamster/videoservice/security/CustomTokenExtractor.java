@@ -1,4 +1,4 @@
-package com.streamster.recommendationservice.security;
+package com.streamster.videoservice.security;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;

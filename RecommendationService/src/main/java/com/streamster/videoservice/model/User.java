@@ -1,7 +1,7 @@
-package com.streamster.recommendationservice.model;
+package com.streamster.videoservice.model;
 
 
-import com.streamster.recommendationservice.model.dto.UserInfo;
+import com.streamster.videoservice.model.dto.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;

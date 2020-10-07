@@ -1,4 +1,4 @@
-package com.streamster.recommendationservice.security;
+package com.streamster.videoservice.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

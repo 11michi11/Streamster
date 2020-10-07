@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: recommendation-service
+  data:
+    mongodb:
+      uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+      preferTokenInfo: true
+      token-info-uri: http://localhost:8080/user-service/oauth/check_token
+    client:
+      client-id: my-trusted-client
+      client-secret: secret
+
+server:
+  servlet:
+    context-path: /video-service
+  port: 8093

@@ -1,4 +1,4 @@
-package com.streamster.recommendationservice;
+package com.streamster.videoservice;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

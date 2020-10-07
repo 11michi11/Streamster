@@ -1,7 +1,7 @@
-package com.streamster.recommendationservice.security;
+package com.streamster.videoservice.security;
 
-import com.streamster.recommendationservice.model.User;
-import com.streamster.recommendationservice.repository.UserRepository;
+import com.streamster.videoservice.model.User;
+import com.streamster.videoservice.repository.UserRepository;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

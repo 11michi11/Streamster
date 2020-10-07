@@ -10,6 +10,12 @@ spring:
             - Path=/user-service/**
           filters:
             - DedupeResponseHeader=Access-Control-Allow-Origin
+        - id: user-service-route
+          uri: http://localhost:8093/video-service
+          predicates:
+            - Path=/video-service/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin
 #        - id: search-service-route
 #          uri: lb://search-service
 #          predicates:
