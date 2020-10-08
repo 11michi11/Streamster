@@ -18,11 +18,14 @@ public class RegistrationDTO {
     private String firstName;
     @NotNull
     private String lastName;
-    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")
+    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$",message = "invalid password")
     @NotNull
     private String password;
     @Email
+    @NotNull
     private String email;
+    @Pattern(regexp = "^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)?$",
+            message = "avatar is not valid Base64 encoded string")
     private String avatar;
 
     public RegistrationDTO encryptPassword() {

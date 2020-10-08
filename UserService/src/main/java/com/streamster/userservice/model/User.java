@@ -26,20 +26,10 @@ public class User {
 
     @Id
     private String id;
-    @NotNull
     private String firstName;
-    @NotNull
     private String lastName;
-
-    // (?=.*?[A-Z]) -- at least one uppercase letter
-    // (?=.*?[a-z]) -- at least one lowercase letter
-    // (?=.*?[0-9]) -- at least one digit
-    // .{8,} -- minimum length = 8
-    @Pattern(regexp = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$")
-    @NotNull
     private String password;
-    @Indexed
-    @Email
+    @Indexed(unique = true)
     private String email;
     private String avatar;
     private SystemRoleType systemRole;
