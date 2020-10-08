@@ -9,11 +9,7 @@ import javax.validation.Validator
 
 class RegistrationDTOTest extends Specification {
 
-    Validator validator;
-
-    void setup() {
-        validator = Validation.buildDefaultValidatorFactory().getValidator();
-    }
+    Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     def "test valid password"(String password) {
         when:
