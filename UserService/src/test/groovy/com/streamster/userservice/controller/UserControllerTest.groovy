@@ -42,47 +42,148 @@ class UserControllerTest extends Specification {
         when:
         def results = mvc.perform(put("/users/userId/updateSystemRole?role=TEACHER"))
         then:
-        results.andExpect(status().is2xxSuccessful())
+        results.andExpect(status().isOk())
     }
 
     @WithMockUser(authorities = ['STUDENT'])
     def "test updateSystemRole as student"() {
         when:
-        def results = mvc.perform(get("/users/userId/updateSystemRole?role=TEACHER"))
+        def results = mvc.perform(put("/users/userId/updateSystemRole?role=TEACHER"))
         then:
-        results.andExpect(status().is4xxClientError())
+        results.andExpect(status().isForbidden())
     }
 
     @WithMockUser(authorities = ['TEACHER'])
     def "test updateSystemRole as teacher"() {
         when:
-        def results = mvc.perform(get("/users/userId/updateSystemRole?role=TEACHER"))
+        def results = mvc.perform(put("/users/userId/updateSystemRole?role=TEACHER"))
         then:
-        results.andExpect(status().is4xxClientError())
+        results.andExpect(status().isForbidden())
     }
 
     @WithAnonymousUser
     def "test updateSystemRole as anonymous"() {
         when:
-        def results = mvc.perform(get("/users/userId/updateSystemRole?role=TEACHER"))
+        def results = mvc.perform(put("/users/userId/updateSystemRole?role=TEACHER"))
         then:
-        results.andExpect(status().is4xxClientError())
+        results.andExpect(status().isUnauthorized())
     }
 
     @WithAnonymousUser
-    def "test register validation"() {
+    def "test register"() {
+        given:
+        Map request = [
+                firstName: "John",
+                lastName : "Test",
+                password : "pwd123XX",
+                email    : "correct@email.com",
+                avatar   : "correctAvatar123"
+        ]
+        when:
+        def results = mvc.perform(post("/users/register").contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(request)))
+        then:
+        results.andExpect(status().isCreated())
+    }
+
+    @WithAnonymousUser
+    def "test register validation invalid password"() {
         given:
         Map request = [
                 firstName: "John",
                 lastName : "Test",
                 password : "password",
                 email    : "correct@email.com",
-                avatar   : "avatar"
+                avatar   : "correctAvatar123"
         ]
         when:
-        def results = mvc.perform(post("/users/register").contentType(MediaType.APPLICATION_JSON).content(toJson(request)))
+        def results = mvc.perform(post("/users/register").contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(request)))
         then:
-        results.andExpect(status().is4xxClientError())
+        results.andExpect(status().isBadRequest())
+    }
+
+    @WithAnonymousUser
+    def "test register validation invalid email"() {
+        given:
+        Map request = [
+                firstName: "John",
+                lastName : "Test",
+                password : "password123A",
+                email    : "incorrectEmail",
+                avatar   : "correctAvatar123"
+        ]
+        when:
+        def results = mvc.perform(post("/users/register").contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(request)))
+        then:
+        results.andExpect(status().isBadRequest())
+    }
+
+    @WithAnonymousUser
+    def "test register validation invalid avatar"() {
+        given:
+        Map request = [
+                firstName: "John",
+                lastName : "Test",
+                password : "password123A",
+                email    : "correct@email.com",
+                avatar   : "invalidAvatar"
+        ]
+        when:
+        def results = mvc.perform(post("/users/register").contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(request)))
+        then:
+        results.andExpect(status().isBadRequest())
+    }
+
+    @WithAnonymousUser
+    def "test register validation not unique email"() {
+        given:
+        Map request = [
+                firstName: "John",
+                lastName : "Test",
+                password : "password123A",
+                email    : "incorrectEmail",
+                avatar   : "correctAvatar123"
+        ]
+        when:
+        def results = mvc.perform(post("/users/register").contentType(MediaType.APPLICATION_JSON)
+                .content(toJson(request)))
+        then:
+        results.andExpect(status().isBadRequest())
+    }
+
+    @WithMockUser(authorities = ['ADMIN'])
+    def "test getAllUsers as admin"() {
+        when:
+        def results = mvc.perform(get("/users"))
+        then:
+        results.andExpect(status().isOk())
+    }
+
+    @WithMockUser(authorities = ['STUDENT'])
+    def "test getAllUsers as student"() {
+        when:
+        def results = mvc.perform(get("/users"))
+        then:
+        results.andExpect(status().isForbidden())
+    }
+
+    @WithMockUser(authorities = ['TEACHER'])
+    def "test getAllUsers as teacher"() {
+        when:
+        def results = mvc.perform(get("/users"))
+        then:
+        results.andExpect(status().isForbidden())
+    }
+
+    @WithAnonymousUser
+    def "test getAllUsers as anonymous"() {
+        when:
+        def results = mvc.perform(get("/users"))
+        then:
+        results.andExpect(status().isUnauthorized())
     }
 
     @TestConfiguration
