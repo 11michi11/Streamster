@@ -9,14 +9,17 @@ import com.streamster.userservice.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/users")
+@Validated
 public class UserController {
 
     final UserService userService;
@@ -46,7 +49,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    ResponseEntity<String> register(@RequestBody RegistrationDTO registrationDTO) {
+    ResponseEntity<String> register(@Valid @RequestBody RegistrationDTO registrationDTO) {
         userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
         return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
     }

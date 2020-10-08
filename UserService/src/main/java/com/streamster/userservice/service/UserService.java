@@ -3,6 +3,7 @@ package com.streamster.userservice.service;
 import com.streamster.userservice.model.SystemRoleType;
 import com.streamster.userservice.model.User;
 import com.streamster.userservice.repository.UserRepository;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
 import java.util.NoSuchElementException;
@@ -17,7 +18,11 @@ public class UserService {
     }
 
     public void register(User user) {
-        this.userRepository.save(user);
+        try {
+            this.userRepository.save(user);
+        } catch (DuplicateKeyException ex) {
+            throw new DuplicateKeyException("Given email is already used in the system");
+        }
     }
 
     public void updateSystemRole(String userId, SystemRoleType role) throws NullPointerException {

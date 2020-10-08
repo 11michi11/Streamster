@@ -35,6 +35,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         clients.inMemory()
                 .withClient("my-trusted-client")
                 .authorizedGrantTypes("client_credentials", "password", "authorization_code")
+//                .authorities("ROLE_CLIENT", "ROLE_TRUSTED_CLIENT")
                 .authorities(SystemRoleType.getAllRoles())
                 .scopes("read", "write", "trust")
                 .resourceIds("oauth2-resource")
