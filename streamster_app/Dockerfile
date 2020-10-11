@@ -30,7 +30,7 @@ COPY ./ ./
 
 RUN flutter packages pub global activate webdev
 RUN flutter packages upgrade
-RUN flutter build web
+RUN flutter build web -t lib/main_prod.dart
 
 FROM nginx:alpine
 COPY --from=builder /srv/api/build/web /usr/share/nginx/html

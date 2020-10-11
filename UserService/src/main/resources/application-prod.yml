@@ -11,3 +11,8 @@ server:
 swagger:
   config:
     refreshrate: 60000
+
+services:
+  user: https://user-service-ayoqp7z2fq-lz.a.run.app
+  search: http://localhost:8091/search-service
+  recommendation: http://localhost:8092/recommendation-service
