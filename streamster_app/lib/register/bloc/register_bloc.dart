@@ -18,13 +18,15 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   @override
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
 
-    if (event is RegisterButtonPressed) {
+    if (event is RegisterUser) {
       yield RegisterState.inProgress();
 
        var response = await _registerRepository.register(
           firstName: event.firstName,
+          lastName: event.lastName,
           email: event.email,
           password: event.password,
+         avatar: event.image
        );
        if(response == RegistrationStatus.success) {
          yield RegisterState.success();

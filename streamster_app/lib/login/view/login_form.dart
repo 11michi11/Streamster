@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/common/model/user.dart';
 
 import '../bloc/login_bloc.dart';
 import '../bloc/login_event.dart';
@@ -18,9 +19,29 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
   final _passwordController = TextEditingController();
 
   onLoginButtonPressed() {
-    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
-        username: _usernameController.text,
-        password: _passwordController.text));
+    if(validateInput() ) {
+      BlocProvider.of<LoginBloc>(context).add(AuthenticateUser(
+          username: _usernameController.text,
+          password: _passwordController.text));
+    }
+  }
+
+  bool validateInput() {
+    if(_usernameController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Email is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if(_passwordController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Password is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
+
+    return true;
   }
 
   /*  --------------------------------------------------------- SHARED WIDGETS ----------------------------------------------------------------------- */
@@ -82,7 +103,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
             fontSize: 25.0));
   }
 
-  Widget textField(String fieldName) {
+  Widget customTextField(String fieldName) {
     return Container(
         width: 150.0,
         child: Padding(
@@ -113,8 +134,8 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  textField("Email :"),
-                  SizedBox(
+                  customTextField("Email :"),
+                  Container(
                     width: 190.0,
                     child: TextField(
                         controller: _usernameController,
@@ -128,8 +149,8 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  textField("Password :"),
-                  SizedBox(
+                  customTextField("Password :"),
+                  Container(
                     width: 190.0,
                     child: TextField(
                         obscureText: true,
@@ -144,6 +165,9 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
             ],
           ),
         ),
+        Container(child:
+        state.status == LoginStatus.inProgress ?
+        CircularProgressIndicator() : null),
         loginButton(state),
         createAccountButton()
       ],
@@ -184,7 +208,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
                                     color: Colors.brown,
                                     fontSize: 20.0)),
                           )),
-                      SizedBox(
+                      Container(
                         width: 235,
                         child: TextField(
                             controller: _usernameController,
@@ -210,7 +234,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
                                     color: Colors.brown,
                                     fontSize: 20.0)),
                           )),
-                      SizedBox(
+                      Container(
                         width: 235,
                         child: TextField(
                             obscureText: true,
@@ -226,6 +250,9 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
                 ],
               ),
             ),
+            Container(child:
+            state.status == LoginStatus.inProgress ?
+            CircularProgressIndicator() : null),
             loginButton(state),
             createAccountButton()
           ],
@@ -242,7 +269,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
       },
       child: BlocBuilder<LoginBloc, LoginState>(builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
-          if (constraints.maxWidth > 700) {
+          if (constraints.maxWidth > 1000) {
             return webLayout(state);
           } else {
             return androidLayout(state);
@@ -254,9 +281,19 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
 
   void handleState(LoginState state) {
     if (state.status == LoginStatus.authenticated) {
+
+      if(state.user != null) {
+        if(state.user.systemRole == SystemRole.admin) {
+          Navigator.of(context).pushNamed('/admin');
+        } else {
+          print('not admin, navigate to main page');
+        }
+      }
+
+    } else if(state.status == LoginStatus.unauthenticated) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('authenticated'),
-        backgroundColor: Colors.green,
+        content: Text('authentication failed'),
+        backgroundColor: Colors.red,
       ));
     }
   }
