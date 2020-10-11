@@ -14,8 +14,11 @@ class LoginRepository {
     @required String username,
     @required String password,
   }) async {
-    await this.client.login(username, password);
-    return LoginStatus.authenticated;
+
+    var response = await this.client.login(username, password);
+    return response;
   }
+
+
 
 }

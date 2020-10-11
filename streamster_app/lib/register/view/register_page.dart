@@ -22,7 +22,7 @@ class RegisterPage extends StatelessWidget {
         },
         child: Center(
           child:
-            RegisterFormForWeb(),
+            RegisterForm(),
         ),
       ),
     );

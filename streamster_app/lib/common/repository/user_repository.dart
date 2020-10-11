@@ -7,6 +7,15 @@ class UserRepository {
   UserRepository() {
     this.client = RestClient();
   }
- //TODO - get User request
+
+  Future<User> getUserDetails() async {
+    var response = client.getUserDetails();
+    return response;
+  }
+
+  Future<List<User>> getAllUsers() async {
+    var response = client.getAllUsers();
+    return response;
+  }
 
 }
