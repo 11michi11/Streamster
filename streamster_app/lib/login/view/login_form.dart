@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/common/model/user.dart';
 
 import '../bloc/login_bloc.dart';
 import '../bloc/login_event.dart';
@@ -18,9 +19,29 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
   final _passwordController = TextEditingController();
 
   onLoginButtonPressed() {
-    BlocProvider.of<LoginBloc>(context).add(AuthenticateUser(
-        username: _usernameController.text,
-        password: _passwordController.text));
+    if(validateInput() ) {
+      BlocProvider.of<LoginBloc>(context).add(AuthenticateUser(
+          username: _usernameController.text,
+          password: _passwordController.text));
+    }
+  }
+
+  bool validateInput() {
+    if(_usernameController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Email is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    } else if(_passwordController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Password is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
+
+    return true;
   }
 
   /*  --------------------------------------------------------- SHARED WIDGETS ----------------------------------------------------------------------- */
@@ -260,7 +281,15 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
 
   void handleState(LoginState state) {
     if (state.status == LoginStatus.authenticated) {
-      Navigator.of(context).pushNamed('/admin');
+
+      if(state.user != null) {
+        if(state.user.systemRole == SystemRole.admin) {
+          Navigator.of(context).pushNamed('/admin');
+        } else {
+          print('not admin, navigate to main page');
+        }
+      }
+
     } else if(state.status == LoginStatus.unauthenticated) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('authentication failed'),

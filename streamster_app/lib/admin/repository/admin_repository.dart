@@ -1,7 +1,7 @@
+import 'package:meta/meta.dart';
 import 'package:streamster_app/common/common.dart';
-import 'package:http/http.dart' as http;
 
-enum AdminStatus { init, success, error, inProgress }
+enum AdminStatus { init, success, error, loading, updateSuccessful }
 
 class AdminRepository {
   RestClient client;
@@ -10,23 +10,9 @@ class AdminRepository {
     this.client = RestClient();
   }
 
-  //TODO - add url and correct body attributes
-  Future<AdminStatus> updateSystemRole({String userId, String systemRole}) async {
-
-    var response = await http.post('',
-        headers: {'Content-Type': 'application/json'},
-        body: {
-          'userID' : userId,
-          'SystemRole' :systemRole
-        });
-
-    if(response.statusCode == 200) {
-      return AdminStatus.success;
-    } else {
-      return AdminStatus.error;
-    }
+  Future<AdminStatus> updateSystemRole({@required String userId, @required SystemRole systemRole}) async {
+    var response = client.updateSystemRole(userID: userId, systemRole: systemRole);
+    return response;
   }
-
-
 
 }

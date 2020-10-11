@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/admin/admin.dart';
+import 'package:streamster_app/common/model/user.dart';
 
 class UserList extends StatefulWidget {
   @override
@@ -15,30 +16,19 @@ class _UserListState extends State<UserList> {
   List<User> searchResult = [];
   List<User> users = [];
 
-  _UserListState() {
+  onUserUpdated(String id, SystemRole systemRole) {
 
-    /* TEST DATA */
-    var user = new User("1", "Matej", "Michalek", "matej@mail.com", "password",
-        null, SystemRole.student);
-    var user1 = new User("2", "Michaela", "Golhova", "miska@mail.com",
-        "password", null, SystemRole.teacher);
-    var user2 = new User("3", "Michal", "Pompa", "michal@mail.com", "password",
-        null, SystemRole.teacher);
-    var user3 = new User("4", "Karol", "Karol", "michal@mail.com", "password",
-        null, SystemRole.teacher);
-    var user4 = new User("5", "Izidor", "Pompa", "michal@mail.com", "password",
-        null, SystemRole.teacher);
-
-    users.add(user);
-    users.add(user1);
-    users.add(user2);
-    users.add(user3);
-    users.add(user4);
+    if(systemRole == SystemRole.teacher) {
+      BlocProvider.of<AdminBloc>(context)
+          .add(UpdateSystemRole(userId: id, systemRole: SystemRole.student));
+    } else {
+      BlocProvider.of<AdminBloc>(context)
+          .add(UpdateSystemRole(userId: id, systemRole: SystemRole.teacher));
+    }
   }
 
-  onUserUpdated(String id, String systemRole) {
-    BlocProvider.of<AdminBloc>(context)
-        .add(UpdateSystemRole(userId: id, systemRole: systemRole));
+  getUsers() {
+    BlocProvider.of<AdminBloc>(context).add(GetUsers());
   }
 
   onSearchTextChanged(String text) async {
@@ -53,6 +43,13 @@ class _UserListState extends State<UserList> {
           userDetail.lastName.contains(text)) searchResult.add(userDetail);
     });
     setState(() {});
+  }
+
+
+  @override
+  void initState() {
+    getUsers();
+    super.initState();
   }
 
   /*  --------------------------------------------------------- COMMON WIDGETS ----------------------------------------------------------------------- */
@@ -147,7 +144,7 @@ class _UserListState extends State<UserList> {
                         borderRadius: BorderRadius.circular(18.0)),
                     color: Colors.white,
                     onPressed: () {
-                      onUserUpdated(userList[index].id, userList[index].systemRole.name);
+                      onUserUpdated(userList[index].id, userList[index].systemRole);
                     },
                     child: Padding(
                         padding: const EdgeInsets.only(top: 9.0),
@@ -256,7 +253,7 @@ class _UserListState extends State<UserList> {
                             borderRadius: BorderRadius.circular(18.0)),
                         color: Colors.white,
                         onPressed: () {
-                          onUserUpdated(userList[index].id, userList[index].systemRole.name);
+                          onUserUpdated(userList[index].id, userList[index].systemRole);
                         },
                         child: Padding(
                             padding: const EdgeInsets.only(top: 9.0),
@@ -286,7 +283,9 @@ class _UserListState extends State<UserList> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AdminBloc, AdminState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        handleState(state);
+      },
       child: BlocBuilder<AdminBloc, AdminState>(builder: (context, state) {
         return LayoutBuilder(builder: (context, constraints) {
           if (constraints.maxWidth > 700) {
@@ -301,5 +300,23 @@ class _UserListState extends State<UserList> {
 
   // TODO - handle all states
   void handleState(AdminState state) {
+    switch(state.status) {
+      case AdminStatus.success:
+        setState(() {
+          users = state.users;
+        });
+        break;
+      case AdminStatus.error:
+        // TODO: Handle this case.
+        break;
+      case AdminStatus.loading:
+        // TODO: Handle this case.
+        break;
+      case AdminStatus.updateSuccessful:
+        print('update successful');
+        break;
+      default:
+        break;
+    }
   }
 }

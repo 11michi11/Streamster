@@ -1,7 +1,7 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:streamster_app/admin/model/user.dart';
+import 'package:streamster_app/common/common.dart';
 
 abstract class AdminEvent extends Equatable {
   const AdminEvent();
@@ -9,7 +9,7 @@ abstract class AdminEvent extends Equatable {
 
 class UpdateSystemRole extends AdminEvent {
   final String userId;
-  final String systemRole;
+  final SystemRole systemRole;
 
   UpdateSystemRole({@required this.userId, @required this.systemRole});
 

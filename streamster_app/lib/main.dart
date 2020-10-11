@@ -27,7 +27,7 @@ void main({String env}) async {
     MultiBlocProvider(providers: [
       BlocProvider<LoginBloc>(
         create: (context) {
-          return LoginBloc(loginRepository: loginRepository);
+          return LoginBloc(loginRepository: loginRepository, userRepository: userRepository);
         },
       ),
       BlocProvider<RegisterBloc>(
@@ -37,7 +37,7 @@ void main({String env}) async {
       ),
       BlocProvider<AdminBloc>(
         create: (context) {
-          return AdminBloc(adminRepository: adminRepository);
+          return AdminBloc(adminRepository: adminRepository, userRepository: userRepository);
         },
       ),
     ], child: App(userRepository: userRepository, loginRepository: loginRepository, registerRepository: registerRepository, adminRepository : adminRepository),)
@@ -67,10 +67,10 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        '/login': (context) => LoginPage(loginRepository: loginRepository),
+        '/login': (context) => LoginPage(loginRepository: loginRepository, userRepository: userRepository),
         '/register': (context) =>
             RegisterPage(registerRepository: registerRepository),
-        '/admin' : (context) => AdminPage(adminRepository: adminRepository),
+        '/admin' : (context) => AdminPage(adminRepository: adminRepository, userRepository: userRepository),
       },
       initialRoute: '/login',
     );

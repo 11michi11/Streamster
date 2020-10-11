@@ -1,5 +1,6 @@
 
 import 'package:equatable/equatable.dart';
+import 'package:streamster_app/common/model/user.dart';
 import '../admin.dart';
 
 class AdminState extends Equatable {
@@ -16,11 +17,11 @@ class AdminState extends Equatable {
 
   const AdminState.init() : this._();
 
-  const AdminState.inProgress() : this._(status: AdminStatus.inProgress);
+  const AdminState.loading() : this._(status: AdminStatus.loading);
 
-  const AdminState.success() : this._(status: AdminStatus.success);
+  const AdminState.updateSuccessful() : this._(status: AdminStatus.updateSuccessful);
 
-  const AdminState.getUserSuccess(List<User> userList) : this._(status: AdminStatus.success, users : userList);
+  const AdminState.getUsers(List<User> userList) : this._(status: AdminStatus.success, users: userList);
 
   const AdminState.error(String message) : this._(status: AdminStatus.error, error: message);
 

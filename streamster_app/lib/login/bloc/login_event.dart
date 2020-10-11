@@ -22,9 +22,9 @@ class AuthenticateUser extends LoginEvent {
       'LoginButtonPressed { username: $username, password: $password }';
 }
 
-class GetUserDetails extends LoginEvent {
-
-  @override
-  List<Object> get props => [];
-
-}
+//class GetUserDetails extends LoginEvent {
+//
+//  @override
+//  List<Object> get props => [];
+//
+//}
