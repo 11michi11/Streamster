@@ -17,7 +17,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   @override
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginButtonPressed) {
+    if (event is AuthenticateUser) {
       yield LoginState.inProgress();
 
        var response =  await _loginRepository.login(
@@ -25,8 +25,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           password: event.password,
        );
 
-       //TODO - check the response
-       yield LoginState.authenticated();
+       if(response == LoginStatus.authenticated) {
+         yield LoginState.authenticated();
+       } else {
+         LoginState.unauthenticated();
+       }
     }
   }
 

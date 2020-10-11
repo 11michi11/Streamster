@@ -20,7 +20,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
   final _passwordController = TextEditingController();
 
   onLoginButtonPressed() {
-    BlocProvider.of<LoginBloc>(context).add(LoginButtonPressed(
+    BlocProvider.of<LoginBloc>(context).add(AuthenticateUser(
         username: _usernameController.text,
         password: _passwordController.text));
   }
