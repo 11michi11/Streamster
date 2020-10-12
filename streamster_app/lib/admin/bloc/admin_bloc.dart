@@ -26,7 +26,7 @@ class AdminBloc extends Bloc<AdminEvent, AdminState> {
     } else if (event is UpdateSystemRole) {
 
       var response = await _adminRepository.updateSystemRole(
-          userId: event.userId, systemRole: event.systemRole);
+          userID: event.userId, systemRole: event.systemRole);
 
       if (response == AdminStatus.updateSuccessful) {
         yield AdminState.updateSuccessful();

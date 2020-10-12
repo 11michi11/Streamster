@@ -286,7 +286,7 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
         if(state.user.systemRole == SystemRole.admin) {
           Navigator.of(context).pushNamed('/admin');
         } else {
-          print('not admin, navigate to main page');
+          Navigator.of(context).pushReplacementNamed('/home');
         }
       }
 

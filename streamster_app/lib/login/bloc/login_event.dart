@@ -21,10 +21,3 @@ class AuthenticateUser extends LoginEvent {
   String toString() =>
       'LoginButtonPressed { username: $username, password: $password }';
 }
-
-//class GetUserDetails extends LoginEvent {
-//
-//  @override
-//  List<Object> get props => [];
-//
-//}
