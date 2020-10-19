@@ -45,6 +45,9 @@ dependencies {
 	testCompile platform("org.spockframework:spock-bom:2.0-M3-groovy-2.5")
 	testCompile "org.spockframework:spock-core"
 	testCompile group: 'org.spockframework', name: 'spock-spring', version: '2.0-M3-groovy-2.5'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	compile 'org.springframework.boot:spring-boot-starter-webflux'
+	compile 'org.projectreactor:reactor-spring:1.0.1.RELEASE'
 }
 
 tasks.withType(JavaCompile) {

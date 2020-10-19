@@ -36,7 +36,9 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.authenticationManager(authenticationManagerBean())
+        resources
+                .stateless(false)
+                .authenticationManager(authenticationManagerBean())
                 .tokenExtractor(new CustomTokenExtractor());
     }
 

@@ -10,10 +10,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,6 +29,7 @@ public class User {
     @Indexed(unique = true)
     private String email;
     private String avatar;
+    private List<String> videoIds = new ArrayList<>();
     private SystemRoleType systemRole;
     private List<GroupRole> groupRoles;
 
@@ -46,13 +44,17 @@ public class User {
         this.groupRoles = groupRoles;
     }
 
+    public void addVideo(String videoID) {
+        videoIds.add(videoID);
+    }
+
     public static User fromRegistrationDTO(RegistrationDTO dto) {
-        return new User(dto.getFirstName(),dto.getLastName(),dto.getPassword(),dto.getEmail(),dto.getAvatar(),
+        return new User(dto.getFirstName(), dto.getLastName(), dto.getPassword(), dto.getEmail(), dto.getAvatar(),
                 SystemRoleType.STUDENT, Collections.emptyList());
     }
 
     public UserView toUserView() {
-        return new UserView(this.id,this.firstName,this.lastName,this.email,this.avatar,this.systemRole,
+        return new UserView(this.id, this.firstName, this.lastName, this.email, this.avatar, this.systemRole,
                 this.groupRoles);
     }
 }
