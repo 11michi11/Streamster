@@ -3,16 +3,18 @@ package com.streamster.videoservice.service;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import lombok.SneakyThrows;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -38,11 +40,18 @@ public class FileService {
         }
     }
 
+    public List<GridFSFile> getByAuthor(String authorId) {
+        List<GridFSFile> files = gridFsTemplate.find(new Query(Criteria.where("metadata.authorId").is(authorId)))
+                .into(new LinkedList<>());
+        if (files.isEmpty()) throw new NoSuchElementException("Cannot be found any video with authorId: " + authorId);
+        return files;
+    }
 
     @SneakyThrows
-    public String store(final MultipartFile file, String userId) {
+    public String store(final MultipartFile file, String userId, Document metadata) {
         try {
-            String gridFSFileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(), file.getContentType()).toString();
+            String gridFSFileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(),
+                    file.getContentType(), metadata).toString();
             if (gridFSFileId != null && !gridFSFileId.isEmpty()) {
                 return gridFSFileId;
             }
