@@ -31,6 +31,7 @@ public class VideoService {
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + userEmail));
 
         metadata.put("authorId", user.getId());
+        metadata.put("authorName", user.getFirstName()+ " " + user.getLastName());
         // Store file to the GridFS
         String fileId = fileService.store(file, user.getId(), metadata);
         // Update user
