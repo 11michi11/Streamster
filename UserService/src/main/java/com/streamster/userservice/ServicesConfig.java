@@ -21,7 +21,7 @@ public class ServicesConfig {
     private String video;
 
     public List<String> getAllServices() {
-        return List.of(search, recommendation, user);
+        return List.of(search, recommendation, user, video);
     }
 
     public Map<String, String> getAllServicesAsMap() {
