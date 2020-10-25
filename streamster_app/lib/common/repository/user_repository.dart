@@ -4,11 +4,15 @@ import 'package:streamster_app/common/model/group_role.dart';
 import '../common.dart';
 
 class UserRepository {
-  RestClient restClient;
+  RestClient restClient = RestClient();
 
-  UserRepository() {
-    this.restClient = RestClient();
+  static final UserRepository _instance = UserRepository._internal();
+
+  factory UserRepository() {
+    return _instance;
   }
+
+  UserRepository._internal();
 
   Future<User> getUserDetails() async {
     var response = await restClient.client.get(RestClient.getUserUrl);

@@ -24,16 +24,18 @@ class RestClient {
 
   RestClient._internal();
 
-  //TODO - when error unauthenticated in NOT returned, find the way how to handle error state
   Future<LoginStatus> login(String username, String password) async {
     client = await oauth2
         .resourceOwnerPasswordGrant(authUrl, username, password,
-        identifier: clientId, secret: clientSecret)
+            identifier: clientId, secret: clientSecret)
         .catchError((error) {
       print('login error: $error ');
-      return LoginStatus.unauthenticated;
+      return null;
     });
-    return LoginStatus.authenticated;
+
+    return client != null
+        ? LoginStatus.authenticated
+        : LoginStatus.unauthenticated;
   }
 
 

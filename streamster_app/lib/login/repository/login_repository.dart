@@ -14,10 +14,6 @@ class LoginRepository {
     @required String username,
     @required String password,
   }) async {
-
     return this.client.login(username, password);
   }
-
-
-
 }
