@@ -3,21 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/upload_video/upload_video.dart';
-import 'package:streamster_app/upload_video/view/upload_video_android.dart';
-import 'package:streamster_app/upload_video/view/upload_video_web.dart';
 
+// class UploadVideoForm extends StatefulWidget {
+//   @override
+//   State<StatefulWidget> createState() => _UploadVideoFormPage();
+// }
 
-class UploadVideoForm extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => _UploadVideoFormPage();
-}
-
-class _UploadVideoFormPage extends State<UploadVideoForm> {
+class UploadVideoForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<UploadVideoBloc, UploadVideoState>(
       listener: (context, state) {
-        handleState(state);
+        handleState(state, context);
       },
       child: BlocBuilder<UploadVideoBloc, UploadVideoState>(
           builder: (context, state) {
@@ -32,7 +29,7 @@ class _UploadVideoFormPage extends State<UploadVideoForm> {
     );
   }
 
-  void handleState(UploadVideoState state) {
+  void handleState(UploadVideoState state, BuildContext context) {
     if(state.status == UploadVideoStatus.success) {
       print('video uploaded successfully');
       Scaffold.of(context).showSnackBar(SnackBar(

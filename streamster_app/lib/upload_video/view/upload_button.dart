@@ -24,8 +24,8 @@ class UploadButton extends StatelessWidget {
       height: 60,
       child: FlatButton(
         shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
-        color: Colors.brown,
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0), side: BorderSide(color: Colors.brown),),
+        color: Colors.white,
         onPressed: () {
           if (state.status != UploadVideoStatus.uploading) {
             List<String> tags = new List<String>();
@@ -35,12 +35,12 @@ class UploadButton extends StatelessWidget {
           }
         },
         child: Padding(
-          padding: const EdgeInsets.only(top: 9),
-          child: Text('Upload Video',
+          padding: const EdgeInsets.only(top: 10),
+          child: Text('Submit',
               style: TextStyle(
                   fontSize: 20,
                   fontFamily: 'BalooTammudu',
-                  color: Colors.white)),
+                  color: Colors.brown)),
         ),
       ),
     );

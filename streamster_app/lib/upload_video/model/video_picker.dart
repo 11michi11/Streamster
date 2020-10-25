@@ -37,7 +37,7 @@ class VideoPicker {
     input.click();
     final resultReceived = reader.onLoad.first;
     await resultReceived;
-    await result;
+    return await result;
   }
 
   static Future<Video> pickVideoAndroid() async {

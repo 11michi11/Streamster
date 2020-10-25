@@ -1,6 +1,11 @@
 export 'view/upload_video_form.dart';
 export 'view/upload_video_page.dart';
+export 'view/upload_button.dart';
+export 'view/upload_video_android.dart';
+export 'view/upload_video_web.dart';
 export 'repository/upload_video_repository.dart';
 export 'bloc/upload_video_bloc.dart';
 export 'bloc/upload_video_event.dart';
 export 'bloc/upload_video_state.dart';
+export 'model/video.dart';
+export 'model/video_picker.dart';
