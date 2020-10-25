@@ -8,12 +8,12 @@ import '../upload_video.dart';
 import 'upload_button.dart';
 
 class UploadVideoWeb extends StatefulWidget {
-
   final UploadVideoState state;
+
   UploadVideoWeb(this.state);
 
   @override
-  State<StatefulWidget> createState()  => _UploadVideoState();
+  State<StatefulWidget> createState() => _UploadVideoState();
 }
 
 class _UploadVideoState extends State<UploadVideoWeb> {
@@ -24,9 +24,9 @@ class _UploadVideoState extends State<UploadVideoWeb> {
   Video video;
 
   onUploadButtonPressed(String title, String description, List<String> tags) {
-    if(video != null) {
-      BlocProvider.of<UploadVideoBloc>(context).add(
-          UploadVideo(title, description, tags, video.fileName, video.videoData));
+    if (video != null) {
+      BlocProvider.of<UploadVideoBloc>(context).add(UploadVideo(
+          title, description, tags, video.fileName, video.videoData));
     }
   }
 
@@ -39,7 +39,6 @@ class _UploadVideoState extends State<UploadVideoWeb> {
 
   @override
   Widget build(BuildContext context) {
-
     return Center(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.50,
@@ -47,7 +46,6 @@ class _UploadVideoState extends State<UploadVideoWeb> {
         margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
         child: Card(
           child:
-//          state.status == UploadVideoStatus.uploading ? SizedBox(width: 35, height: 35,child: CircularProgressIndicator()) :
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -134,7 +132,7 @@ class _UploadVideoState extends State<UploadVideoWeb> {
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintStyle:
-                                TextStyle(fontFamily: 'BalooTammudu'),
+                                    TextStyle(fontFamily: 'BalooTammudu'),
                                 contentPadding: EdgeInsets.only(top: 10.0),
                                 hintText: 'Enter description'),
                           ),
@@ -159,7 +157,8 @@ class _UploadVideoState extends State<UploadVideoWeb> {
                             borderRadius: BorderRadius.circular(10.0)),
                         color: Colors.white,
                         onPressed: () {
-                          if (widget.state.status != UploadVideoStatus.uploading) {
+                          if (widget.state.status !=
+                              UploadVideoStatus.uploading) {
                             onSelectFile();
                           }
                         },
@@ -179,12 +178,12 @@ class _UploadVideoState extends State<UploadVideoWeb> {
                   ),
                 ],
               ),
-              UploadButton(widget.state, context, _tagsController, _titleController, _descriptionController, video)
+              UploadButton(widget.state, context, _tagsController,
+                  _titleController, _descriptionController, video)
             ],
           ),
         ),
       ),
     );
   }
-
 }
