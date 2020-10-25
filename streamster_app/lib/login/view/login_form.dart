@@ -291,8 +291,9 @@ class _LoginFormForWebState extends State<LoginFormForWeb> {
       }
 
     } else if(state.status == LoginStatus.unauthenticated) {
+      Navigator.of(context).pushReplacementNamed('/home');
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('authentication failed'),
+        content: Text('Bad credentials'),
         backgroundColor: Colors.red,
       ));
     }

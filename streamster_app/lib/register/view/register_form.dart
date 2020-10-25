@@ -75,7 +75,6 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   bool validateImageSize(int image) {
-
     if(image == null) {
       print('$tag registration without image');
       return true;
@@ -151,7 +150,7 @@ class _RegisterFormState extends State<RegisterForm> {
               borderRadius: BorderRadius.circular(18.0)),
           color: Colors.white,
           onPressed: () {
-            if (state.status != RegistrationStatus.inProgress) {
+            if (state.status != RegistrationStatus.loading) {
               onRegisterButtonPressed(image, imageSize);
             }
           },

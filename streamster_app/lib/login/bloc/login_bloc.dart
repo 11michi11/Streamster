@@ -23,10 +23,15 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is AuthenticateUser) {
       yield LoginState.inProgress();
 
-      var response = await _loginRepository.login(
+      var response;
+      try {
+        response = await _loginRepository.login(
           username: event.username,
           password: event.password,
         );
+      } catch(Error) {
+        yield LoginState.unauthenticated();
+      }
 
        if(response == LoginStatus.authenticated) {
          var user = await _userRepository.getUserDetails();

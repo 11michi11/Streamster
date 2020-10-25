@@ -13,7 +13,7 @@ class RegisterState extends Equatable {
 
   const RegisterState.init() : this._();
 
-  const RegisterState.inProgress() : this._(status: RegistrationStatus.inProgress);
+  const RegisterState.loading() : this._(status: RegistrationStatus.loading);
 
   const RegisterState.success() : this._(status: RegistrationStatus.success);
 
