@@ -14,14 +14,45 @@ class UserRepository {
 
   UserRepository._internal();
 
+  User user;
+  List<User> users = [];
+
   Future<User> getUserDetails() async {
-    var response = await restClient.client.get(RestClient.getUserUrl);
+    if (user == null) {
+      var response = await restClient.client.get(RestClient.getUserUrl);
 
-    if (response.statusCode == 200) {
-      var body = json.decode(response.body);
-      var systemRole = assignSystemRole(body['systemRole']);
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
 
-      /* TODO - add group roles
+        user = mapUserFromBody(body);
+      } else {
+        // TODO handle error
+        print('getUserDetails: ${response.statusCode}');
+        return null;
+      }
+    }
+    return user;
+  }
+
+  Future<List<User>> getAllUsers() async {
+    if (users.isEmpty) {
+      var response = await restClient.client.get(RestClient.getAllUserUrl);
+
+      users = [];
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        for (var user in body) {
+          users.add(mapUserFromBody(user));
+        }
+      }
+    }
+    return users;
+  }
+
+  User mapUserFromBody(dynamic body) {
+    var systemRole = assignSystemRole(body['systemRole']);
+
+    /* TODO - add group roles
       List<GroupRole> groups;
       var groupRoles = body['groupRoles'];
 
@@ -30,42 +61,9 @@ class UserRepository {
         groups.add(new GroupRole(roles['groupId'], groupRole));
       }
        */
-      var user = User(body['id'], body['firstName'], body['lastName'],
-          body['email'], body['avatar'], systemRole, null);
-      print(user.toString());
-      return user;
-    } else {
-      print('getUserDetails: ${response.statusCode}');
-      return null;
-    }
-  }
-
-  Future<List<User>> getAllUsers() async {
-    var response = await restClient.client.get(RestClient.getAllUserUrl);
-
-    List<User> users = new List<User>();
-    List<GroupRole> groups = new List<GroupRole>();
-
-    if (response.statusCode == 200) {
-      var body = json.decode(response.body);
-
-      for (var user in body) {
-        var systemRole = assignSystemRole(user['systemRole']);
-
-        /* TODO - add group roles
-        var groupRoles = user['groupRoles'];
-
-        for(var roles in groupRoles) {
-          var groupRole = assignGroupRole(roles['role']);
-          groups.add(new GroupRole(roles['groupId'], groupRole));
-        }
-        */
-        users.add(new User(user['id'], user['firstName'], user['lastName'],
-            user['email'], user['avatar'], systemRole, groups));
-      }
-    }
-
-    return users;
+    var user = User(body['id'], body['firstName'], body['lastName'],
+        body['email'], body['avatar'], systemRole, []);
+    return user;
   }
 
   SystemRole assignSystemRole(String role) {
@@ -98,5 +96,10 @@ class UserRepository {
       default:
         return null;
     }
+  }
+
+  void clear() {
+    user = null;
+    users = [];
   }
 }

@@ -38,5 +38,7 @@ class RestClient {
         : LoginStatus.unauthenticated;
   }
 
-
+  void logout() {
+    client = null;
+  }
 }

@@ -78,12 +78,15 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        '/login': (context) => LoginPage(loginRepository: loginRepository, userRepository: userRepository),
+        '/login': (context) => LoginPage(
+            loginRepository: loginRepository, userRepository: userRepository),
         '/register': (context) =>
             RegisterPage(registerRepository: registerRepository),
-        '/admin' : (context) => AdminPage(adminRepository: adminRepository, userRepository: userRepository),
-        '/home' : (context) => HomePage(),
-        '/uploadVideo' : (context) => UploadVideoPage(uploadVideoRepository: uploadVideoRepository),
+        '/admin': (context) => AdminPage(
+            adminRepository: adminRepository, userRepository: userRepository),
+        '/home': (context) => HomePage(userRepository: userRepository),
+        '/uploadVideo': (context) =>
+            UploadVideoPage(uploadVideoRepository: uploadVideoRepository),
       },
       initialRoute: '/login',
     );
