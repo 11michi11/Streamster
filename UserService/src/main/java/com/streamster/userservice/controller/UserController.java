@@ -6,6 +6,7 @@ import com.streamster.userservice.model.dto.RegistrationDTO;
 import com.streamster.userservice.model.view.UserView;
 import com.streamster.userservice.repository.UserRepository;
 import com.streamster.userservice.service.UserService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/users")
 @Validated
+@Log4j2
 public class UserController {
 
     final UserService userService;
@@ -28,11 +30,6 @@ public class UserController {
     public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
         this.userRepository = userRepository;
-    }
-
-    @GetMapping("/test")
-    ResponseEntity<String> test() {
-        return new ResponseEntity<>("SUCCESS",HttpStatus.OK);
     }
 
     @GetMapping("/userDetails")
@@ -57,7 +54,17 @@ public class UserController {
     @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).ADMIN)")
     @PutMapping("/{userId}/updateSystemRole")
     ResponseEntity<String> updateSystemRole(@PathVariable String userId, @RequestParam SystemRoleType role) {
-        userService.updateSystemRole(userId,role);
+        userService.updateSystemRole(userId, role);
         return new ResponseEntity<>("The role has been updated", HttpStatus.OK);
     }
+
+    @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).TEACHER)")
+    @PutMapping("/{userId}/videos/{videoId}")
+    ResponseEntity<String> addVideoToUser(@PathVariable String userId, @PathVariable String videoId) {
+        userService.addVideoToUser(userId, videoId);
+        log.info("Added video to user");
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+
 }
