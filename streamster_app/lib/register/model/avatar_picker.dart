@@ -1,12 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:streamster_app/register/model/Image.dart';
+import 'package:streamster_app/register/model/avatar.dart';
 import 'package:universal_html/prefer_universal/html.dart' as html;
 import 'package:image_picker/image_picker.dart';
 
-class ImageFilePicker {
+class AvatarPicker {
 
-  static Future<Image> pickImageWeb() async {
+  static Future<Avatar> pickImageWeb() async {
     var result;
     final reader = html.FileReader();
     final html.InputElement input = html.document.createElement('input');
@@ -14,10 +14,10 @@ class ImageFilePicker {
       ..type = 'file'
       ..accept = 'image/*';
 
-    input.onChange.listen((e) {
+    input.onChange.listen((e) async {
       if (input.files.isEmpty) {
         print("file is empty");
-        return;
+        return null;
       }
       reader.readAsDataUrl(input.files[0]);
       reader.onError.listen((err) =>
@@ -29,16 +29,18 @@ class ImageFilePicker {
             encoded.replaceFirst(RegExp(r'data:image/[^;]+;base64,'), '');
         var imageEncoded = stripped;
         var imageBytes = base64.decode(stripped);
-        return new Image(imageBytes, imageEncoded, imageBytes.lengthInBytes);
+
+        return new Avatar(imageBytes, imageEncoded, imageBytes.lengthInBytes, null);
       });
     });
     input.click();
     final resultReceived = reader.onLoad.first;
     await resultReceived;
-    await result;
+    return await result;
+
   }
 
-  static Future<Image> pickImageAndroid() async {
+  static Future<Avatar> pickImageAndroid() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -51,7 +53,7 @@ class ImageFilePicker {
 
       String base64Image = base64Encode(imageBytes);
       var imageEncoded = base64Image;
-      return new Image(imageBytes, imageEncoded,imageSize);
+      return new Avatar(imageBytes, imageEncoded,imageSize, androidImage);
     } else {
       // Handle error
     }

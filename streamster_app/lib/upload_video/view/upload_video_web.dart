@@ -45,98 +45,83 @@ class _UploadVideoState extends State<UploadVideoWeb> {
         height: MediaQuery.of(context).size.height,
         margin: EdgeInsets.only(top: 20.0, bottom: 20.0),
         child: Card(
-          child:
-          Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                        margin: EdgeInsets.only(right: 25, bottom: 20),
-                        child: Icon(
-                          Icons.video_call,
-                          color: Colors.brown,
-                          size: 50,
-                        )),
-                    Text('Upload Video Page',
-                        style: TextStyle(
-                            fontFamily: 'BalooTammuduBold',
-                            color: Colors.brown,
-                            fontSize: 30)),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Text('Upload Video Page',
+                  style: TextStyle(
+                      fontFamily: 'BalooTammudu',
+                      color: Colors.brown,
+                      fontSize: 30)),
+              Column(
                 children: [
-                  Text('Title',
-                      style: TextStyle(
-                          fontFamily: 'BalooTammuduBold',
-                          color: Colors.brown,
-                          fontSize: 20)),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    height: 60,
-                    child: TextField(
-                        controller: _titleController,
-                        style: TextStyle(fontFamily: 'BalooTammudu'),
-                        decoration: InputDecoration(
-                            hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                            contentPadding: EdgeInsets.only(top: 10.0),
-                            hintText: 'Enter title')),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text('Tags',
-                      style: TextStyle(
-                          fontFamily: 'BalooTammuduBold',
-                          color: Colors.brown,
-                          fontSize: 20)),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    height: 60,
-                    child: TextField(
-                        controller: _tagsController,
-                        style: TextStyle(fontFamily: 'BalooTammudu'),
-                        decoration: InputDecoration(
-                            hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                            contentPadding: EdgeInsets.only(top: 10.0),
-                            hintText: 'Enter tags')),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text('Description',
-                      style: TextStyle(
-                          fontFamily: 'BalooTammuduBold',
-                          color: Colors.brown,
-                          fontSize: 20)),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.30,
-                    height: 160,
-                    child: Card(
-                        color: Colors.white,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: TextField(
-                            maxLines: 10,
-                            controller: _descriptionController,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Title',
+                          style: TextStyle(
+                              fontFamily: 'BalooTammudu', fontSize: 20)),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: 60,
+                        child: TextField(
+                            controller: _titleController,
                             style: TextStyle(fontFamily: 'BalooTammudu'),
                             decoration: InputDecoration(
-                                border: InputBorder.none,
                                 hintStyle:
                                     TextStyle(fontFamily: 'BalooTammudu'),
                                 contentPadding: EdgeInsets.only(top: 10.0),
-                                hintText: 'Enter description'),
+                                hintText: 'Enter title')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Tags',
+                          style: TextStyle(
+                              fontFamily: 'BalooTammudu', fontSize: 20)),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.25,
+                        height: 60,
+                        child: TextField(
+                            controller: _tagsController,
+                            style: TextStyle(fontFamily: 'BalooTammudu'),
+                            decoration: InputDecoration(
+                                hintStyle:
+                                    TextStyle(fontFamily: 'BalooTammudu'),
+                                contentPadding: EdgeInsets.only(top: 10.0),
+                                hintText: 'Enter tags')),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text('Description',
+                          style: TextStyle(
+                              fontFamily: 'BalooTammudu', fontSize: 20)),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.28,
+                          height: 150,
+                          child: Card(
+                            child: Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: TextField(
+                                maxLines: 10,
+                                controller: _descriptionController,
+                                style: TextStyle(fontFamily: 'BalooTammudu'),
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintStyle:
+                                        TextStyle(fontFamily: 'BalooTammudu'),
+                                    contentPadding: EdgeInsets.only(top: 10.0),
+                                    hintText: 'Enter description'),
+                              ),
+                            ),
                           ),
-                        )),
+                        ),
+                    ],
                   ),
                 ],
               ),
@@ -144,12 +129,10 @@ class _UploadVideoState extends State<UploadVideoWeb> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text('Select file',
-                      style: TextStyle(
-                          fontFamily: 'BalooTammuduBold',
-                          color: Colors.brown,
-                          fontSize: 20)),
+                      style:
+                          TextStyle(fontFamily: 'BalooTammudu', fontSize: 20)),
                   ButtonTheme(
-                    minWidth: 150,
+                    minWidth: MediaQuery.of(context).size.width * 0.25,
                     height: 50,
                     child: FlatButton(
                         shape: RoundedRectangleBorder(
@@ -164,8 +147,13 @@ class _UploadVideoState extends State<UploadVideoWeb> {
                         },
                         child: Icon(Icons.file_upload, color: Colors.black54)),
                   ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
                   SizedBox(
-                    width: 300,
+                    width: MediaQuery.of(context).size.width * 0.20,
                     height: 50,
                     child: TextField(
                         readOnly: true,
@@ -186,4 +174,5 @@ class _UploadVideoState extends State<UploadVideoWeb> {
       ),
     );
   }
+
 }

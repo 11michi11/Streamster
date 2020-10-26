@@ -14,9 +14,19 @@ class UploadVideoRepository {
   Future<UploadVideoStatus> upload(List<int> bytes, String filename) async {
     print("sending");
     var request = http.MultipartRequest(
-        'POST', Uri.parse("http://localhost:8080/video-service/upload"));
+        'POST', Uri.parse("http://localhost:8080/video-service/videos/upload"));
     request.files
         .add(http.MultipartFile.fromBytes('video', bytes, filename: filename));
+    var metadataValues = '''{
+    "description":"",
+    "language":"",
+    "length": 0,
+    "studyPrograms": [],
+    "tags":	[],
+    "thumbnail":"",
+    "title": ""
+    }''';
+    request.fields.addAll({'metadata': metadataValues});
     var result = await restClient.client.send(request);
     if(result.statusCode == 201) {
       print("result: $result");
