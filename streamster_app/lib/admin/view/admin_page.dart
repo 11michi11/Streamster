@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/admin/admin.dart';
-import 'package:streamster_app/admin/view/user_list.dart';
+import 'package:streamster_app/admin/view/admin_form.dart';
 import 'package:streamster_app/common/common.dart';
 
 class AdminPage extends StatelessWidget {
@@ -19,8 +19,7 @@ class AdminPage extends StatelessWidget {
         create: (context) {
           return AdminBloc(adminRepository: adminRepository, userRepository: userRepository);
         },
-        child: UserList()
-      ),
+          child: AdminForm()),
     );
   }
 }

@@ -18,12 +18,13 @@ public class ServicesConfig {
     private String search;
     private String recommendation;
     private String user;
+    private String video;
 
     public List<String> getAllServices() {
-        return List.of(search, recommendation, user);
+        return List.of(search, recommendation, user, video);
     }
 
     public Map<String, String> getAllServicesAsMap() {
-        return Map.of(search, "search", recommendation, "recommendation", user, "user");
+        return Map.of(search, "search", recommendation, "recommendation", user, "user", video, "video");
     }
 }

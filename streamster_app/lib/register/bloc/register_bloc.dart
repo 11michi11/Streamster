@@ -19,7 +19,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
 
     if (event is RegisterUser) {
-      yield RegisterState.inProgress();
+      yield RegisterState.loading();
 
        var response = await _registerRepository.register(
           firstName: event.firstName,

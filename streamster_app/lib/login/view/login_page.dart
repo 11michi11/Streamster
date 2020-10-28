@@ -17,6 +17,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: BlocProvider(
         create: (context) {
           return LoginBloc(
@@ -24,7 +25,7 @@ class LoginPage extends StatelessWidget {
               userRepository: userRepository);
         },
         child: Center(
-          child: LoginFormForWeb(),
+          child: LoginForm(),
         ),
       ),
     );

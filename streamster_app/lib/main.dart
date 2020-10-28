@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/admin/admin.dart';
 import 'package:get_it/get_it.dart';
+import 'package:streamster_app/home/view/home_page.dart';
 import 'package:streamster_app/login/repository/login_repository.dart';
 import 'package:streamster_app/register/repository/register_repository.dart';
+import 'package:streamster_app/upload_video/bloc/upload_video_bloc.dart';
+import 'package:streamster_app/upload_video/upload_video.dart';
 import 'admin/view/admin_page.dart';
 import 'common/app_config.dart';
 import 'common/common.dart';
@@ -22,6 +25,7 @@ void main({String env}) async {
   final userRepository = UserRepository();
   final registerRepository = RegisterRepository();
   final adminRepository = AdminRepository();
+  final uploadVideoRepository = UploadVideoRepository();
 
   runApp(
     MultiBlocProvider(providers: [
@@ -40,7 +44,12 @@ void main({String env}) async {
           return AdminBloc(adminRepository: adminRepository, userRepository: userRepository);
         },
       ),
-    ], child: App(userRepository: userRepository, loginRepository: loginRepository, registerRepository: registerRepository, adminRepository : adminRepository),)
+      BlocProvider<UploadVideoBloc>(
+        create: (context) {
+          return UploadVideoBloc(uploadVideoRepository: uploadVideoRepository);
+        },
+      )
+    ], child: App(userRepository: userRepository, loginRepository: loginRepository, registerRepository: registerRepository, adminRepository : adminRepository, uploadVideoRepository: uploadVideoRepository,),)
   );
 }
 
@@ -49,13 +58,15 @@ class App extends StatelessWidget {
   final LoginRepository loginRepository;
   final RegisterRepository registerRepository;
   final AdminRepository adminRepository;
+  final UploadVideoRepository uploadVideoRepository;
 
   App(
       {Key key,
       @required this.userRepository,
       @required this.loginRepository,
       @required this.registerRepository,
-      @required this.adminRepository})
+      @required this.adminRepository,
+      @required this.uploadVideoRepository})
       : super(key: key);
 
   @override
@@ -67,10 +78,15 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        '/login': (context) => LoginPage(loginRepository: loginRepository, userRepository: userRepository),
+        '/login': (context) => LoginPage(
+            loginRepository: loginRepository, userRepository: userRepository),
         '/register': (context) =>
             RegisterPage(registerRepository: registerRepository),
-        '/admin' : (context) => AdminPage(adminRepository: adminRepository, userRepository: userRepository),
+        '/admin': (context) => AdminPage(
+            adminRepository: adminRepository, userRepository: userRepository),
+        '/home': (context) => HomePage(userRepository: userRepository),
+        '/uploadVideo': (context) =>
+            UploadVideoPage(uploadVideoRepository: uploadVideoRepository),
       },
       initialRoute: '/login',
     );

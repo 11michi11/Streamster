@@ -16,3 +16,4 @@ services:
   user: http://localhost:8090/user-service
   search: http://localhost:8091/search-service
   recommendation: http://localhost:8092/recommendation-service
+  video: http://localhost:8093/video-service
