@@ -13,6 +13,12 @@ spring:
             - Path=/user-service/**
           filters:
             - DedupeResponseHeader=Access-Control-Allow-Origin
+        - id: video-service-route
+            uri: https://video-service-ayoqp7z2fq-lz.a.run.app
+            predicates:
+              - Path=/video-service/**
+            filters:
+              - DedupeResponseHeader=Access-Control-Allow-Origin
 #        - id: search-service-route
 #          uri: lb://search-service
 #          predicates:
