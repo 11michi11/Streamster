@@ -13,6 +13,7 @@ class RestClient {
   static final registerUrl = Uri.parse("$baseUrl/user-service/users/register");
   static final getUserUrl = Uri.parse("$baseUrl/user-service/users/userDetails");
   static final getAllUserUrl = Uri.parse("$baseUrl/user-service/users");
+  static final uploadUrl = Uri.parse("$baseUrl/video-service/videos/upload");
 
   Client client;
 

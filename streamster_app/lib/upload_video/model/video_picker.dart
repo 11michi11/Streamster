@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
 import 'package:universal_html/prefer_universal/html.dart' as html;
 import 'dart:io';
+import 'package:flutter_video_info/flutter_video_info.dart';
+
 
 class VideoPicker {
 

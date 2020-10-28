@@ -2,6 +2,7 @@
 import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
+import 'package:streamster_app/upload_video/model/video_metadata.dart';
 
 abstract class UploadVideoEvent extends Equatable {
 
@@ -10,15 +11,13 @@ abstract class UploadVideoEvent extends Equatable {
 
 class UploadVideo extends UploadVideoEvent {
 
-  final String title;
-  final String description;
-  final List<String> tags;
   final String fileName;
   final Uint8List videoData;
+  final VideoMetadata metadata;
 
-  UploadVideo(this.title, this.description, this.tags, this.fileName, this.videoData);
+  UploadVideo(this.fileName, this.videoData, this.metadata);
 
   @override
-  List<Object> get props => [title, description, tags, fileName, videoData];
+  List<Object> get props => [fileName, videoData, metadata];
 
 }
