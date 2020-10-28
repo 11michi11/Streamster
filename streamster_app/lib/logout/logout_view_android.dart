@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:streamster_app/logout/logout_view.dart';
 
-class LogoutAndroid extends Logout {
+class LogoutButton extends Logout {
   @override
   Widget logoutButton(BuildContext context) {
     return ListTile(
