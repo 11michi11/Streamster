@@ -1,17 +1,30 @@
 import 'package:flutter/material.dart';
 
 class LoginCommonWidgets {
+
   static Widget header() {
-    return Text("Login to Streamster",
+    return Text.rich(
+      TextSpan(
+        text: 'Login to ',
         style: TextStyle(
-            fontFamily: 'BalooTammuduBold',
-            color: Colors.brown,
-            fontSize: 25.0));
+            fontSize: 25, fontFamily: 'BalooTammudu', color: Colors.brown),
+        children: <TextSpan>[
+          TextSpan(
+              text: 'Streamster',
+              style: TextStyle(
+                fontSize: 25,
+                fontFamily: 'BalooTammuduBold',
+                color: Colors.brown,
+              )),
+          // can add more TextSpans here...
+        ],
+      ),
+    );
   }
 
   static Widget customTextField(String fieldName) {
     return Container(
-        width: 150.0,
+        width: 140,
         child: Padding(
           padding: const EdgeInsets.only(top: 20.0),
           child: Text(fieldName,

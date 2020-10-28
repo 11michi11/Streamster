@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/upload_video/upload_video.dart';
 
-// class UploadVideoForm extends StatefulWidget {
-//   @override
-//   State<StatefulWidget> createState() => _UploadVideoFormPage();
-// }
-
 class UploadVideoForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

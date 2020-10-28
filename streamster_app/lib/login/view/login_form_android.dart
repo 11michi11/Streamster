@@ -25,9 +25,10 @@ class _LoginFormAndroidState extends State<LoginFormAndroid> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Container(
+          margin: EdgeInsets.only(top: 15),
             child: Opacity(
                 opacity: 0.7,
                 child: Image(image: AssetImage("images/book2.jpg")))),
@@ -41,7 +42,7 @@ class _LoginFormAndroidState extends State<LoginFormAndroid> {
                 children: [
                   LoginCommonWidgets.customTextField("Email :"),
                   Container(
-                    width: 190.0,
+                    width: 170.0,
                     child: TextField(
                         controller: _usernameController,
                         decoration: InputDecoration(
@@ -56,7 +57,7 @@ class _LoginFormAndroidState extends State<LoginFormAndroid> {
                 children: [
                   LoginCommonWidgets.customTextField("Password :"),
                   Container(
-                    width: 190.0,
+                    width: 170.0,
                     child: TextField(
                         obscureText: true,
                         controller: _passwordController,
@@ -74,15 +75,19 @@ class _LoginFormAndroidState extends State<LoginFormAndroid> {
             child: widget.state.status == LoginStatus.inProgress
                 ? CircularProgressIndicator()
                 : null),
-        loginButton(widget.state),
-        LoginCommonWidgets.createAccountButton(context)
+        Column(children: [
+          loginButton(widget.state),
+          SizedBox(height: 20), //margin
+          LoginCommonWidgets.createAccountButton(context),
+          SizedBox(height: 50), //margin
+        ]),
       ],
     );
   }
 
   Widget loginButton(LoginState state) {
     return ButtonTheme(
-      minWidth: 180,
+      minWidth: 200,
       height: 60,
       child: FlatButton(
         shape: RoundedRectangleBorder(

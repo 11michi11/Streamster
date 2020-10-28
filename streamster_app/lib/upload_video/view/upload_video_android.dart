@@ -31,6 +31,7 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   List<String> studyPrograms = new List();
 
   _UploadVideoAndroidState() {
+    //test data
     tags.add("programming");
     tags.add("java");
     tags.add("object oriented programming");
@@ -46,7 +47,6 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   }
 
   onSelectVideoFile() async {
-    print("select file android");
     video = await VideoPicker.pickVideoAndroid();
     setState(() {
       _fileNameController.text = video.fileName;
@@ -56,18 +56,18 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   onSelectThumbnail() async {
     var avatar = await AvatarPicker.pickImageAndroid();
     setState(() {
-      _thumbnailController.text = avatar.imageFile.path;
+      _thumbnailController.text = "image added";
     });
   }
 
-  onAddClicked(controller, list) {
+  onAddItemClicked(controller, list) {
     var item = controller.text;
     setState(() {
       list.insert(0,item);
     });
   }
 
-  onDeleteItem(index, list) {
+  onDeleteItemClicked(index, list) {
     Scaffold.of(context).showSnackBar(
         SnackBar(content: Text('${list[index]} deleted')));
     setState(() {
@@ -87,15 +87,12 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
             return Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text('Upload Video',
-                    style: TextStyle(
-                        fontFamily: 'BalooTammudu',
-                        color: Colors.black54,
-                        fontSize: 30)),
+                SizedBox(height: 20), //margin
                 titleField(),
                 tagField(),
                 scrollableViewList(tags),
                 Container(
+                  margin: EdgeInsets.only(top: 15),
                   alignment: Alignment(-0.7,0),
                   child: Text("Study Programs",
                       style: TextStyle(
@@ -182,7 +179,7 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
             ),
             color: Colors.white,
             onPressed: () {
-              onAddClicked(_tagsController, tags);
+              onAddItemClicked(_tagsController, tags);
               _tagsController.text = '';
             },
             child: Padding(
@@ -225,7 +222,7 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
             ),
             color: Colors.white,
             onPressed: () {
-              onAddClicked(_studyProgramController, studyPrograms);
+              onAddItemClicked(_studyProgramController, studyPrograms);
               _studyProgramController.text = '';
             },
             child: Padding(
@@ -245,6 +242,7 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   Widget descriptionField() {
     return Column(
       children: [
+        SizedBox(height: 15),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -417,7 +415,7 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
               itemBuilder: (BuildContext context, index) =>
                   GestureDetector(
                     onDoubleTap: () => {
-                      onDeleteItem(index,list)
+                      onDeleteItemClicked(index,list)
                     },
                     child: Container(
                         margin: EdgeInsets.only(right: 30),

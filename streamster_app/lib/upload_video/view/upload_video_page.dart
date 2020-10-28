@@ -15,7 +15,7 @@ class UploadVideoPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.brown,  leading: IconButton(
+      appBar: AppBar(title: Text("Upload Video") ,backgroundColor: Colors.brown,  leading: IconButton(
         icon: Icon(Icons.arrow_back, color: Colors.white),
         onPressed: () => Navigator.of(context).pop(),
       ), ),
