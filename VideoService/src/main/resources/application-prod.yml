@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: video-service
+  data:
+    mongodb:
+      uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
+server:
+  servlet:
+    context-path: /video-service
+  port: 8080
+
+services:
+  user: https://user-service-ayoqp7z2fq-lz.a.run.app
+  search: http://localhost:8091/search-service
+  recommendation: http://localhost:8092/recommendation-service

@@ -12,7 +12,6 @@ import 'package:streamster_app/upload_video/repository/dummyThumbnail.dart';
 enum UploadVideoStatus { init, uploading, success, error }
 
 class UploadVideoRepository {
-
   RestClient restClient;
 
   UploadVideoRepository() {
@@ -32,7 +31,7 @@ class UploadVideoRepository {
     request.files.add(http.MultipartFile.fromString("metadata", convert.jsonEncode(metadata.toJson()),contentType:MediaType.parse("application/json")));
 
     var result = await restClient.client.send(request);
-    if(result.statusCode == 201) {
+    if (result.statusCode == 201) {
       print("result: $result");
       return UploadVideoStatus.success;
     } else {
