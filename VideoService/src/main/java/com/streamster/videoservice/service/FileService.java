@@ -48,7 +48,7 @@ public class FileService {
     }
 
     @SneakyThrows
-    public String store(final MultipartFile file, String userId, Document metadata) {
+    public String store(final MultipartFile file, Document metadata) {
         try {
             String gridFSFileId = gridFsTemplate.store(file.getInputStream(), file.getOriginalFilename(),
                     file.getContentType(), metadata).toString();
