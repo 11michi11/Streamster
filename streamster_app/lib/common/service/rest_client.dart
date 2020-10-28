@@ -11,8 +11,11 @@ class RestClient {
   static final baseUrl = getIt.get<AppConfig>().apiUrl;
   static final authUrl = Uri.parse("$baseUrl/user-service/oauth/token");
   static final registerUrl = Uri.parse("$baseUrl/user-service/users/register");
-  static final getUserUrl = Uri.parse("$baseUrl/user-service/users/userDetails");
+  static final getUserUrl =
+      Uri.parse("$baseUrl/user-service/users/userDetails");
   static final getAllUserUrl = Uri.parse("$baseUrl/user-service/users");
+  static final getAllUsersVideosUrl =
+      Uri.parse("$baseUrl/video-service/videos/currentUser");
 
   Client client;
 
