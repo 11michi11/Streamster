@@ -14,6 +14,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
+	getCommons
 }
 
 def dockerPassword = hasProperty('gcloudToken') ? gcloudToken : file('../keyfile.json').text
@@ -64,6 +65,7 @@ dependencies {
 	testCompile "org.spockframework:spock-core"
 	testCompile group: 'org.spockframework', name: 'spock-spring', version: '2.0-M3-groovy-2.5'
 	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+	implementation project(":commons")
 }
 
 tasks.withType(JavaCompile) {
