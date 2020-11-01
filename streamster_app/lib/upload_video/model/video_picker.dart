@@ -16,7 +16,7 @@ class VideoPicker {
       ..type = 'file'
       ..accept = 'video/*';
 
-    input.onChange.listen((e) {
+    input.onChange.listen((e) async {
       if (input.files.isEmpty) {
         print("file is empty");
         return;
@@ -26,6 +26,8 @@ class VideoPicker {
       var fileName = input.files[0].name;
       reader.onError.listen((err) => print(err.toString()));
 
+      var videoLength = await getVideoLength(input.files[0].relativePath);
+
       result = reader.onLoad.first.then((res) {
         final encoded = reader.result as String;
         final stripped =
@@ -33,7 +35,7 @@ class VideoPicker {
         var videoData = base64.decode(stripped);
         var videoSize = videoData.lengthInBytes;
 
-        return new Video(videoData,videoSize,fileName);
+        return new Video(videoData,videoSize,videoLength,fileName);
       });
     });
     input.click();
@@ -54,10 +56,17 @@ class VideoPicker {
 
       var videoData = _androidVideo.readAsBytesSync();
       var videoSize = videoData.length;
+      var videoLength = await getVideoLength(pickedFile.path);
       fileName =
           'video added'; //pickedFile.path = its returning wrong file name - image_picker8353325253317463941.jpg
 
-      return new Video(videoData, videoSize, fileName);
+      return new Video(videoData, videoSize, videoLength, fileName);
     }
+  }
+
+  static Future<double> getVideoLength(String path) async {
+    var videoInfo = await FlutterVideoInfo().getVideoInfo(path);
+    print("VIDEO DURATION ${videoInfo.duration}");
+    return videoInfo.duration;
   }
 }
