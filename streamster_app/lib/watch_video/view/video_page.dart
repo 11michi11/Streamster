@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:streamster_app/watch_video/view/video_widget.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_player_controls/video_player_controls.dart';
 
 class VideoPage extends StatefulWidget {
 
@@ -19,10 +20,13 @@ class VideoPage extends StatefulWidget {
 }
 
 class _VideoPageState extends State<VideoPage> {
-  
+
+  Controller controller;
   bool isExtended = false;
   String url;
-  
+
+  _VideoPageState();
+
   Widget defaultImage() {
     return Container(
         width: 45,
@@ -130,24 +134,61 @@ class _VideoPageState extends State<VideoPage> {
 
   @override
   void initState() {
+    super.initState();
     if(widget.url == null) {
       url = 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
     } else {
       url = widget.url;
     }
-    super.initState();
+
+    controller = Controller(
+        items: [
+          PlayerItem(
+            url:url)
+        ],
+      autoPlay: true,
+      errorBuilder: (context, message) {
+        return Container(
+          child: Text(message),
+        );
+      },
+      autoInitialize: true,
+      // isLooping: false,
+      allowedScreenSleep: true,
+      // showControls: false,
+      // hasSubtitles: true,
+      // isLive: true,
+      // showSeekButtons: false,
+      // showSkipButtons: false,
+      // allowFullScreen: false,
+      fullScreenByDefault: false,
+      placeholder: Container(
+        color: Colors.white,
+      ),
+      isPlaying: (isPlaying) {
+      },
+      playerItem: (playerItem) {
+      },
+      videosCompleted: (isCompleted) {
+        print(isCompleted);
+      },
+    );
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Container(
         child: Column(
           children: [
-            VideoWidget(
-              videoPlayerController: VideoPlayerController.network(
-                //'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
-                 url),
+            //Video
+            Container(
+              height: 230,
+              child: VideoPlayerControls(
+                controller: controller,
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
