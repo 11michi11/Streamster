@@ -9,7 +9,6 @@ import 'package:streamster_app/upload_video/model/video_metadata.dart';
 import '../upload_video.dart';
 
 class UploadButton extends StatelessWidget {
-
   final UploadVideoState state;
   final BuildContext context;
   final TextEditingController _titleController;
@@ -20,9 +19,16 @@ class UploadButton extends StatelessWidget {
   final ImageCustom thumbnail;
   final Video video;
 
-  UploadButton(this.state, this.context, this._titleController, this._tagsController,
-      this._studyProgramsController, this._descriptionController,
-      this._languageController, this.thumbnail, this.video);
+  UploadButton(
+      this.state,
+      this.context,
+      this._titleController,
+      this._tagsController,
+      this._studyProgramsController,
+      this._descriptionController,
+      this._languageController,
+      this.thumbnail,
+      this.video);
 
   @override
   Widget build(BuildContext context) {
@@ -30,14 +36,19 @@ class UploadButton extends StatelessWidget {
       minWidth: 200,
       height: 60,
       child: FlatButton(
-        shape:
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0), side: BorderSide(color: Colors.brown),),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0),
+          side: BorderSide(color: Colors.brown),
+        ),
         color: Colors.brown,
         onPressed: () {
           if (state.status != UploadVideoStatus.uploading) {
             onUploadButtonPressed(
-                _titleController.text, [_tagsController.text], [_studyProgramsController.text],
-                _descriptionController.text, _languageController.text);
+                _titleController.text,
+                [_tagsController.text],
+                [_studyProgramsController.text],
+                _descriptionController.text,
+                _languageController.text);
           }
         },
         child: Padding(
@@ -52,8 +63,83 @@ class UploadButton extends StatelessWidget {
     );
   }
 
-  onUploadButtonPressed(String title, List<String> tags, List<String> studyPrograms, String description, String language) {
-    BlocProvider.of<UploadVideoBloc>(context).add(
-        UploadVideo(video.fileName, video.videoData, new VideoMetadata(title, description, tags, studyPrograms, thumbnail?.imageEncoded ?? null, language, 0)));
+  onUploadButtonPressed(String title, List<String> tags,
+      List<String> studyPrograms, String description, String language) {
+    if (!isEmpty()) {
+      if (validateVideoExtension(video.videoExtension)) {
+        if (validateThumbnailSize(thumbnail.imageSize)) {
+          BlocProvider.of<UploadVideoBloc>(context).add(UploadVideo(
+              video.fileName,
+              video.videoData,
+              new VideoMetadata(
+                  title,
+                  description,
+                  tags,
+                  studyPrograms,
+                  thumbnail?.imageEncoded ?? null,
+                  language,
+                  video.videoLength)));
+        }
+      }
+    }
+  }
+
+  bool isEmpty() {
+    if (_titleController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Title is empty'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    } else if (_tagsController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Tags are empty'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    } else if (_studyProgramsController.text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Study programs are empty'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    } else if (video == null) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('No video file uploaded'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool validateVideoExtension(String videoExtension) {
+    // to be defined
+//    var validExtensions = [".mp4", ".mov", ".mkv"];
+//    if (validExtensions.contains(videoExtension))
+//      return true;
+//    else {
+//      Scaffold.of(context).showSnackBar(SnackBar(
+//        content: Text('Video file format "$videoExtension" is not supported'),
+//        backgroundColor: Colors.red,
+//      ));
+//      return false;
+//    }
+    return true;
+  }
+
+  bool validateThumbnailSize(int imageSize) {
+    if (imageSize == null) {
+      return true;
+    } else if (imageSize <= 15000000) {
+      return true;
+    } else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('This thumbnail is too big. Maximum size is 15MB'),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
   }
 }
