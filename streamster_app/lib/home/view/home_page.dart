@@ -31,7 +31,7 @@ class HomePage extends StatelessWidget {
             if (constraints.maxWidth > 1000) {
               return HomeFormWeb();
             } else {
-              return HomeFormAndroid();
+              return HomeFormAndroid(userRepository: userRepository);
             }
           });
         }),
