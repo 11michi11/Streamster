@@ -37,6 +37,11 @@ public class UserService {
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
     }
 
+    public User getUserById(String userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with id: " + userId));
+    }
+
     public void addVideoToUser(String userId, String videoId) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with id: " + userId));
