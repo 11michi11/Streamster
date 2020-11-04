@@ -1,7 +1,5 @@
 package com.streamster.videoservice.amqp;
 
-import com.streamster.commons.amqp.Message;
-import com.streamster.commons.amqp.payload.NewVideo;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;

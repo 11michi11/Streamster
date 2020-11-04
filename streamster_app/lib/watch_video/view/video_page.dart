@@ -146,8 +146,9 @@ class _VideoPageState extends State<VideoPage> {
           children: [
             VideoWidget(
               videoPlayerController: VideoPlayerController.network(
-                //'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
-                 url),
+                  //'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
+                  url,
+                  formatHint: VideoFormat.other),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

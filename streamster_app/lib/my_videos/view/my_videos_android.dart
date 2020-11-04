@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_bloc.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_event.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_state.dart';
@@ -46,11 +47,16 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
           FlatButton(onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => VideoPage(videoItem.authorName,videoItem.description,videoItem.studyPrograms,
-                videoItem.tags, videoItem.language, 'https://apigateway-ayoqp7z2fq-lz.a.run.app/video-service/streaming/5f8469bf2dc3a978cd007c68'),
-              ),
-            );
+                MaterialPageRoute(
+                  builder: (context) => VideoPage(
+                      videoItem.authorName,
+                      videoItem.description,
+                      videoItem.studyPrograms,
+                      videoItem.tags,
+                      videoItem.language,
+                      '${RestClient.baseUrl}/video-service/streaming/5f8469bf2dc3a978cd007c68'),
+                ),
+              );
           },
             child: Text('test'),),
           Expanded(
