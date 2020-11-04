@@ -115,18 +115,16 @@ class UploadButton extends StatelessWidget {
   }
 
   bool validateVideoExtension(String videoExtension) {
-    // to be defined
-//    var validExtensions = [".mp4", ".mov", ".mkv"];
-//    if (validExtensions.contains(videoExtension))
-//      return true;
-//    else {
-//      Scaffold.of(context).showSnackBar(SnackBar(
-//        content: Text('Video file format "$videoExtension" is not supported'),
-//        backgroundColor: Colors.red,
-//      ));
-//      return false;
-//    }
-    return true;
+    var validExtensions = [".mp4"];
+    if (validExtensions.contains(videoExtension))
+      return true;
+    else {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('Video file format "$videoExtension" is not supported'),
+        backgroundColor: Colors.red,
+      ));
+      return false;
+    }
   }
 
   bool validateThumbnailSize(int imageSize) {
