@@ -58,7 +58,7 @@ class RegisterButton extends StatelessWidget {
 
   bool validatePassword(String password) {
     return RegExp(
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
         .hasMatch(password);
   }
 
