@@ -1,0 +1,23 @@
+plugins {
+    id 'io.franzbecker.gradle-lombok' version '4.0.0'
+    id 'java'
+}
+
+group = 'com.streamster'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '14'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

@@ -38,6 +38,12 @@ public class UserController {
         return new ResponseEntity<>(currentUser.toUserView(), HttpStatus.OK);
     }
 
+    @GetMapping("/userDetails/{userId}")
+    ResponseEntity<UserView> getUserDetails(@PathVariable String userId) {
+        User user = userService.getUserById(userId);
+        return new ResponseEntity<>(user.toUserView(), HttpStatus.OK);
+    }
+
     @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).ADMIN)")
     @GetMapping
     ResponseEntity<List<UserView>> getAllUsers() {
