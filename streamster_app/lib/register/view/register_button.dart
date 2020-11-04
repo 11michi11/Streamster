@@ -6,19 +6,18 @@ import 'package:streamster_app/register/bloc/register_state.dart';
 import '../register.dart';
 
 class RegisterButton extends StatelessWidget {
-
   final RegisterState state;
   final BuildContext context;
   final TextEditingController _firstNameController;
   final TextEditingController _lastNameController;
   final TextEditingController _emailController;
   final TextEditingController _passwordController;
-  final Avatar avatar;
+  final ImageCustom avatar;
   RegisterButton(this.state, this.context, this._firstNameController, this._lastNameController, this._emailController, this._passwordController, this.avatar);
 
-  onRegisterButtonPressed(String avatar, int imageSize) {
-    if(validateImageSize(imageSize)) {
-      if(!isEmpty()) {
+  onRegisterButtonPressed(avatar) {
+    if (!isEmpty()) {
+      if (avatar == null || validateImageSize(avatar.imageSize)) {
         if (validateEmail(_emailController.text)) {
           if (validatePassword(_passwordController.text)) {
             BlocProvider.of<RegisterBloc>(context).add(RegisterUser(
@@ -26,12 +25,7 @@ class RegisterButton extends StatelessWidget {
                 lastName: _lastNameController.text,
                 email: _emailController.text,
                 password: _passwordController.text,
-                image: avatar));
-          } else {
-            Scaffold.of(context).showSnackBar(SnackBar(
-              content: Text('Invalid password'),
-              backgroundColor: Colors.red,
-            ));
+                image: avatar?.imageEncoded ?? null));
           }
         } else {
           Scaffold.of(context).showSnackBar(SnackBar(
@@ -44,7 +38,7 @@ class RegisterButton extends StatelessWidget {
   }
 
   /*    output:
-    Vignesh123! : true
+    Vignesh123 : true
     vignesh123 : false
     VIGNESH123! : false
     vignesh@ : false
@@ -52,21 +46,36 @@ class RegisterButton extends StatelessWidget {
     */
   bool validateEmail(String email) {
     return RegExp(
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(email);
   }
 
   bool validatePassword(String password) {
-    return RegExp(
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
+    var isValid = RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$')
         .hasMatch(password);
+    if (!isValid) {
+      var errorMessage = "Invalid password";
+      if (password.length < 8) {
+        errorMessage = "Password must be at least 8 characters long";
+      } else if (!RegExp(r'^(?=.*?[0-9]).{8,}$').hasMatch(password)) {
+        errorMessage = "Password must contain at least one digit";
+      } else if (!RegExp(r'^(?=.*?[A-Z]).{8,}$').hasMatch(password)) {
+        errorMessage = "Password must contain at least one uppercase letter";
+      } else if (!RegExp(r'^(?=.*?[a-z]).{8,}$').hasMatch(password)) {
+        errorMessage = "Password must contain at least one lowercase letter";
+      }
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text(errorMessage),
+        backgroundColor: Colors.red,
+      ));
+    }
+    return isValid;
   }
 
   bool validateImageSize(int image) {
-    if(image == null) {
+    if (image == null) {
       return true;
-    }
-    else if (image <= 15000000) {
+    } else if (image <= 15000000) {
       return true;
     } else {
       Scaffold.of(context).showSnackBar(SnackBar(
@@ -78,28 +87,25 @@ class RegisterButton extends StatelessWidget {
   }
 
   bool isEmpty() {
-    if(_firstNameController.text.isEmpty) {
+    if (_firstNameController.text.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Name is empty'),
         backgroundColor: Colors.red,
       ));
       return true;
-    }
-    else if(_lastNameController.text.isEmpty) {
+    } else if (_lastNameController.text.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Surname is empty'),
         backgroundColor: Colors.red,
       ));
       return true;
-    }
-    else if(_emailController.text.isEmpty) {
+    } else if (_emailController.text.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Email is empty'),
         backgroundColor: Colors.red,
       ));
       return true;
-    }
-    else if(_passwordController.text.isEmpty) {
+    } else if (_passwordController.text.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Password is empty'),
         backgroundColor: Colors.red,
@@ -118,12 +124,12 @@ class RegisterButton extends StatelessWidget {
         minWidth: 180,
         height: 60,
         child: FlatButton(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           color: Colors.brown,
           onPressed: () {
             if (state.status != RegistrationStatus.loading) {
-              onRegisterButtonPressed(avatar.imageEncoded, avatar.imageSize);
+              onRegisterButtonPressed(avatar);
             }
           },
           child: Padding(
@@ -138,5 +144,4 @@ class RegisterButton extends StatelessWidget {
       ),
     );
   }
-
 }

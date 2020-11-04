@@ -16,6 +16,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: MultiBlocProvider(
         providers: [
           BlocProvider<HomeBloc>(
@@ -30,7 +31,7 @@ class HomePage extends StatelessWidget {
             if (constraints.maxWidth > 1000) {
               return HomeFormWeb();
             } else {
-              return HomeFormAndroid();
+              return HomeFormAndroid(userRepository: userRepository);
             }
           });
         }),

@@ -1,10 +1,13 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/watch_video/view/video_widget.dart';
 import 'package:video_player/video_player.dart';
 
 class VideoPage extends StatefulWidget {
-
+  final String videoTitle;
+  final String avatar;
   final String author;
   final String description;
   final List<String> studyPrograms;
@@ -12,31 +15,21 @@ class VideoPage extends StatefulWidget {
   final String language;
   final String url;
 
-  VideoPage(this.author, this.description, this.studyPrograms, this.tags, this.language, this.url) : super();
+  VideoPage(this.videoTitle, this.avatar, this.author, this.description,
+      this.studyPrograms, this.tags, this.language, this.url)
+      : super();
 
   @override
   State<StatefulWidget> createState() => _VideoPageState();
 }
 
 class _VideoPageState extends State<VideoPage> {
-  
   bool isExtended = false;
-  String url;
-  
-  Widget defaultImage() {
-    return Container(
-        width: 45,
-        height: 45,
-        decoration: BoxDecoration(
-            border: Border.all(color: Colors.white),
-            shape: BoxShape.circle,
-            image: DecorationImage(
-                fit: BoxFit.fill,
-                image: NetworkImage(
-                    "https://scontent-cph2-1.xx.fbcdn.net/v/t31.0-8/18358881_1293777014069016_6493560286323388419_o.jpg?_nc_cat=104&_nc_sid=09cbfe&_nc_ohc=ObxWnFMAMGgAX9R_SfZ&_nc_ht=scontent-cph2-1.xx&oh=0f5fa0c0ea02b3df77eecd4fc8ab548e&oe=5FAB318A"))));
-  }
+  String url, description, language, author;
 
-  Widget videoItemExtended() {
+  _VideoPageState();
+
+  Widget videoDataExtendedSection() {
     return Container(
       height: 250,
       child: ListView.builder(
@@ -49,7 +42,7 @@ class _VideoPageState extends State<VideoPage> {
                       fontFamily: 'BalooTammuduBold',
                       color: Colors.brown,
                       fontSize: 15)),
-              Text("MATEJ MICHALEK",
+              Text(author,
                   style: TextStyle(
                       fontFamily: 'BalooTammudu',
                       color: Colors.black54,
@@ -59,8 +52,7 @@ class _VideoPageState extends State<VideoPage> {
                       fontFamily: 'BalooTammuduBold',
                       color: Colors.brown,
                       fontSize: 15)),
-              Text(
-                  "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,",
+              Text(description,
                   style: TextStyle(
                     fontFamily: 'BalooTammudu',
                     color: Colors.black54,
@@ -72,7 +64,7 @@ class _VideoPageState extends State<VideoPage> {
                       fontFamily: 'BalooTammuduBold',
                       color: Colors.brown,
                       fontSize: 15)),
-              Text("Software engineering, Global Business Engineering",
+              Text(formatListData(widget.studyPrograms),
                   style: TextStyle(
                       fontFamily: 'BalooTammudu',
                       color: Colors.black54,
@@ -82,7 +74,7 @@ class _VideoPageState extends State<VideoPage> {
                       fontFamily: 'BalooTammuduBold',
                       color: Colors.brown,
                       fontSize: 15)),
-              Text("nature, programming, marketing",
+              Text(formatListData(widget.tags),
                   style: TextStyle(
                       fontFamily: 'BalooTammudu',
                       color: Colors.black54,
@@ -92,7 +84,7 @@ class _VideoPageState extends State<VideoPage> {
                       fontFamily: 'BalooTammuduBold',
                       color: Colors.brown,
                       fontSize: 15)),
-              Text("english",
+              Text(language,
                   style: TextStyle(
                       fontFamily: 'BalooTammudu',
                       color: Colors.black54,
@@ -105,62 +97,102 @@ class _VideoPageState extends State<VideoPage> {
   }
 
   Widget commentSection() {
-    return Column(children: [
-      Container(
-          margin: EdgeInsets.only(bottom: 10),
-          width: MediaQuery.of(context).size.width * 0.85,
-          child: Divider(color: Colors.brown)),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Row(
-            children: [
-              Icon(Icons.star_border, color: Colors.black54, size: 35),
-              Icon(Icons.star_border, color: Colors.black54, size: 35),
-              Icon(Icons.star_border, color: Colors.black54, size: 35),
-              Icon(Icons.star_border, color: Colors.black54, size: 35),
-              Icon(Icons.star_border, color: Colors.black54, size: 35),
-            ],
-          ),
-          Icon(Icons.add_comment_outlined, color: Colors.black54, size: 36)
-        ],
-      )
-    ],);
+    return Column(
+      children: [
+        Container(
+            margin: EdgeInsets.only(bottom: 10),
+            width: MediaQuery.of(context).size.width * 0.85,
+            child: Divider(color: Colors.brown)),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Row(
+              children: [
+                Icon(Icons.star_border, color: Colors.black54, size: 35),
+                Icon(Icons.star_border, color: Colors.black54, size: 35),
+                Icon(Icons.star_border, color: Colors.black54, size: 35),
+                Icon(Icons.star_border, color: Colors.black54, size: 35),
+                Icon(Icons.star_border, color: Colors.black54, size: 35),
+              ],
+            ),
+            Icon(Icons.add_comment_outlined, color: Colors.black54, size: 36)
+          ],
+        )
+      ],
+    );
+  }
+
+  void initVideoInformationData() {
+    if (widget.description == null) {
+      description = 'no description set';
+    } else {
+      description = widget.description;
+    }
+
+    if (widget.language == null) {
+      language = 'no language set';
+    } else {
+      language = widget.language;
+    }
+
+    //TODO - remove
+    if (widget.url == null) {
+      url =
+          'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
+    } else {
+      url = widget.url;
+    }
+
+    if (widget.author == null) {
+      author = 'no author set';
+    } else {
+      author = widget.author;
+    }
+  }
+
+  /*
+  * to format study programs and tags */
+  String formatListData(List<String> list) {
+    String data = '';
+    for (String item in list) {
+      data += '$item,  ';
+    }
+    return data;
   }
 
   @override
   void initState() {
-    if(widget.url == null) {
-      url = 'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4';
-    } else {
-      url = widget.url;
-    }
     super.initState();
+    initVideoInformationData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.brown,
+      ),
+      backgroundColor: Colors.white,
       body: Container(
         child: Column(
           children: [
             VideoWidget(
-              videoPlayerController: VideoPlayerController.network(
-                  //'https://flutter.github.io/assets-for-api-docs/assets/videos/butterfly.mp4'
-                  url,
-                  formatHint: VideoFormat.other),
-            ),
+                videoPlayerController: VideoPlayerController.network(url),
+                looping: false),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
                   children: [
-                    SizedBox(width: 15),//margin
-                    defaultImage(),
+                    SizedBox(width: 15), //margin
+                    Container(
+                        child: widget.avatar == null
+                            ? Avatar.defaultAvatar(45.0)
+                            : Avatar.setAvatar(45.0, widget.avatar)),
                     SizedBox(width: 15), //margin
                     Padding(
                       padding: const EdgeInsets.only(top: 10.0),
-                      child: Text("Butterfly Valley",
+                      child: Text(widget.videoTitle,
                           style: TextStyle(
                               fontFamily: 'BalooTammuduBold',
                               color: Colors.brown,
@@ -170,24 +202,34 @@ class _VideoPageState extends State<VideoPage> {
                 ),
                 Container(
                     margin: EdgeInsets.only(right: 20.0),
-                    child: isExtended == false ? FlatButton(onPressed: () { setState(() {
-                      isExtended = true;
-                    });},child: Icon(Icons.arrow_downward, color: Colors.brown)) :
-                    FlatButton(onPressed: () { setState(() {
-                      isExtended = false;
-                    });}, child: Icon(Icons.arrow_upward, color: Colors.brown))),
+                    child: isExtended == false
+                        ? FlatButton(
+                            onPressed: () {
+                              setState(() {
+                                isExtended = true;
+                              });
+                            },
+                            child:
+                                Icon(Icons.arrow_downward, color: Colors.brown))
+                        : FlatButton(
+                            onPressed: () {
+                              setState(() {
+                                isExtended = false;
+                              });
+                            },
+                            child:
+                                Icon(Icons.arrow_upward, color: Colors.brown))),
               ],
             ),
             Container(
                 width: MediaQuery.of(context).size.width * 0.85,
                 child: Divider(color: Colors.brown)),
             Container(
-              child: isExtended == true ? Column(
-                children: [
-                  videoItemExtended(),
-                  commentSection()
-                ],
-              ) : null,
+              child: isExtended == true
+                  ? Column(
+                      children: [videoDataExtendedSection(), commentSection()],
+                    )
+                  : null,
             ),
           ],
         ),

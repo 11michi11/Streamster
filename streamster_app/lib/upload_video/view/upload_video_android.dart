@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:streamster_app/register/model/avatar_picker.dart';
+import 'package:streamster_app/register/register.dart';
 import 'package:streamster_app/upload_video/model/video.dart';
+import 'package:streamster_app/upload_video/model/video_metadata.dart';
 import 'package:streamster_app/upload_video/model/video_picker.dart';
 
 import '../upload_video.dart';
@@ -22,28 +23,24 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   final _descriptionController = TextEditingController();
   final _tagsController = TextEditingController();
   final _fileNameController = TextEditingController();
-  final _studyProgramController = TextEditingController();
+  final _studyProgramsController = TextEditingController();
   final _languageController = TextEditingController();
   final _thumbnailController = TextEditingController();
 
   Video video;
+  ImageCustom thumbnail;
   List<String> tags = new List();
   List<String> studyPrograms = new List();
 
   _UploadVideoAndroidState() {
-    //test data
+    /*
+    * TODO - test data delete
+    * */
     tags.add("programming");
     tags.add("java");
     tags.add("object oriented programming");
     studyPrograms.add("software engineering");
     studyPrograms.add("global business engineering");
-  }
-
-  onUploadButtonPressed(String title, String description, List<String> tags) {
-    if (video != null) {
-      BlocProvider.of<UploadVideoBloc>(context).add(UploadVideo(
-          title, description, tags, video.fileName, video.videoData));
-    }
   }
 
   onSelectVideoFile() async {
@@ -53,8 +50,11 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
     });
   }
 
+  /*
+  * TODO - add avatar to request
+  * */
   onSelectThumbnail() async {
-    var avatar = await AvatarPicker.pickImageAndroid();
+    thumbnail = await ImagePickerCustom.pickImageAndroid();
     setState(() {
       _thumbnailController.text = "image added";
     });
@@ -108,8 +108,9 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
                 selectThumbnailField(),
                 Container(
                     margin: EdgeInsets.only(top: 50, bottom: 50),
-                    child: UploadButton(widget.state, context, _tagsController,
-                        _titleController, _descriptionController, video))
+                    child: UploadButton(widget.state, context, _titleController, _tagsController,
+                        _studyProgramsController, _descriptionController, _languageController,
+                        thumbnail, video))
               ],
             );
           },
@@ -204,7 +205,7 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
           width: MediaQuery.of(context).size.width * 0.60,
           height: 60,
           child: TextField(
-              controller: _studyProgramController,
+              controller: _studyProgramsController,
               style: TextStyle(fontFamily: 'BalooTammudu'),
               decoration: InputDecoration(
                   hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
@@ -222,8 +223,8 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
             ),
             color: Colors.white,
             onPressed: () {
-              onAddItemClicked(_studyProgramController, studyPrograms);
-              _studyProgramController.text = '';
+              onAddItemClicked(_studyProgramsController, studyPrograms);
+              _studyProgramsController.text = '';
             },
             child: Padding(
               padding: const EdgeInsets.only(top: 10),
