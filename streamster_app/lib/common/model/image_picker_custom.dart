@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:streamster_app/register/model/avatar.dart';
 import 'package:universal_html/prefer_universal/html.dart' as html;
 import 'package:image_picker/image_picker.dart';
 
-class AvatarPicker {
+import 'image_custom.dart';
 
-  static Future<Avatar> pickImageWeb() async {
+class ImagePickerCustom {
+
+  static Future<ImageCustom> pickImageWeb() async {
     var result;
     final reader = html.FileReader();
     final html.InputElement input = html.document.createElement('input');
@@ -30,7 +31,7 @@ class AvatarPicker {
         var imageEncoded = stripped;
         var imageBytes = base64.decode(stripped);
 
-        return new Avatar(imageBytes, imageEncoded, imageBytes.lengthInBytes, null);
+        return new ImageCustom(imageBytes, imageEncoded, imageBytes.lengthInBytes, null);
       });
     });
     input.click();
@@ -40,7 +41,7 @@ class AvatarPicker {
 
   }
 
-  static Future<Avatar> pickImageAndroid() async {
+  static Future<ImageCustom> pickImageAndroid() async {
     final picker = ImagePicker();
     final pickedFile = await picker.getImage(source: ImageSource.gallery);
 
@@ -49,11 +50,11 @@ class AvatarPicker {
       /* Encode image to String base64 */
       List<int> imageBytes = androidImage.readAsBytesSync();
       var imageSize = imageBytes.length;
-      print('image lenght: ${imageBytes.length}');
+      print('image length: ${imageBytes.length}');
 
       String base64Image = base64Encode(imageBytes);
       var imageEncoded = base64Image;
-      return new Avatar(imageBytes, imageEncoded,imageSize, androidImage);
+      return new ImageCustom(imageBytes, imageEncoded,imageSize, androidImage);
     } else {
       // Handle error
     }

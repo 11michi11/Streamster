@@ -21,7 +21,7 @@ class UploadVideoBloc extends Bloc<UploadVideoEvent, UploadVideoState> {
       yield UploadVideoState.uploading();
       print('yield uploading');
 
-      var response = await _uploadVideoRepository.upload(event.videoData, event.fileName);
+      var response = await _uploadVideoRepository.upload(event.fileName, event.videoData, event.metadata);
       if(response == UploadVideoStatus.success){
         yield UploadVideoState.success();
       } else {

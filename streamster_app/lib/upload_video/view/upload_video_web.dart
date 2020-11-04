@@ -21,12 +21,15 @@ class _UploadVideoState extends State<UploadVideoWeb> {
   final _descriptionController = TextEditingController();
   final _tagsController = TextEditingController();
   final _fileNameController = TextEditingController();
+  final _studyProgramsController = TextEditingController();
+  final _languageController = TextEditingController();
+  final _thumbnailController = TextEditingController();
   Video video;
 
   onUploadButtonPressed(String title, String description, List<String> tags) {
     if (video != null) {
       BlocProvider.of<UploadVideoBloc>(context).add(UploadVideo(
-          title, description, tags, video.fileName, video.videoData));
+          video.fileName, video.videoData, null));
     }
   }
 
@@ -166,8 +169,9 @@ class _UploadVideoState extends State<UploadVideoWeb> {
                   ),
                 ],
               ),
-              UploadButton(widget.state, context, _tagsController,
-                  _titleController, _descriptionController, video)
+              UploadButton(widget.state, context, _titleController,
+                  _tagsController, _studyProgramsController, _descriptionController,
+                  _languageController, null, video)
             ],
           ),
         ),
