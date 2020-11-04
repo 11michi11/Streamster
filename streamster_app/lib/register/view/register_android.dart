@@ -17,7 +17,7 @@ class _RegisterAndroidState extends State<RegisterAndroid> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  Avatar avatar;
+  ImageCustom avatar;
 
   @override
   void dispose() {
@@ -29,7 +29,7 @@ class _RegisterAndroidState extends State<RegisterAndroid> {
   }
 
   Future pickImage() async {
-    var image = await AvatarPicker.pickImageAndroid();
+    var image = await ImagePickerCustom.pickImageAndroid();
     setState(() {
       avatar = image;
     });

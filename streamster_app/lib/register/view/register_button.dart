@@ -12,7 +12,8 @@ class RegisterButton extends StatelessWidget {
   final TextEditingController _lastNameController;
   final TextEditingController _emailController;
   final TextEditingController _passwordController;
-  final Avatar avatar;
+  final ImageCustom avatar;
+  RegisterButton(this.state, this.context, this._firstNameController, this._lastNameController, this._emailController, this._passwordController, this.avatar);
 
   RegisterButton(
       this.state,
