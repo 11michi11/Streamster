@@ -29,6 +29,8 @@ dependencies:
   equatable: ^1.0.0
   image_picker: ^0.6.7
   universal_html: ^1.2.1
+  flutter_video_info: ^1.0.1
+  http_parser: ^3.1.4
   chewie: ^0.9.7
   video_player: ">=0.7.0 <0.11.0"
   flutter:

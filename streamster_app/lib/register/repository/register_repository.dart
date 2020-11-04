@@ -7,6 +7,7 @@ enum RegistrationStatus {
   init,
   loading,
   success,
+  emailNotUnique,
   error,
 }
 
@@ -24,15 +25,20 @@ class RegisterRepository {
       String email,
       String password,
       String avatar}) async {
-
     var user = UserInfo(firstName, lastName, email, password, avatar);
 
+    print("Sending register request");
+    print(RestClient.registerUrl.toString());
     var response = await http.post(RestClient.registerUrl,
         headers: {'Content-Type': 'application/json'},
         body: convert.jsonEncode(user.toJson()));
-
-    if (response.statusCode == 200) {
+    print("Received register response");
+    if (response.statusCode == 201) {
       return RegistrationStatus.success;
+    } else if (response.statusCode == 400 &&
+        response.body == "Given email is already used in the system") {
+      print("Inserted email is already used in the system.");
+      return RegistrationStatus.emailNotUnique;
     } else {
       return RegistrationStatus.error;
     }

@@ -20,7 +20,7 @@ class _RegisterWebState extends State<RegisterWeb> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  Avatar avatar;
+  ImageCustom avatar;
 
   @override
   void dispose() {
@@ -65,7 +65,7 @@ class _RegisterWebState extends State<RegisterWeb> {
   }
 
   Future pickImage() async{
-    var image = await AvatarPicker.pickImageWeb();
+    var image = await ImagePickerCustom.pickImageWeb();
     print("image : $image");
     setState(() {
       avatar = image;
