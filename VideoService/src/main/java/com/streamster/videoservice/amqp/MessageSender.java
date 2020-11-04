@@ -3,21 +3,19 @@ package com.streamster.videoservice.amqp;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.streamster.commons.amqp.Message;
 
 
-public class Sender {
+public class MessageSender {
 
     @Autowired
     private RabbitTemplate template;
 
     @Autowired
-    private Queue queue;
+    private Queue user;
 
-    //    @Scheduled(fixedDelay = 1000, initialDelay = 500)
-    public void send() {
-        String message = "hello";
-        this.template.convertAndSend(queue.getName(), message);
-        System.out.println(" [x] Sent '" + message + "'");
+    public void sendToUserService(Message message) {
+        this.template.convertAndSend(user.getName(), message.toJson());
     }
 
 }
