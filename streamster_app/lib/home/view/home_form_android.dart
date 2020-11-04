@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
 import 'package:streamster_app/logout/logout_view_android.dart';
+import 'package:streamster_app/watch_video/view/video_page.dart';
 
 class HomeFormAndroid extends StatefulWidget {
   final UserRepository userRepository;
@@ -15,10 +16,6 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
   final UserRepository userRepository;
 
   _HomeFormAndroidState(this.userRepository);
-
-  onUploadVideoPressed() {
-    Navigator.of(context).pushNamed('/uploadVideo');
-  }
 
   Widget defaultImage() {
     return Container(
@@ -36,6 +33,7 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
         appBar:
             AppBar(backgroundColor: Colors.brown, title: Text('Streamster')),
         drawer: Drawer(
@@ -73,16 +71,32 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
                   ],
                 ),
                 onTap: () {
-                  onUploadVideoPressed();
+                  Navigator.of(context).pushNamed('/uploadVideo');
                 },
               ),
-              LogoutAndroid()
+              ListTile(
+                title: Row(
+                  children: [
+                    Icon(Icons.camera_enhance_rounded, color: Colors.brown),
+                    SizedBox(width: 15),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Text('My Videos',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'BalooTammudu',
+                              color: Colors.brown)),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/myVideos');
+                },
+              ),
+              LogoutButton()
             ],
           ),
         ),
-        body: Container(
-          width: MediaQuery.of(context).size.width,
-          child: Column(),
-        ));
+        body: VideoPage(null,null,null,null,null,null));
   }
 }

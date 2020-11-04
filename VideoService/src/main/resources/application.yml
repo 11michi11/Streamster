@@ -4,6 +4,9 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
+  rabbitmq:
+    addresses: amqps://usungdnh:6FdsPqpoFGU8ACD0yJ_Mz_V8h-SNKOnA@kangaroo.rmq.cloudamqp.com/usungdnh
+
   servlet:
     multipart:
       max-file-size: 1000MB

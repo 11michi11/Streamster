@@ -6,3 +6,5 @@ include 'ListsService'
 include 'UserService'
 include 'SearchService'
 include 'VideoService'
+include 'commons'
+

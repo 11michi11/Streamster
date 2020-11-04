@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web
                 .ignoring()
                 .antMatchers(
+                        "/streaming/**",
                         "/swagger-ui.html",
                         "/v2/api-docs",
                         "/v2/websockets.json",
