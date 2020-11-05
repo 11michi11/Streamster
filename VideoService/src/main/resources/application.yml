@@ -15,7 +15,7 @@ security:
   oauth2:
     resource:
       filter-order: 3
-      preferTokenInfo: truef
+      preferTokenInfo: true
       token-info-uri: http://localhost:8080/user-service/oauth/check_token
     client:
       client-id: my-trusted-client

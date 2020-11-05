@@ -22,14 +22,15 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.Map;
 
+
 public class CustomRemoteTokenService implements ResourceServerTokenServices {
 
     private RestOperations restTemplate;
-
+    private ServicesConfig servicesConfig;
     private AccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
 
-    @Autowired
-    public CustomRemoteTokenService() {
+    public CustomRemoteTokenService(ServicesConfig servicesConfig) {
+        this.servicesConfig = servicesConfig;
         restTemplate = new RestTemplate();
         ((RestTemplate) restTemplate).setErrorHandler(new DefaultResponseErrorHandler() {
             @Override
@@ -45,7 +46,7 @@ public class CustomRemoteTokenService implements ResourceServerTokenServices {
     @Override
     public OAuth2Authentication loadAuthentication(String accessToken) throws AuthenticationException, InvalidTokenException {
         HttpHeaders headers = new HttpHeaders();
-        Map<String, Object> map = executePost("http://localhost:8080/user-service/oauth/check_token?token=" + accessToken, headers);
+        Map<String, Object> map = executePost(servicesConfig.getUser() + "/oauth/check_token?token=" + accessToken, headers);
         if (map == null || map.isEmpty() || map.get("error") != null) {
             throw new InvalidTokenException("Token not allowed");
         }

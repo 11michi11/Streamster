@@ -4,6 +4,24 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
+  rabbitmq:
+    addresses: amqps://usungdnh:${RABBIT_PASSWORD}@kangaroo.rmq.cloudamqp.com/usungdnh
+
+  servlet:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+
+security:
+  oauth2:
+    resource:
+      filter-order: 3
+      preferTokenInfo: true
+      token-info-uri: https://user-service-ayoqp7z2fq-lz.a.run.app/user-service/oauth/check_token
+    client:
+      client-id: my-trusted-client
+      client-secret: secret
+
 server:
   servlet:
     context-path: /video-service
@@ -13,3 +31,4 @@ services:
   user: https://user-service-ayoqp7z2fq-lz.a.run.app
   search: http://localhost:8091/search-service
   recommendation: http://localhost:8092/recommendation-service
+  video: https://video-service-ayoqp7z2fq-lz.a.run.app
