@@ -5,7 +5,7 @@ spring:
     mongodb:
       uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
   rabbitmq:
-    addresses: amqps://usungdnh:6FdsPqpoFGU8ACD0yJ_Mz_V8h-SNKOnA@kangaroo.rmq.cloudamqp.com/usungdnh
+    addresses: amqps://usungdnh:${RABBIT_PASSWORD}@kangaroo.rmq.cloudamqp.com/usungdnh
 
   servlet:
     multipart:

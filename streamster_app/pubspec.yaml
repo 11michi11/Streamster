@@ -32,9 +32,9 @@ dependencies:
   flutter_video_info: ^1.0.1
   http_parser: ^3.1.4
   chewie: ^0.9.7
+  video_player: ">=0.7.0 <0.11.0"
   flutter:
     sdk: flutter
-  video_player: ">=0.10.0 <2.0.0"
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -74,6 +74,7 @@ flutter:
     - images/book2.jpg
     - images/icon_person.png
     - images/person_grey_icon.png
+    - images/brnk_thumbnail.PNG
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

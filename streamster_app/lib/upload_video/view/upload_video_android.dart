@@ -33,7 +33,9 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   List<String> studyPrograms = new List();
 
   _UploadVideoAndroidState() {
-    //test data
+    /*
+    * TODO - test data delete
+    * */
     tags.add("programming");
     tags.add("java");
     tags.add("object oriented programming");
@@ -48,6 +50,9 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
     });
   }
 
+  /*
+  * TODO - add avatar to request
+  * */
   onSelectThumbnail() async {
     thumbnail = await ImagePickerCustom.pickImageAndroid();
     setState(() {

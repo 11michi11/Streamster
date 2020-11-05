@@ -44,7 +44,7 @@ class User {
 
   @override
   String toString() {
-    return 'User{id: $id, firstName: $firstName, lastName: $lastName, email: $email, systemRole: ${systemRole.name}, groupRoles: $groupRoles}';
+    return 'User{id: $id, firstName: $firstName, lastName: $lastName, email: $email, avatar: $avatar, systemRole: ${systemRole.name}, groupRoles: $groupRoles}';
   }
 }
 

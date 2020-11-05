@@ -1,23 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/common/app_config.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_bloc.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_event.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_state.dart';
 import 'package:streamster_app/my_videos/model/video_item.dart';
 import 'package:streamster_app/my_videos/repository/my_videos_repository.dart';
 import 'package:streamster_app/watch_video/view/video_page.dart';
+import 'dart:convert';
+import 'dart:typed_data';
+
+import '../../main.dart';
 
 class MyVideosAndroid extends StatefulWidget {
   final MyVideosState state;
 
   MyVideosAndroid(this.state);
-
   @override
   State<StatefulWidget> createState() => _MyVideosAndroidState();
 }
 
 class _MyVideosAndroidState extends State<MyVideosAndroid> {
-
+  MyVideosStatus _status;
   VideoItem videoItem;
   List<VideoItem> videos = new List();
 
@@ -25,6 +31,18 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
   void initState() {
     BlocProvider.of<MyVideosBloc>(context).add(GetAllVideos());
     super.initState();
+    _status = MyVideosStatus.inProgress;
+  }
+
+  Widget setThumbnail(encodedImage) {
+    Uint8List bytes = base64Decode(encodedImage);
+    return Image.memory(bytes);
+  }
+
+  Widget progressBar() {
+    return Center(
+      child: CircularProgressIndicator(),
+    );
   }
 
   @override
@@ -34,46 +52,82 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
         if (state.status == MyVideosStatus.success) {
           print(state.videos);
           setState(() {
-            videos = state.videos;
-            videoItem = state.videos.first;
+            if(state.videos.length > 0) {
+              videos = state.videos;
+              videoItem = state.videos.first;
+            } else {
+              Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text('You have no videos'),
+                backgroundColor: Colors.brown,
+              ));
+            }
           });
-        } else if(state.status == MyVideosStatus.inProgress) {
-          print('loading');
         }
+        setState(() {
+          _status = state.status;
+        });
       },
-      child: Column(
-        children: [
-          FlatButton(onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => VideoPage(videoItem.authorName,videoItem.description,videoItem.studyPrograms,
-                videoItem.tags, videoItem.language, 'https://apigateway-ayoqp7z2fq-lz.a.run.app/video-service/streaming/5f8469bf2dc3a978cd007c68'),
-              ),
-            );
-          },
-            child: Text('test'),),
-          Expanded(
-            child: ListView.builder(
+      child: _status == MyVideosStatus.inProgress
+          ? progressBar()
+          : ListView.builder(
               itemCount: videos.length,
               itemBuilder: (BuildContext context, int index) {
-                return Container(
-                  height: 150.0,
-                  child: Card(
-                    child: ListTile(
-                      title: Text(' ${videos[index].title}',
-                          style: TextStyle(
-                              fontSize: 20,
-                              fontFamily: 'BalooTammudu',
-                              color: Colors.brown))
-                    ),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => VideoPage(
+                          videoItem.title,
+                            null,
+                            videoItem.authorName,
+                            videoItem.description,
+                            videoItem.studyPrograms,
+                            videoItem.tags,
+                            videoItem.language,
+                            '${getIt.get<AppConfig>().apiUrl}/${videoItem.id}'),
+                      ),
+                    );
+                  },
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 230,
+                        width: MediaQuery.of(context).size.width,
+                        child: videos[index].thumbnail == null
+                            ? Image.asset('images/brnk_thumbnail.PNG')
+                            : setThumbnail(videos[index].thumbnail),
+                      ),
+                      SizedBox(height: 10),
+                      Row(
+                        children: [
+                          SizedBox(width: 10),
+                          /*
+                          * TODO - request user's avatar
+                          * */
+                          Avatar.defaultAvatar(45.0),
+                          SizedBox(width: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('${videos[index].title}',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      color: Colors.brown,
+                                      fontWeight: FontWeight.bold)),
+                              Text('${videos[index].authorName}',
+                                  style: TextStyle(
+                                      fontSize: 13, color: Colors.brown)),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                    ],
                   ),
                 );
               },
             ),
-          ),
-        ],
-      ),
     );
   }
 }

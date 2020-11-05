@@ -1,7 +1,8 @@
 package com.streamster.videoservice.controller;
 
-import com.streamster.videoservice.service.StreamingService;
-import org.springframework.core.io.support.ResourceRegion;
+import com.streamster.videoservice.service.FileService;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,21 +12,16 @@ import java.io.IOException;
 @RequestMapping("/streaming")
 public class StreamingController {
 
-    private final StreamingService streamingService;
+    private final FileService fileService;
 
-    public StreamingController(StreamingService streamingService) {
-        this.streamingService = streamingService;
+    public StreamingController(FileService fileService) {
+        this.fileService = fileService;
     }
-
 
     @GetMapping("/{videoId}")
-    public ResponseEntity<ResourceRegion> getVideoChunk(@PathVariable String videoId, @RequestHeader HttpHeaders headers) throws IOException {
-        var range = headers.getRange().stream().findFirst();
-        var region = streamingService.getVideoResourceRegion(videoId, range);
-        return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
-                .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                .body(region);
+    public ResponseEntity getVideoChunk(@PathVariable String videoId) throws IOException {
+        GridFsResource gridFsResource = fileService.findAsResource(videoId);
+        return ResponseEntity.ok().body(new InputStreamResource(gridFsResource.getInputStream()));
     }
-
 
 }

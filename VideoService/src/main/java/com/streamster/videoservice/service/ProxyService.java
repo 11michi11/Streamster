@@ -1,6 +1,9 @@
 package com.streamster.videoservice.service;
 
+import com.streamster.commons.amqp.Message;
+import com.streamster.commons.amqp.payload.NewVideo;
 import com.streamster.videoservice.ServicesConfig;
+import com.streamster.videoservice.amqp.MessageSender;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,34 +16,15 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Log4j2
 public class ProxyService {
 
-    private ServicesConfig servicesConfig;
+    private final MessageSender messageSender;
 
-    public ProxyService(ServicesConfig servicesConfig) {
-        this.servicesConfig = servicesConfig;
+    public ProxyService(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
 
 
-    public ClientResponse addVideoToUser(String videoID, String userID) {
-        var client = createAuthenticatedWebClient(servicesConfig.getUser());
-        return client
-                .put()
-                .uri("/users/" + userID + "/videos/" + videoID)
-                .exchange()
-                .block();
+    public void addVideoToUser(String videoID, String userID) {
+        var message = new Message<>(new NewVideo(videoID, userID));
+        messageSender.sendToUserService(message);
     }
-
-
-    private WebClient createAuthenticatedWebClient(String baseURL) {
-        OAuth2AuthenticationDetails auth = (OAuth2AuthenticationDetails) SecurityContextHolder.getContext().getAuthentication().getDetails();
-        var accessToken = auth.getTokenValue();
-
-        log.info(accessToken);
-        return WebClient
-                .builder()
-                .baseUrl(baseURL)
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
-                .build();
-    }
-
-
 }
