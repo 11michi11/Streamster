@@ -15,7 +15,16 @@ class RegisterButton extends StatelessWidget {
   final ImageCustom avatar;
   RegisterButton(this.state, this.context, this._firstNameController, this._lastNameController, this._emailController, this._passwordController, this.avatar);
 
-  onRegisterButtonPressed(avatar) {
+  RegisterButton(
+      this.state,
+      this.context,
+      this._firstNameController,
+      this._lastNameController,
+      this._emailController,
+      this._passwordController,
+      this.avatar);
+
+  onRegisterButtonPressed(ImageCustom avatar) {
     if (!isEmpty()) {
       if (avatar == null || validateImageSize(avatar.imageSize)) {
         if (validateEmail(_emailController.text)) {
