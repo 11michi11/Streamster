@@ -12,8 +12,8 @@ class UploadButton extends StatelessWidget {
   final UploadVideoState state;
   final BuildContext context;
   final TextEditingController _titleController;
-  final TextEditingController _tagsController;
-  final TextEditingController _studyProgramsController;
+  final List<String> tags;
+  final List<String> studyPrograms;
   final TextEditingController _descriptionController;
   final TextEditingController _languageController;
   final ImageCustom thumbnail;
@@ -23,8 +23,8 @@ class UploadButton extends StatelessWidget {
       this.state,
       this.context,
       this._titleController,
-      this._tagsController,
-      this._studyProgramsController,
+      this.tags,
+      this.studyPrograms,
       this._descriptionController,
       this._languageController,
       this.thumbnail,
@@ -45,8 +45,8 @@ class UploadButton extends StatelessWidget {
           if (state.status != UploadVideoStatus.uploading) {
             onUploadButtonPressed(
                 _titleController.text,
-                [_tagsController.text],
-                [_studyProgramsController.text],
+                tags,
+                studyPrograms,
                 _descriptionController.text,
                 _languageController.text);
           }
@@ -91,13 +91,13 @@ class UploadButton extends StatelessWidget {
         backgroundColor: Colors.red,
       ));
       return true;
-    } else if (_tagsController.text.isEmpty) {
+    } else if (tags == null || tags.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Tags are empty'),
         backgroundColor: Colors.red,
       ));
       return true;
-    } else if (_studyProgramsController.text.isEmpty) {
+    } else if (studyPrograms == null || studyPrograms.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Study programs are empty'),
         backgroundColor: Colors.red,
