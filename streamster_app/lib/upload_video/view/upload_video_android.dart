@@ -108,8 +108,8 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
                 selectThumbnailField(),
                 Container(
                     margin: EdgeInsets.only(top: 50, bottom: 50),
-                    child: UploadButton(widget.state, context, _titleController, _tagsController,
-                        _studyProgramsController, _descriptionController, _languageController,
+                    child: UploadButton(widget.state, context, _titleController, tags,
+                        studyPrograms, _descriptionController, _languageController,
                         thumbnail, video))
               ],
             );
