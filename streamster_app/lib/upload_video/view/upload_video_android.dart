@@ -23,25 +23,14 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   final _descriptionController = TextEditingController();
   final _tagsController = TextEditingController();
   final _fileNameController = TextEditingController();
-  final _studyProgramsController = TextEditingController();
-  final _languageController = TextEditingController();
   final _thumbnailController = TextEditingController();
 
   Video video;
   ImageCustom thumbnail;
   List<String> tags = new List();
   List<String> studyPrograms = new List();
-
-  _UploadVideoAndroidState() {
-    /*
-    * TODO - test data delete
-    * */
-    tags.add("programming");
-    tags.add("java");
-    tags.add("object oriented programming");
-    studyPrograms.add("software engineering");
-    studyPrograms.add("global business engineering");
-  }
+  String studyProgramsDropdownValue = 'GBE';
+  String languageDropdownValue = 'English';
 
   onSelectVideoFile() async {
     video = await VideoPicker.pickVideoAndroid();
@@ -50,9 +39,6 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
     });
   }
 
-  /*
-  * TODO - add avatar to request
-  * */
   onSelectThumbnail() async {
     thumbnail = await ImagePickerCustom.pickImageAndroid();
     setState(() {
@@ -103,13 +89,22 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
                 studyProgramField(),
                 scrollableViewList(studyPrograms),
                 descriptionField(),
+                Container(
+                  margin: EdgeInsets.only(top: 15),
+                  alignment: Alignment(-0.7,0),
+                  child: Text("Language",
+                      style: TextStyle(
+                          fontFamily: 'BalooTammudu',
+                          color: Colors.brown,
+                          fontSize: 20)),
+                ),
                 languageField(),
                 selectFileField(),
                 selectThumbnailField(),
                 Container(
                     margin: EdgeInsets.only(top: 50, bottom: 50),
-                    child: UploadButton(widget.state, context, _titleController, _tagsController,
-                        _studyProgramsController, _descriptionController, _languageController,
+                    child: UploadButton(widget.state, context, _titleController.text, tags,
+                        studyPrograms, _descriptionController.text, languageDropdownValue,
                         thumbnail, video))
               ],
             );
@@ -198,45 +193,30 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   }
 
   Widget studyProgramField() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.60,
-          height: 60,
-          child: TextField(
-              controller: _studyProgramsController,
-              style: TextStyle(fontFamily: 'BalooTammudu'),
-              decoration: InputDecoration(
-                  hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                  contentPadding: EdgeInsets.only(top: 10.0),
-                  hintText: 'enter study program')),
-        ),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-        ButtonTheme(
-          minWidth: 65,
-          height: 30,
-          child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              side: BorderSide(color: Colors.black54),
-            ),
-            color: Colors.white,
-            onPressed: () {
-              onAddItemClicked(_studyProgramsController, studyPrograms);
-              _studyProgramsController.text = '';
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text('add',
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: 'BalooTammudu',
-                      color: Colors.black54)),
-            ),
-          ),
-        )
-      ],
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      width: MediaQuery.of(context).size.width * 0.85,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: Colors.black26)
+      ),
+      child: DropdownButton<String>(
+        value: studyProgramsDropdownValue,
+        isExpanded: true,
+        onChanged: (String newValue) {
+          setState(() {
+            studyProgramsDropdownValue = newValue;
+            studyPrograms.insert(0,newValue);
+          });
+        },
+        items: <String>['GBE', 'Software engineering', 'Mechanical Engineering', 'Civil Engineering']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Center(child: Text(value)),
+          );
+        }).toList(),
+      ),
     );
   }
 
@@ -327,29 +307,29 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   }
 
   Widget languageField() {
-    return Row(
-      children: [
-        SizedBox(width: MediaQuery.of(context).size.width * 0.10),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.25,
-          child: Text("Language",
-              style: TextStyle(
-                  fontFamily: 'BalooTammudu',
-                  color: Colors.brown,
-                  fontSize: 20)),
-        ),
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.55,
-          height: 60,
-          child: TextField(
-              controller: _languageController,
-              style: TextStyle(fontFamily: 'BalooTammudu'),
-              decoration: InputDecoration(
-                  hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                  contentPadding: EdgeInsets.only(top: 10.0),
-                  hintText: "Enter language")),
-        ),
-      ],
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      width: MediaQuery.of(context).size.width * 0.85,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: Colors.black26)
+      ),
+      child: DropdownButton<String>(
+        value: languageDropdownValue,
+        isExpanded: true,
+        onChanged: (String newValue) {
+          setState(() {
+            languageDropdownValue = newValue;
+          });
+        },
+        items: <String>['English', 'Danish']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Center(child: Text(value)),
+          );
+        }).toList(),
+      ),
     );
   }
 

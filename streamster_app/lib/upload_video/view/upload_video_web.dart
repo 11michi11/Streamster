@@ -169,9 +169,9 @@ class _UploadVideoState extends State<UploadVideoWeb> {
                   ),
                 ],
               ),
-              UploadButton(widget.state, context, _titleController,
-                  _tagsController, _studyProgramsController, _descriptionController,
-                  _languageController, null, video)
+              UploadButton(widget.state, context, _titleController.text,
+                  null, null, _descriptionController.text,
+                  _languageController.text, null, video)
             ],
           ),
         ),

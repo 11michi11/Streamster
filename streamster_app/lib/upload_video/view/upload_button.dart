@@ -11,22 +11,22 @@ import '../upload_video.dart';
 class UploadButton extends StatelessWidget {
   final UploadVideoState state;
   final BuildContext context;
-  final TextEditingController _titleController;
-  final TextEditingController _tagsController;
-  final TextEditingController _studyProgramsController;
-  final TextEditingController _descriptionController;
-  final TextEditingController _languageController;
+  final String title;
+  final List<String> tags;
+  final List<String> studyPrograms;
+  final String description;
+  final String language;
   final ImageCustom thumbnail;
   final Video video;
 
   UploadButton(
       this.state,
       this.context,
-      this._titleController,
-      this._tagsController,
-      this._studyProgramsController,
-      this._descriptionController,
-      this._languageController,
+      this.title,
+      this.tags,
+      this.studyPrograms,
+      this.description,
+      this.language,
       this.thumbnail,
       this.video);
 
@@ -44,11 +44,11 @@ class UploadButton extends StatelessWidget {
         onPressed: () {
           if (state.status != UploadVideoStatus.uploading) {
             onUploadButtonPressed(
-                _titleController.text,
-                [_tagsController.text],
-                [_studyProgramsController.text],
-                _descriptionController.text,
-                _languageController.text);
+                title,
+                tags,
+                studyPrograms,
+                description,
+                language);
           }
         },
         child: Padding(
@@ -85,19 +85,19 @@ class UploadButton extends StatelessWidget {
   }
 
   bool isEmpty() {
-    if (_titleController.text.isEmpty) {
+    if (title.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Title is empty'),
         backgroundColor: Colors.red,
       ));
       return true;
-    } else if (_tagsController.text.isEmpty) {
+    } else if (tags.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Tags are empty'),
         backgroundColor: Colors.red,
       ));
       return true;
-    } else if (_studyProgramsController.text.isEmpty) {
+    } else if (studyPrograms.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Study programs are empty'),
         backgroundColor: Colors.red,
