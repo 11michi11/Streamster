@@ -1,4 +1,4 @@
-package com.streamster.videoservice.amqp;
+package com.streamster.userservice.amqp;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.context.annotation.Bean;
@@ -6,6 +6,12 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class QueueConfig {
+
+    private final MessageDispatcher dispatcher;
+
+    public QueueConfig(MessageDispatcher dispatcher) {
+        this.dispatcher = dispatcher;
+    }
 
     @Bean
     public Queue user() {
@@ -20,7 +26,7 @@ public class QueueConfig {
 
     @Bean
     public Receiver receiver() {
-        return new Receiver();
+        return new Receiver(dispatcher);
     }
 
     @Bean
