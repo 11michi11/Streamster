@@ -26,6 +26,7 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
   MyVideosStatus _status;
   VideoItem videoItem;
   List<VideoItem> videos = new List();
+  String encodedAvatar;
 
   @override
   void initState() {
@@ -55,6 +56,7 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
             if(state.videos.length > 0) {
               videos = state.videos;
               videoItem = state.videos.first;
+              encodedAvatar = state.user.avatar;
             } else {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text('You have no videos'),
@@ -102,10 +104,7 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
                       Row(
                         children: [
                           SizedBox(width: 10),
-                          /*
-                          * TODO - request user's avatar
-                          * */
-                          Avatar.defaultAvatar(45.0),
+                          Container(child: encodedAvatar == null ? Avatar.defaultAvatar(45.0) : Avatar.setAvatar(45.0, encodedAvatar) ),
                           SizedBox(width: 20),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
