@@ -81,7 +81,7 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
                       MaterialPageRoute(
                         builder: (context) => VideoPage(
                           videoItem.title,
-                            null,
+                            encodedAvatar,
                             videoItem.authorName,
                             videoItem.description,
                             videoItem.studyPrograms,
