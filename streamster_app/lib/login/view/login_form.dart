@@ -47,7 +47,7 @@ class _LoginFormState extends State<LoginForm> {
         content: Text('Bad credentials'),
         backgroundColor: Colors.red,
       ));
-      Navigator.of(context).pushReplacementNamed('/home');
+      //Navigator.of(context).pushReplacementNamed('/home');
     }
   }
 }
