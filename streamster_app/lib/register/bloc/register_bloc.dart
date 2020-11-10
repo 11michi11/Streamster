@@ -1,4 +1,3 @@
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:streamster_app/register/repository/register_repository.dart';
@@ -14,25 +13,24 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         _registerRepository = registerRepository,
         super(const RegisterState.init());
 
-
   @override
   Stream<RegisterState> mapEventToState(RegisterEvent event) async* {
-
     if (event is RegisterUser) {
       yield RegisterState.loading();
 
-       var response = await _registerRepository.register(
+      var response = await _registerRepository.register(
           firstName: event.firstName,
           lastName: event.lastName,
           email: event.email,
           password: event.password,
-         avatar: event.image
-       );
-       if(response == RegistrationStatus.success) {
-         yield RegisterState.success();
+          avatar: event.image);
+      if (response == RegistrationStatus.success) {
+        yield RegisterState.success();
+      } else if (response == RegistrationStatus.emailNotUnique) {
+        yield RegisterState.error("Inserted email is already used in the system.");
       } else {
-         yield RegisterState.error("error");
-       }
+        yield RegisterState.error("error");
+      }
     }
   }
 }

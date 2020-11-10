@@ -107,7 +107,7 @@ class App extends StatelessWidget {
         '/uploadVideo': (context) =>
             UploadVideoPage(uploadVideoRepository: uploadVideoRepository),
         '/myVideos': (context) =>
-            MyVideosPage(myVideosRepository: myVideosRepository),
+            MyVideosPage(myVideosRepository: myVideosRepository, userRepository: userRepository),
       },
       initialRoute: '/login',
     );

@@ -35,14 +35,7 @@ public class VideoService {
         // Store file to the GridFS
         String fileId = fileService.store(file, metadata);
         // Update user
-        ClientResponse clientResponse = proxyService.addVideoToUser(fileId, user.getId());
-        log.info("Response from user service");
-        log.info(clientResponse.rawStatusCode());
-        log.info(clientResponse.bodyToMono(String.class).block());
-        if (!clientResponse.statusCode().is2xxSuccessful()) {
-            // Call to UserService failed, delete file
-            fileService.delete(fileId);
-        }
+        proxyService.addVideoToUser(fileId, user.getId());
     }
 
     public void delete(String videoId) {
