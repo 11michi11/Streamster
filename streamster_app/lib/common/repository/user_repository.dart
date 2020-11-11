@@ -34,6 +34,22 @@ class UserRepository {
     return user;
   }
 
+  Future<User> getUserDetailsById(String id) async {
+    if (user == null) {
+      var response = await restClient.client.get('${RestClient.getUserUrl}/$id');
+
+      if (response.statusCode == 200) {
+        var body = json.decode(response.body);
+        user = mapUserFromBody(body);
+      } else {
+        // TODO handle error
+        print('getUserDetails: ${response.statusCode}');
+        return null;
+      }
+    }
+    return user;
+  }
+
   Future<List<User>> getAllUsers() async {
     if (users.isEmpty) {
       var response = await restClient.client.get(RestClient.getAllUserUrl);
