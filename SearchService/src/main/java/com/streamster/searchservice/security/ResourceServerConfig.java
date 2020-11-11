@@ -1,5 +1,6 @@
 package com.streamster.searchservice.security;
 
+import com.streamster.searchservice.ServicesConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +14,12 @@ import org.springframework.security.oauth2.provider.token.ResourceServerTokenSer
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
+
+    private ServicesConfig servicesConfig;
+
+    public ResourceServerConfig(ServicesConfig servicesConfig) {
+        this.servicesConfig = servicesConfig;
+    }
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -36,13 +43,15 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-        resources.authenticationManager(authenticationManagerBean())
+        resources
+                .stateless(false)
+                .authenticationManager(authenticationManagerBean())
                 .tokenExtractor(new CustomTokenExtractor());
     }
 
     @Bean
     public ResourceServerTokenServices tokenService() {
-        CustomRemoteTokenService tokenServices = new CustomRemoteTokenService();
+        CustomRemoteTokenService tokenServices = new CustomRemoteTokenService(servicesConfig);
         return tokenServices;
     }
 
