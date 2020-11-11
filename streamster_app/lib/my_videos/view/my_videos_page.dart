@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_bloc.dart';
 import 'package:streamster_app/my_videos/repository/my_videos_repository.dart';
 
@@ -7,9 +8,10 @@ import 'my_videos_form.dart';
 
 class MyVideosPage extends StatelessWidget {
   final MyVideosRepository myVideosRepository;
+  final UserRepository userRepository;
 
-  MyVideosPage({Key key, @required this.myVideosRepository})
-      : assert(myVideosRepository != null),
+  MyVideosPage({Key key, @required this.myVideosRepository, @required this.userRepository})
+      : assert(myVideosRepository != null, userRepository != null),
         super(key: key);
 
   @override
@@ -25,7 +27,7 @@ class MyVideosPage extends StatelessWidget {
         ),
         body: BlocProvider(
             create: (context) {
-              return MyVideosBloc(myVideosRepository: myVideosRepository);
+              return MyVideosBloc(myVideosRepository: myVideosRepository, userRepository: userRepository);
             },
             child: MyVideosForm()));
   }

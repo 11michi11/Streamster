@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.DefaultResponseErrorHandler;
 import org.springframework.web.client.RestOperations;
@@ -22,15 +23,13 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.util.Map;
 
-
 public class CustomRemoteTokenService implements ResourceServerTokenServices {
 
     private RestOperations restTemplate;
-    private ServicesConfig servicesConfig;
+    private final ServicesConfig servicesConfig;
     private AccessTokenConverter tokenConverter = new DefaultAccessTokenConverter();
 
     public CustomRemoteTokenService(ServicesConfig servicesConfig) {
-        this.servicesConfig = servicesConfig;
         restTemplate = new RestTemplate();
         ((RestTemplate) restTemplate).setErrorHandler(new DefaultResponseErrorHandler() {
             @Override
@@ -41,6 +40,7 @@ public class CustomRemoteTokenService implements ResourceServerTokenServices {
                 }
             }
         });
+        this.servicesConfig = servicesConfig;
     }
 
     @Override

@@ -1,14 +1,13 @@
 package com.streamster.searchservice.security;
 
-import java.util.Enumeration;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.security.oauth2.provider.authentication.TokenExtractor;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 public class CustomTokenExtractor implements TokenExtractor {
 
