@@ -12,6 +12,7 @@ import java.util.MissingFormatArgumentException;
 @Data
 @AllArgsConstructor
 public class VideoView {
+
     private String id;
     private String title;
     private String description;
@@ -24,8 +25,9 @@ public class VideoView {
 
     public static VideoView fromGridFSFile(GridFSFile file) {
         Document metaData = file.getMetadata();
-        if (metaData == null)
+        if (metaData == null) {
             throw new MissingFormatArgumentException("Metadata cannot be found for fileId: " + file.getId());
+        }
         return new VideoView(file.getId().asObjectId().getValue().toString(),
                 metaData.getString("title"),
                 metaData.getString("description"),
