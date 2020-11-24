@@ -1,8 +1,10 @@
 package com.streamster.userservice.service;
 
+import com.streamster.userservice.model.Preferences;
 import com.streamster.userservice.model.SystemRoleType;
 import com.streamster.userservice.model.User;
 import com.streamster.userservice.repository.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Component;
 
@@ -46,6 +48,19 @@ public class UserService {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with id: " + userId));
         user.addVideo(videoId);
+        userRepository.save(user);
+    }
+
+    @SneakyThrows
+    public void updateUserPreferences(Preferences preferences, String email, String userId) {
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
+
+        if (!user.getId().equals(userId)) {
+            throw new IllegalAccessException("You do not have access to this operation");
+        }
+
+        user.setPreferences(preferences);
         userRepository.save(user);
     }
 }

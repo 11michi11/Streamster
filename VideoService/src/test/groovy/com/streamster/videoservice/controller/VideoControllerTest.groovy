@@ -1,9 +1,11 @@
 package com.streamster.videoservice.controller
 
+import com.streamster.videoservice.ServicesConfig
 import com.streamster.videoservice.repository.UserRepository
 import com.streamster.videoservice.service.FileService
 import com.streamster.videoservice.service.ProxyService
 import com.streamster.videoservice.service.VideoService
+import org.spockframework.spring.SpringBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -41,6 +43,9 @@ class VideoControllerTest extends Specification {
 
     @Autowired
     WebApplicationContext context
+
+    @SpringBean
+    ServicesConfig servicesConfig = Mock()
 
     void setup() {
         mvc = webAppContextSetup(context).apply(springSecurity()).build()

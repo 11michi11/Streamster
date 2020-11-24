@@ -30,6 +30,7 @@ public class User {
     private String email;
     private String avatar;
     private List<String> videoIds = new ArrayList<>();
+    private Preferences preferences;
     private SystemRoleType systemRole;
     private List<GroupRole> groupRoles;
 

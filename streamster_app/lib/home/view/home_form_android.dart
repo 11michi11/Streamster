@@ -125,6 +125,44 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
                   Navigator.of(context).pushNamed('/myVideos');
                 },
               ),
+              ListTile(
+                title: Row(
+                  children: [
+                    Icon(Icons.camera_enhance_rounded, color: Colors.brown),
+                    SizedBox(width: 15),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Text('Search',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'BalooTammudu',
+                              color: Colors.brown)),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/search');
+                },
+              ),
+              ListTile(
+                title: Row(
+                  children: [
+                    Icon(Icons.camera_enhance_rounded, color: Colors.brown),
+                    SizedBox(width: 15),
+                    Padding(
+                      padding: EdgeInsets.only(top: 8),
+                      child: Text('Preferences',
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontFamily: 'BalooTammudu',
+                              color: Colors.brown)),
+                    ),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed('/preferences');
+                },
+              ),
               LogoutButton()
             ],
           ),

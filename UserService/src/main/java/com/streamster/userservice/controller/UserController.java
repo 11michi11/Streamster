@@ -1,5 +1,6 @@
 package com.streamster.userservice.controller;
 
+import com.streamster.userservice.model.Preferences;
 import com.streamster.userservice.model.SystemRoleType;
 import com.streamster.userservice.model.User;
 import com.streamster.userservice.model.dto.RegistrationDTO;
@@ -70,6 +71,13 @@ public class UserController {
         userService.addVideoToUser(userId, videoId);
         log.info("Added video to user");
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{userId}/preferences")
+    ResponseEntity<String> updateUserPreferences(@PathVariable String userId, @RequestBody Preferences preferences,
+                                                 Principal principal) {
+        userService.updateUserPreferences(preferences, principal.getName(), userId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
