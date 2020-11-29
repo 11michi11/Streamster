@@ -16,6 +16,10 @@ class PreferencesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: Text("Preferences") ,backgroundColor: Colors.brown,  leading: IconButton(
+        icon: Icon(Icons.arrow_back, color: Colors.white),
+        onPressed: () => Navigator.of(context).pop(),
+      ), ),
       body: BlocProvider(
         create: (context) {
           return PreferencesBloc(preferencesRepository: preferencesRepository);

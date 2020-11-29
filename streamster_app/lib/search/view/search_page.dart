@@ -27,7 +27,7 @@ class SearchPage extends StatelessWidget {
         create: (context) {
           return SearchBloc(searchRepository: searchRepository);
         },
-        child: Center(child: SearchForm()),
+        child: SearchForm(),
       ),
     );
   }

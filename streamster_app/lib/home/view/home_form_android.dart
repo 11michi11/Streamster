@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
 import 'package:streamster_app/logout/logout_view_android.dart';
+import 'package:streamster_app/search/search.dart';
 import 'package:streamster_app/watch_video/view/video_page.dart';
 
 class HomeFormAndroid extends StatefulWidget {
@@ -128,26 +129,7 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
               ListTile(
                 title: Row(
                   children: [
-                    Icon(Icons.camera_enhance_rounded, color: Colors.brown),
-                    SizedBox(width: 15),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8),
-                      child: Text('Search',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'BalooTammudu',
-                              color: Colors.brown)),
-                    ),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/search');
-                },
-              ),
-              ListTile(
-                title: Row(
-                  children: [
-                    Icon(Icons.camera_enhance_rounded, color: Colors.brown),
+                    Icon(Icons.room_preferences, color: Colors.brown),
                     SizedBox(width: 15),
                     Padding(
                       padding: EdgeInsets.only(top: 8),
@@ -171,7 +153,7 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
         body: Container(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: VideoPage("Video Title",null,"author","description",studyPrograms,studyPrograms,null,null),
+          child: SearchForm()
         ));
   }
 }

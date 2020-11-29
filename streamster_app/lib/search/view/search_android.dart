@@ -9,7 +9,6 @@ import 'package:streamster_app/common/service/rest_client.dart';
 import 'package:streamster_app/my_videos/model/video_item.dart';
 import 'package:streamster_app/watch_video/view/video_page.dart';
 
-import '../../main.dart';
 import '../search.dart';
 
 class SearchAndroid extends StatefulWidget {
@@ -57,7 +56,9 @@ class _SearchAndroidState extends State<SearchAndroid> {
       },
       child: Column(
         children: [
+          SizedBox(height: 20),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.60,
@@ -70,25 +71,24 @@ class _SearchAndroidState extends State<SearchAndroid> {
                         contentPadding: EdgeInsets.only(top: 10.0),
                         hintText: "Search")),
               ),
+              SizedBox(width: 20,),
               ButtonTheme(
-                // minWidth: 200,
-                // height: 60,
                 child: FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0),
                     side: BorderSide(color: Colors.brown),
                   ),
-                  color: Colors.brown,
+                  color: Colors.white,
                   onPressed: () {
                     onSearchTextChanged(_searchTermController.text);
                   },
                   child: Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Text('Submit',
+                    child: Text('submit',
                         style: TextStyle(
                             fontSize: 20,
                             fontFamily: 'BalooTammudu',
-                            color: Colors.white)),
+                            color: Colors.brown)),
                   ),
                 ),
               ),
