@@ -17,5 +17,7 @@ class PreferencesRepository {
     this.client = RestClient();
   }
 
-  updatePreferences() {}
+  updatePreferences() {
+
+  }
 }

@@ -47,6 +47,9 @@ class _SearchAndroidState extends State<SearchAndroid> {
                 content: Text('There are no videos matching search term'),
                 backgroundColor: Colors.brown,
               ));
+              for(var video in videos) {
+                videos.remove(video);
+              }
             }
           });
         }

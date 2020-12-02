@@ -6,3 +6,4 @@ export 'view/preferences_form.dart';
 export 'view/preferences_page.dart';
 export 'view/preferences_android.dart';
 export 'view/preferences_web.dart';
+export 'model/preferences.dart';
