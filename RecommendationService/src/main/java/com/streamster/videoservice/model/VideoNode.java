@@ -16,15 +16,11 @@ import java.util.Set;
 @NodeEntity(label = "Video")
 public class VideoNode {
     @Id
-    @GeneratedValue
-    private Long id;
+//    @GeneratedValue
+//    private Long id;
 //    @Id
     private String videoId;
     private String title;
     private String description;
     private int length;
-
-    @Relationship(type = "prefersAuthor")
-    public Set<VideoNode> preferredCreators;
-
 }

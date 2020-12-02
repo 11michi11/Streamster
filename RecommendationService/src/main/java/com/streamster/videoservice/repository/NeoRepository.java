@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Map;
 
-public interface VideoIdNeoRepository extends Neo4jRepository {
+public interface NeoRepository extends Neo4jRepository {
     @Query(value=RecommendationQuery.value)
     Iterable<RecommendedVideo> getRecommendedVideos(@Param("username") String username);
 }

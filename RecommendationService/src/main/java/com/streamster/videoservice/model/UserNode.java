@@ -1,12 +1,16 @@
 package com.streamster.videoservice.model;
 
+import com.streamster.videoservice.controller.WatchAction;
+import com.streamster.videoservice.model.dto.ActionDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Set;
 
 @Data
@@ -16,6 +20,8 @@ import java.util.Set;
 public class UserNode {
     @Id
     private String userId;
+
+    private String name;
 
     @Relationship(type = "prefersTag")
     public Set<TagNode> preferredTags;
@@ -27,17 +33,19 @@ public class UserNode {
     public LengthIntervalNode preferredLengthInterval;
 
     @Relationship(type = "WatchesVideo")
-    public Iterator<WatchAction> watch;
+    public Set<WatchAction> watch;
 
-}
+    public UserNode(String userId, String name) {
+        this.userId = userId;
+        this.name = name;
+        this.watch = new HashSet<>();
+    }
 
-@AllArgsConstructor
-@RelationshipEntity(type = "WatchesVideo")
-class WatchAction {
-    @StartNode
-    private UserNode user;
-    @EndNode
-    private VideoNode video;
-    private int priority;
-    private LocalDate time;
+    public void addWatch(WatchAction watchAction) {
+        this.watch.add(watchAction);
+    }
+
+    public static UserNode fromUser(User user) {
+        return new UserNode(user.getId(),user.getFirstName());
+    }
 }
