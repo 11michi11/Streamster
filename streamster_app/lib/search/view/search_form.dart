@@ -37,12 +37,6 @@ class _SearchFormState extends State<SearchForm> {
         content: Text('$state.error'),
         backgroundColor: Colors.red,
       ));
-    } else if (state.status == SearchStatus.success) {
-      Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('success'),
-        backgroundColor: Colors.green,
-      ));
-      // Navigator.of(context).pushNamed('/login');
-    }
+    } else if (state.status == SearchStatus.success) {}
   }
 }

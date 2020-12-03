@@ -120,7 +120,8 @@ class App extends StatelessWidget {
             RegisterPage(registerRepository: registerRepository),
         '/admin': (context) => AdminPage(
             adminRepository: adminRepository, userRepository: userRepository),
-        '/home': (context) => HomePage(userRepository: userRepository),
+        '/home': (context) => HomePage(
+            userRepository: userRepository, searchRepository: searchRepository),
         '/uploadVideo': (context) =>
             UploadVideoPage(uploadVideoRepository: uploadVideoRepository),
         '/myVideos': (context) => MyVideosPage(

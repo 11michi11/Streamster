@@ -37,7 +37,6 @@ class _SearchAndroidState extends State<SearchAndroid> {
     return BlocListener<SearchBloc, SearchState>(
       listener: (context, state) {
         if (state.status == SearchStatus.success) {
-          // print(state.videos);
           setState(() {
             if (state.videos.length > 0) {
               videos = state.videos;
@@ -99,62 +98,64 @@ class _SearchAndroidState extends State<SearchAndroid> {
           ),
           _status == SearchStatus.loading
               ? progressBar()
-              : ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: videos.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VideoPage(
-                                videoItem.title,
-                                null,
-                                videoItem.authorName,
-                                videoItem.description,
-                                videoItem.studyPrograms,
-                                videoItem.tags,
-                                videoItem.language,
-                                '${RestClient.videoUrl}/${videoItem.id}'),
-                          ),
-                        );
-                      },
-                      child: Column(
-                        children: [
-                          Container(
-                            height: 230,
-                            width: MediaQuery.of(context).size.width,
-                            child: videos[index].thumbnail == null
-                                ? Image.asset('images/brnk_thumbnail.PNG')
-                                : setThumbnail(videos[index].thumbnail),
-                          ),
-                          SizedBox(height: 10),
-                          Row(
-                            children: [
-                              // SizedBox(width: 10),
-                              // Container(child: encodedAvatar == null ? Avatar.defaultAvatar(45.0) : Avatar.setAvatar(45.0, encodedAvatar) ),
-                              // SizedBox(width: 20),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text('${videos[index].title}',
-                                      style: TextStyle(
-                                          fontSize: 17,
-                                          color: Colors.brown,
-                                          fontWeight: FontWeight.bold)),
-                                  Text('${videos[index].authorName}',
-                                      style: TextStyle(
-                                          fontSize: 13, color: Colors.brown)),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                        ],
-                      ),
-                    );
-                  },
+              : Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: videos.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VideoPage(
+                                  videoItem.title,
+                                  null,
+                                  videoItem.authorName,
+                                  videoItem.description,
+                                  videoItem.studyPrograms,
+                                  videoItem.tags,
+                                  videoItem.language,
+                                  '${RestClient.videoUrl}/${videoItem.id}'),
+                            ),
+                          );
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 230,
+                              width: MediaQuery.of(context).size.width,
+                              child: videos[index].thumbnail == null
+                                  ? Image.asset('images/brnk_thumbnail.PNG')
+                                  : setThumbnail(videos[index].thumbnail),
+                            ),
+                            SizedBox(height: 10),
+                            Row(
+                              children: [
+                                // SizedBox(width: 10),
+                                // Container(child: encodedAvatar == null ? Avatar.defaultAvatar(45.0) : Avatar.setAvatar(45.0, encodedAvatar) ),
+                                // SizedBox(width: 20),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${videos[index].title}',
+                                        style: TextStyle(
+                                            fontSize: 17,
+                                            color: Colors.brown,
+                                            fontWeight: FontWeight.bold)),
+                                    Text('${videos[index].authorName}',
+                                        style: TextStyle(
+                                            fontSize: 13, color: Colors.brown)),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
         ],
       ),
