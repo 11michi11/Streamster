@@ -1,19 +1,23 @@
 import 'dart:core';
-import 'package:streamster_app/preferences/model/lengthInterval.dart';
 
 class Preferences {
 
   List<String> tags;
   List<String> studyPrograms;
-  LengthInterval interval;
+  int minLength;
+  int maxLength;
 
-  Preferences(this.tags, this.studyPrograms, this.interval);
+  Preferences(this.tags, this.studyPrograms, this.minLength, this.maxLength);
 
-  Map toJson() =>
-      {
-        'tags' : tags,
-        'studyPrograms' : studyPrograms,
-        'intervalMin' : interval.min,
-        'intervalMax' : interval.max
+  Map toJson() => {
+        'tags': tags,
+        'studyPrograms': studyPrograms,
+        'minLength': minLength,
+        'maxLength': maxLength
       };
+
+  @override
+  String toString() {
+    return 'Preferences{tags: $tags, studyPrograms: $studyPrograms, minLength: $minLength, maxLength: $maxLength}';
+  }
 }

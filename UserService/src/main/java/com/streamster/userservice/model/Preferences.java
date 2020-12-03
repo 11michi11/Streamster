@@ -9,6 +9,7 @@ public class Preferences {
 
     private List<String> studyPrograms;
     private List<String> tags;
-    private Long lengthOfVideo;
+    private Long minLength;
+    private Long maxLength;
 
 }

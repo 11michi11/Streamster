@@ -63,4 +63,10 @@ public class UserService {
         user.setPreferences(preferences);
         userRepository.save(user);
     }
+
+    public Preferences getUserPreferences(String userId) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with id: " + userId));
+        return user.getPreferences();
+    }
 }

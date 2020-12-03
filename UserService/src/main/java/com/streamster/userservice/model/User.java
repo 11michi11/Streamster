@@ -56,6 +56,6 @@ public class User {
 
     public UserView toUserView() {
         return new UserView(this.id, this.firstName, this.lastName, this.email, this.avatar, this.systemRole,
-                this.groupRoles);
+                this.groupRoles, this.preferences);
     }
 }

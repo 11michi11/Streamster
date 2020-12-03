@@ -66,7 +66,9 @@ void main({String env}) async {
       ),
       BlocProvider<PreferencesBloc>(
         create: (context) {
-          return PreferencesBloc(preferencesRepository: preferencesRepository);
+          return PreferencesBloc(
+              preferencesRepository: preferencesRepository,
+              userRepository: userRepository);
         },
       ),
     ],
@@ -129,7 +131,8 @@ class App extends StatelessWidget {
             userRepository: userRepository),
         '/search': (context) => SearchPage(searchRepository: searchRepository),
         '/preferences': (context) => PreferencesPage(
-              preferencesRepository: preferencesRepository,
+          preferencesRepository: preferencesRepository,
+          userRepository: userRepository,
             )
       },
       initialRoute: '/login',

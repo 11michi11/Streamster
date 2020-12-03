@@ -73,7 +73,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping("/{userId}/preferences")
+    @PostMapping("/{userId}/preferences")
     ResponseEntity<String> updateUserPreferences(@PathVariable String userId, @RequestBody Preferences preferences,
                                                  Principal principal) {
         userService.updateUserPreferences(preferences, principal.getName(), userId);
