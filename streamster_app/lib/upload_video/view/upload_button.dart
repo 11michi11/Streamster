@@ -91,13 +91,13 @@ class UploadButton extends StatelessWidget {
         backgroundColor: Colors.red,
       ));
       return true;
-    } else if (tags.isEmpty) {
+    } else if (tags == null || tags.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Tags are empty'),
         backgroundColor: Colors.red,
       ));
       return true;
-    } else if (studyPrograms.isEmpty) {
+    } else if (studyPrograms == null || studyPrograms.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('Study programs are empty'),
         backgroundColor: Colors.red,

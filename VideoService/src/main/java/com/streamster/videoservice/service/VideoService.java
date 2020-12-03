@@ -6,7 +6,6 @@ import lombok.extern.log4j.Log4j2;
 import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.ClientResponse;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -34,7 +33,7 @@ public class VideoService {
         metadata.put("authorName", user.getFirstName()+ " " + user.getLastName());
         // Store file to the GridFS
         String fileId = fileService.store(file, metadata);
-        // Update user
+        // Update user service
         proxyService.addVideoToUser(fileId, user.getId());
     }
 

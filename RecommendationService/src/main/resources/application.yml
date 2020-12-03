@@ -4,6 +4,9 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
+  rabbitmq:
+    addresses: amqps://usungdnh:${RABBIT_PASSWORD}@kangaroo.rmq.cloudamqp.com/usungdnh
+
 security:
   oauth2:
     resource:
@@ -18,3 +21,9 @@ server:
   servlet:
     context-path: /recommendation-service
   port: 8092
+
+services:
+  user: http://localhost:8090/user-service
+  search: http://localhost:8091/search-service
+  recommendation: http://localhost:8092/recommendation-service
+  video: http://localhost:8093/video-service

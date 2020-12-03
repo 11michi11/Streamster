@@ -12,7 +12,7 @@ security:
     resource:
       filter-order: 3
       preferTokenInfo: true
-      token-info-uri: http://localhost:8080/user-service/oauth/check_token
+      token-info-uri: https://user-service-ayoqp7z2fq-lz.a.run.app/user-service/oauth/check_token
     client:
       client-id: my-trusted-client
       client-secret: secret
@@ -20,10 +20,10 @@ security:
 server:
   servlet:
     context-path: /search-service
-  port: 8091
+  port: 8080
 
 services:
-  user: http://localhost:8090/user-service
+  user: https://user-service-ayoqp7z2fq-lz.a.run.app/user-service
   search: http://localhost:8091/search-service
   recommendation: http://localhost:8092/recommendation-service
-  video: http://localhost:8093/video-service
+  video: https://video-service-ayoqp7z2fq-lz.a.run.app/video-service

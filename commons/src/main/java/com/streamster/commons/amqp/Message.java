@@ -1,13 +1,11 @@
 package com.streamster.commons.amqp;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.streamster.commons.amqp.payload.NewVideo;
 import com.streamster.commons.amqp.payload.Payload;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.ToString;
 
-import java.io.IOException;
 
 @NoArgsConstructor
 @ToString
@@ -35,16 +33,4 @@ public class Message<T extends Payload> {
         objectMapper.enableDefaultTyping();
         return objectMapper.writeValueAsString(this);
     }
-
-    public static void main(String[] args) throws IOException {
-        Message message = new Message<>(new NewVideo("fucking_fish", "user"));
-        String json = message.toJson();
-        System.out.println(json);
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.enableDefaultTyping();
-        Message message1 = objectMapper.readValue(json, Message.class);
-        System.out.println(message1);
-    }
-
 }

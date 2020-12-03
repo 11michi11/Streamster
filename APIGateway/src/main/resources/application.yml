@@ -16,23 +16,17 @@ spring:
             - Path=/video-service/**
           filters:
             - DedupeResponseHeader=Access-Control-Allow-Origin
-#        - id: search-service-route
-#          uri: lb://search-service
-#          predicates:
-#            - Path=/search-service/**
-#          filters:
-#            - DedupeResponseHeader=Access-Control-Allow-Origin
-#        - id: lists-service-route
-#          uri: lb://lists-service
-#          predicates:
-#            - Path=/lists-service/**
-#          filters:
-#            - DedupeResponseHeader=Access-Control-Allow-Origin
-#        - id: lists-service-route
-#          uri: lb://recommendation-service
-#          predicates:
-#            - Path=/recommendation-service/**
-#          filters:
-#            - DedupeResponseHeader=Access-Control-Allow-Origin
+        - id: search-service-route
+          uri: http://localhost:8091/search-service
+          predicates:
+            - Path=/search-service/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin
+        - id: recommendation-service-route
+          uri: http://localhost:8092/recommendation-service
+          predicates:
+            - Path=/recommendation-service/**
+          filters:
+            - DedupeResponseHeader=Access-Control-Allow-Origin
 server:
   port: 8080

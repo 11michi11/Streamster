@@ -4,19 +4,31 @@ package com.streamster.searchservice.model;
 import com.streamster.searchservice.model.dto.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
+
 
 @Document("users")
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
+@Validated
 public class User {
 
-    String email;
-    String name;
-    String password;
-
-    public static User fromUserInfo(UserInfo userInfo) {
-        return new User(userInfo.getEmail(), userInfo.getName(), userInfo.getPassword());
-    }
+    @Id
+    private String id;
+    private String firstName;
+    private String lastName;
+    private String password;
+    @Indexed(unique = true)
+    private String email;
+    private String avatar;
+    private SystemRoleType systemRole;
+    private List<GroupRole> groupRoles;
 
 }
