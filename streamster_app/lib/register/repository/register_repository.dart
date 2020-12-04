@@ -27,12 +27,9 @@ class RegisterRepository {
       String avatar}) async {
     var user = UserInfo(firstName, lastName, email, password, avatar);
 
-    print("Sending register request");
-    print(RestClient.registerUrl.toString());
     var response = await http.post(RestClient.registerUrl,
         headers: {'Content-Type': 'application/json'},
         body: convert.jsonEncode(user.toJson()));
-    print("Received register response");
     if (response.statusCode == 201) {
       return RegistrationStatus.success;
     } else if (response.statusCode == 400 &&

@@ -5,6 +5,7 @@ import 'package:get_it/get_it.dart';
 import 'package:streamster_app/home/view/home_page.dart';
 import 'package:streamster_app/login/repository/login_repository.dart';
 import 'package:streamster_app/register/repository/register_repository.dart';
+import 'package:streamster_app/search/repository/search_repository.dart';
 import 'package:streamster_app/upload_video/bloc/upload_video_bloc.dart';
 import 'package:streamster_app/upload_video/upload_video.dart';
 import 'admin/view/admin_page.dart';
@@ -13,8 +14,10 @@ import 'common/common.dart';
 import 'login/login.dart';
 import 'my_videos/repository/my_videos_repository.dart';
 import 'my_videos/view/my_videos_page.dart';
+import 'preferences/preferences.dart';
 import 'register/bloc/register_bloc.dart';
 import 'register/view/register_page.dart';
+import 'search/search.dart';
 
 // This is our global ServiceLocator
 GetIt getIt = GetIt.instance;
@@ -29,6 +32,8 @@ void main({String env}) async {
   final adminRepository = AdminRepository();
   final uploadVideoRepository = UploadVideoRepository();
   final myVideosRepository = MyVideosRepository();
+  final searchRepository = SearchRepository();
+  final preferencesRepository = PreferencesRepository();
 
   runApp(MultiBlocProvider(
     providers: [
@@ -53,7 +58,19 @@ void main({String env}) async {
         create: (context) {
           return UploadVideoBloc(uploadVideoRepository: uploadVideoRepository);
         },
-      )
+      ),
+      BlocProvider<SearchBloc>(
+        create: (context) {
+          return SearchBloc(searchRepository: searchRepository);
+        },
+      ),
+      BlocProvider<PreferencesBloc>(
+        create: (context) {
+          return PreferencesBloc(
+              preferencesRepository: preferencesRepository,
+              userRepository: userRepository);
+        },
+      ),
     ],
     child: App(
       userRepository: userRepository,
@@ -62,6 +79,8 @@ void main({String env}) async {
       adminRepository: adminRepository,
       uploadVideoRepository: uploadVideoRepository,
       myVideosRepository: myVideosRepository,
+      searchRepository: searchRepository,
+      preferencesRepository: preferencesRepository,
     ),
   ));
 }
@@ -73,16 +92,20 @@ class App extends StatelessWidget {
   final AdminRepository adminRepository;
   final UploadVideoRepository uploadVideoRepository;
   final MyVideosRepository myVideosRepository;
+  final SearchRepository searchRepository;
+  final PreferencesRepository preferencesRepository;
 
-  App(
-      {Key key,
-      @required this.userRepository,
-      @required this.loginRepository,
-      @required this.registerRepository,
-      @required this.adminRepository,
-      @required this.uploadVideoRepository,
-      @required this.myVideosRepository})
-      : super(key: key);
+  App({
+    Key key,
+    @required this.userRepository,
+    @required this.loginRepository,
+    @required this.registerRepository,
+    @required this.adminRepository,
+    @required this.uploadVideoRepository,
+    @required this.myVideosRepository,
+    @required this.searchRepository,
+    @required this.preferencesRepository,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -93,21 +116,24 @@ class App extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       routes: {
-        '/login': (context) =>
-            LoginPage(
-                loginRepository: loginRepository,
-                userRepository: userRepository),
+        '/login': (context) => LoginPage(
+            loginRepository: loginRepository, userRepository: userRepository),
         '/register': (context) =>
             RegisterPage(registerRepository: registerRepository),
-        '/admin': (context) =>
-            AdminPage(
-                adminRepository: adminRepository,
-                userRepository: userRepository),
-        '/home': (context) => HomePage(userRepository: userRepository),
+        '/admin': (context) => AdminPage(
+            adminRepository: adminRepository, userRepository: userRepository),
+        '/home': (context) => HomePage(
+            userRepository: userRepository, searchRepository: searchRepository),
         '/uploadVideo': (context) =>
             UploadVideoPage(uploadVideoRepository: uploadVideoRepository),
-        '/myVideos': (context) =>
-            MyVideosPage(myVideosRepository: myVideosRepository, userRepository: userRepository),
+        '/myVideos': (context) => MyVideosPage(
+            myVideosRepository: myVideosRepository,
+            userRepository: userRepository),
+        '/search': (context) => SearchPage(searchRepository: searchRepository),
+        '/preferences': (context) => PreferencesPage(
+          preferencesRepository: preferencesRepository,
+          userRepository: userRepository,
+            )
       },
       initialRoute: '/login',
     );
