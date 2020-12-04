@@ -29,6 +29,13 @@ public class RestResponseEntityExceptionHandler {
         return ex.getMessage();
     }
 
+    @ResponseBody
+    @ExceptionHandler(value = {IllegalAccessException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String illegalAccessExceptionHandler(IllegalAccessException ex) {
+        return ex.getMessage();
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody

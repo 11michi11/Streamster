@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:streamster_app/common/model/group_role.dart';
+import 'package:streamster_app/preferences/model/preferences.dart';
 
 import '../common.dart';
 
@@ -34,20 +35,22 @@ class UserRepository {
     return user;
   }
 
-  Future<User> getUserDetailsById(String id) async {
-    if (user == null) {
-      var response = await restClient.client.get('${RestClient.getUserUrl}/$id');
+  Future reloadUserDetails() async {
+    this.user = null;
+    getUserDetails();
+  }
 
-      if (response.statusCode == 200) {
-        var body = json.decode(response.body);
-        user = mapUserFromBody(body);
-      } else {
-        // TODO handle error
-        print('getUserDetails: ${response.statusCode}');
-        return null;
-      }
+  Future<User> getUserDetailsById(String id) async {
+    var response = await restClient.client.get('${RestClient.getUserUrl}/$id');
+
+    if (response.statusCode == 200) {
+      var body = json.decode(response.body);
+      return mapUserFromBody(body);
+    } else {
+      // TODO handle error
+      print('getUserDetails: ${response.statusCode}');
+      return null;
     }
-    return user;
   }
 
   Future<List<User>> getAllUsers() async {
@@ -77,8 +80,26 @@ class UserRepository {
         groups.add(new GroupRole(roles['groupId'], groupRole));
       }
        */
-    var user = User(body['id'], body['firstName'], body['lastName'],
-        body['email'], body['avatar'], systemRole, []);
+    var preferencesJson = body['preferences'];
+    var preferences;
+    if (preferencesJson != null) {
+      preferences = new Preferences(
+          List<String>.from(preferencesJson['tags']),
+          List<String>.from(preferencesJson['studyPrograms']),
+          preferencesJson['minLength'],
+          preferencesJson['maxLength']
+      );
+    }
+
+    var user = User(
+        body['id'],
+        body['firstName'],
+        body['lastName'],
+        body['email'],
+        body['avatar'],
+        systemRole,
+        [],
+        preferences);
     return user;
   }
 
