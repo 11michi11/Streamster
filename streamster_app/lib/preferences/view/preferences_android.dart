@@ -19,13 +19,13 @@ class PreferencesAndroid extends StatefulWidget {
 class _PreferencesAndroidState extends State<PreferencesAndroid> {
   final UserRepository userRepository;
   final _tagsController = TextEditingController();
-  final _studyProgramsController = TextEditingController();
 
   List<String> tags = new List();
   List<String> studyPrograms = new List();
 
   double _currentMinSliderValue = 0;
   double _currentMaxSliderValue = 0;
+  String studyProgramsDropdownValue;
 
   _PreferencesAndroidState(this.userRepository);
 
@@ -147,45 +147,33 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
   }
 
   Widget studyProgramField() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: MediaQuery.of(context).size.width * 0.60,
-          height: 60,
-          child: TextField(
-              controller: _studyProgramsController,
-              style: TextStyle(fontFamily: 'BalooTammudu'),
-              decoration: InputDecoration(
-                  hintStyle: TextStyle(fontFamily: 'BalooTammudu'),
-                  contentPadding: EdgeInsets.only(top: 10.0),
-                  hintText: 'enter study program')),
-        ),
-        SizedBox(width: MediaQuery.of(context).size.width * 0.05),
-        ButtonTheme(
-          minWidth: 65,
-          height: 30,
-          child: FlatButton(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-              side: BorderSide(color: Colors.black54),
-            ),
-            color: Colors.white,
-            onPressed: () {
-              onAddItemClicked(_studyProgramsController, studyPrograms);
-              _studyProgramsController.text = '';
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text('add',
-                  style: TextStyle(
-                      fontSize: 17,
-                      fontFamily: 'BalooTammudu',
-                      color: Colors.black54)),
-            ),
-          ),
-        )
-      ],
+    return Container(
+      margin: EdgeInsets.only(bottom: 10),
+      width: MediaQuery.of(context).size.width * 0.85,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20.0),
+          border: Border.all(color: Colors.black26)),
+      child: DropdownButton<String>(
+        value: studyProgramsDropdownValue,
+        isExpanded: true,
+        onChanged: (String newValue) {
+          setState(() {
+            studyProgramsDropdownValue = newValue;
+            studyPrograms.insert(0, newValue);
+          });
+        },
+        items: <String>[
+          'GBE',
+          'Software engineering',
+          'Mechanical Engineering',
+          'Civil Engineering'
+        ].map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Center(child: Text(value)),
+          );
+        }).toList(),
+      ),
     );
   }
 
