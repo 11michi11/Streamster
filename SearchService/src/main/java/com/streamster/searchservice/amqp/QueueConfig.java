@@ -8,15 +8,9 @@ import org.springframework.context.annotation.Configuration;
 public class QueueConfig {
 
     @Bean
-    public Queue user() {
-        return new Queue("user");
+    public Queue recommendation() {
+        return new Queue("recommendation");
     }
-
-    @Bean
-    public Queue video() {
-        return new Queue("video");
-    }
-
 
     @Bean
     public Receiver receiver() {

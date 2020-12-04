@@ -14,6 +14,10 @@ import lombok.NoArgsConstructor;
         property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = NewVideo.class, name = "NewVideo"),
+        @JsonSubTypes.Type(value = WatchAction.class, name = "WatchAction"),
+        @JsonSubTypes.Type(value = LikeAction.class, name = "LikeAction"),
+        @JsonSubTypes.Type(value = SearchAction.class, name = "SearchAction"),
+        @JsonSubTypes.Type(value = CreatedVideoAction.class, name = "CreatedVideoAction"),
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Data

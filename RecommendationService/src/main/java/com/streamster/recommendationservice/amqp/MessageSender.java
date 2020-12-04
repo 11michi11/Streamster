@@ -1,4 +1,4 @@
-package com.streamster.searchservice.amqp;
+package com.streamster.recommendationservice.amqp;
 
 import com.streamster.commons.amqp.Message;
 import org.springframework.amqp.core.Queue;
@@ -12,10 +12,10 @@ public class MessageSender {
     private RabbitTemplate template;
 
     @Autowired
-    private Queue recommendation;
+    private Queue user;
 
-    public void sendToRecommendationService(Message message) {
-        this.template.convertAndSend(recommendation.getName(), message.toJson());
+    public void sendToUserService(Message message) {
+        this.template.convertAndSend(user.getName(), message.toJson());
     }
 
 }

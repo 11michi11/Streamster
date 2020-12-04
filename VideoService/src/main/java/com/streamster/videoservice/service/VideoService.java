@@ -47,4 +47,12 @@ public class VideoService {
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
         return this.fileService.getByAuthor(currentUser.getId());
     }
+
+    public void addWatchAction(String email, String videoId) {
+        var currentUser = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
+        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
+        this.proxyService.addWatchedVideoAction(videoId,currentUser.getFirstName());
+    }
 }
