@@ -37,6 +37,7 @@ class Client:
             }
         }
 
+        # headers={'Content-Type': 'multipart/form-data'}
         response = requests.post(upload_video_url + user_email, file=data)
         print(response.status_code)
 
