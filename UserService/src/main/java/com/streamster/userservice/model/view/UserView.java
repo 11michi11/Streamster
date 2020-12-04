@@ -1,6 +1,7 @@
 package com.streamster.userservice.model.view;
 
 import com.streamster.userservice.model.GroupRole;
+import com.streamster.userservice.model.Preferences;
 import com.streamster.userservice.model.SystemRoleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,4 +18,5 @@ public class UserView {
     private String avatar;
     private SystemRoleType systemRole;
     private List<GroupRole> groupRoles;
+    private Preferences preferences;
 }

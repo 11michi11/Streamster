@@ -51,9 +51,9 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
     return BlocListener<MyVideosBloc, MyVideosState>(
       listener: (context, state) {
         if (state.status == MyVideosStatus.success) {
-          print(state.videos);
+          print(state.videos.length);
           setState(() {
-            if(state.videos.length > 0) {
+            if (state.videos.length > 0) {
               videos = state.videos;
               videoItem = state.videos.first;
               encodedAvatar = state.user.avatar;
@@ -80,14 +80,14 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => VideoPage(
-                          videoItem.title,
+                            videoItem.title,
                             encodedAvatar,
                             videoItem.authorName,
                             videoItem.description,
                             videoItem.studyPrograms,
                             videoItem.tags,
                             videoItem.language,
-                            '${getIt.get<AppConfig>().apiUrl}/${videoItem.id}'),
+                            '${RestClient.videoUrl}/${videoItem.id}'),
                       ),
                     );
                   },

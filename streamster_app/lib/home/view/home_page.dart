@@ -4,14 +4,17 @@ import 'package:streamster_app/common/repository/user_repository.dart';
 import 'package:streamster_app/home/bloc/home_bloc.dart';
 import 'package:streamster_app/home/bloc/home_state.dart';
 import 'package:streamster_app/logout/logout_bloc.dart';
+import 'package:streamster_app/search/repository/search_repository.dart';
 
 import 'home_form_android.dart';
 import 'home_form_web.dart';
 
 class HomePage extends StatelessWidget {
   final UserRepository userRepository;
+  final SearchRepository searchRepository;
 
-  const HomePage({Key key, this.userRepository}) : super(key: key);
+  const HomePage({Key key, this.userRepository, this.searchRepository})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,10 @@ class HomePage extends StatelessWidget {
             if (constraints.maxWidth > 1000) {
               return HomeFormWeb();
             } else {
-              return HomeFormAndroid(userRepository: userRepository);
+              return HomeFormAndroid(
+                userRepository: userRepository,
+                searchRepository: searchRepository,
+              );
             }
           });
         }),

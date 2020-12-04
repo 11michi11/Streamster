@@ -1,12 +1,11 @@
-
 import 'package:streamster_app/common/model/group_role.dart';
+import 'package:streamster_app/preferences/model/preferences.dart';
 
 enum SystemRole { admin, teacher, student }
 
 extension SystemRoleAsString on SystemRole {
-
   String get name {
-    switch(this) {
+    switch (this) {
       case SystemRole.admin:
         return 'admin';
       case SystemRole.teacher:
@@ -27,9 +26,10 @@ class User {
   final String avatar;
   final SystemRole systemRole;
   final List<GroupRole> groupRoles;
+  final Preferences preferences;
 
   User(this.id, this.firstName, this.lastName, this.email, this.avatar,
-      this.systemRole, this.groupRoles);
+      this.systemRole, this.groupRoles, this.preferences);
 
   Map<String, dynamic> get map {
     return {
@@ -37,14 +37,14 @@ class User {
       'firstName': firstName,
       'lastName': lastName,
       'email': email,
-      'systemRole':systemRole,
-      'groupRoles':groupRoles
+      'systemRole': systemRole,
+      'groupRoles': groupRoles,
+      'preferences': preferences
     };
   }
 
   @override
   String toString() {
-    return 'User{id: $id, firstName: $firstName, lastName: $lastName, email: $email, avatar: $avatar, systemRole: ${systemRole.name}, groupRoles: $groupRoles}';
+    return 'User{id: $id, firstName: $firstName, lastName: $lastName, email: $email, avatar: $avatar, systemRole: ${systemRole.name}, groupRoles: $groupRoles, preferences: $preferences}';
   }
 }
-

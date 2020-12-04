@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+    <configuration default="false" name="Run Streamster" type="CompoundRunConfigurationType">
+        <toRun name="VideoServiceApplication" type="SpringBootApplicationConfigurationType"/>
+        <toRun name="UserServiceApplication" type="SpringBootApplicationConfigurationType"/>
+        <toRun name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType"/>
+        <toRun name="RecommendationServiceApplication" type="SpringBootApplicationConfigurationType"/>
+        <toRun name="SearchServiceApplication" type="SpringBootApplicationConfigurationType"/>
+        <method v="2"/>
+    </configuration>
+</component>

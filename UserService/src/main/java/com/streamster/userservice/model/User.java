@@ -30,6 +30,7 @@ public class User {
     private String email;
     private String avatar;
     private List<String> videoIds = new ArrayList<>();
+    private Preferences preferences;
     private SystemRoleType systemRole;
     private List<GroupRole> groupRoles;
 
@@ -55,6 +56,6 @@ public class User {
 
     public UserView toUserView() {
         return new UserView(this.id, this.firstName, this.lastName, this.email, this.avatar, this.systemRole,
-                this.groupRoles);
+                this.groupRoles, this.preferences);
     }
 }

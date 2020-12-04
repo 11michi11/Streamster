@@ -33,7 +33,7 @@ public class VideoService {
         metadata.put("authorName", user.getFirstName()+ " " + user.getLastName());
         // Store file to the GridFS
         String fileId = fileService.store(file, metadata);
-        // Update user
+        // Update user service
         proxyService.addVideoToUser(fileId, user.getId());
     }
 
