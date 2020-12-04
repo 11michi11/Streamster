@@ -2,13 +2,13 @@ package com.streamster.userservice.model;
 
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class Preferences {
 
-    private List<String> studyPrograms;
-    private List<String> tags;
+    private Set<String> studyPrograms;
+    private Set<String> tags;
     private Long minLength;
     private Long maxLength;
 
