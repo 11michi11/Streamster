@@ -7,12 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class QueueConfig {
 
-    private final MessageDispatcher dispatcher;
-
-    public QueueConfig(MessageDispatcher dispatcher) {
-        this.dispatcher = dispatcher;
-    }
-
     @Bean
     public Queue user() {
         return new Queue("user");
@@ -23,10 +17,14 @@ public class QueueConfig {
         return new Queue("video");
     }
 
+    @Bean
+    public Queue recommendation() {
+        return new Queue("recommendation");
+    }
 
     @Bean
     public Receiver receiver() {
-        return new Receiver(dispatcher);
+        return new Receiver();
     }
 
     @Bean

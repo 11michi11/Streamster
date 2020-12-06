@@ -12,7 +12,11 @@ public class MessageSender {
     private RabbitTemplate template;
 
     @Autowired
-    private Queue user;
+    private Queue recommendation;
+
+    public void sendToRecommendationService(Message message) {
+        this.template.convertAndSend(recommendation.getName(), message.toJson());
+    }
 
 //    @Scheduled(fixedDelay = 1000, initialDelay = 500)
 //    public void send() {

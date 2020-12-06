@@ -13,9 +13,14 @@ public class MessageSender {
 
     @Autowired
     private Queue user;
+    @Autowired
+    private Queue recommendation;
 
     public void sendToUserService(Message message) {
         this.template.convertAndSend(user.getName(), message.toJson());
     }
 
+    public void sendToRecommendationService(Message message) {
+        this.template.convertAndSend(recommendation.getName(), message.toJson());
+    }
 }

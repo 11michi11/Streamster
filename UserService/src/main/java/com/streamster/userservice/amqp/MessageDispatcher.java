@@ -20,7 +20,7 @@ public class MessageDispatcher {
         switch (message.getAction()) {
             case NEW_VIDEO -> {
                 if (message.getPayload() instanceof NewVideo newVideo) {
-                    userService.addVideoToUser(newVideo.getUserId(), newVideo.getUserId());
+                    userService.addVideoToUser(newVideo.getUserId(), newVideo.getVideoId());
                 }
             }
             default -> log.error("Unhandled message type: " + message.getAction() + ", with payload: " + message.getPayload());

@@ -1,0 +1,31 @@
+package com.streamster.recommendationservice.model.actions;
+
+import com.streamster.recommendationservice.model.nodes.UserNode;
+import com.streamster.recommendationservice.model.nodes.VideoNode;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.neo4j.ogm.annotation.*;
+
+import java.time.LocalDate;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@RelationshipEntity(type = "DislikesVideo")
+public class DislikeAction {
+    @Id
+    @GeneratedValue
+    private Long id;
+    @StartNode
+    private UserNode user;
+    @EndNode
+    private VideoNode video;
+    @Property
+    private final int priority = -5;
+    @Property
+    private final String time = LocalDate.now().toString();
+
+    public DislikeAction(UserNode user, VideoNode video) {
+        this.user = user;
+        this.video = video;
+    }
+}

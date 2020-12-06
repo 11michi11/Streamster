@@ -12,10 +12,10 @@ public class MessageSender {
     private RabbitTemplate template;
 
     @Autowired
-    private Queue user;
+    private Queue recommendation;
 
-    public void sendToUserService(Message message) {
-        this.template.convertAndSend(user.getName(), message.toJson());
+    public void sendToRecommendationService(Message message) {
+        this.template.convertAndSend(recommendation.getName(), message.toJson());
     }
 
 }
