@@ -50,4 +50,16 @@ public class VideoController {
         this.videoService.delete(videoId);
         return new ResponseEntity<>("Video has been deleted", HttpStatus.OK);
     }
+
+    @PostMapping("/{videoId}/like")
+    public ResponseEntity<String> likeVideo(@PathVariable String videoId, Principal principal) {
+        videoService.likeVideo(videoId, principal.getName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{videoId}/dislike")
+    public ResponseEntity<String> dislikeVideo(@PathVariable String videoId, Principal principal) {
+        videoService.dislikeVideo(videoId, principal.getName());
+        return ResponseEntity.ok().build();
+    }
 }

@@ -7,6 +7,8 @@ import org.bson.Document;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,17 +26,18 @@ public class VideoService {
         this.proxyService = proxyService;
     }
 
-    public void uploadVideo(MultipartFile file, String userEmail, Document metadata) {
+    public String uploadVideo(MultipartFile file, String userEmail, Document metadata) {
         var user = userRepository
                 .findByEmail(userEmail)
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + userEmail));
 
         metadata.put("authorId", user.getId());
-        metadata.put("authorName", user.getFirstName()+ " " + user.getLastName());
+        metadata.put("authorName", user.getFirstName() + " " + user.getLastName());
         // Store file to the GridFS
         String fileId = fileService.store(file, metadata);
         // Update user service
         proxyService.addVideoToUser(fileId, user.getId());
+        return fileId;
     }
 
     public void delete(String videoId) {
@@ -46,5 +49,41 @@ public class VideoService {
                 .findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
         return this.fileService.getByAuthor(currentUser.getId());
+    }
+
+    public void likeVideo(String videoId, String userEmail) {
+        var user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + userEmail));
+
+        var metadata = fileService.find(videoId).getMetadata();
+        var likedBy = metadata.getList("likedBy", String.class, new ArrayList<>());
+        var dislikedBy = metadata.getList("dislikedBy", String.class, new ArrayList<>());
+
+        likedBy.add(user.getId());
+        dislikedBy.remove(user.getId());
+
+        // Remove duplicates
+        metadata.put("likedBy", new HashSet<>(likedBy));
+        metadata.put("dislikedBy", dislikedBy);
+
+        fileService.updateMetadata(videoId, metadata);
+    }
+
+    public void dislikeVideo(String videoId, String userEmail) {
+        var user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + userEmail));
+
+        var metadata = fileService.find(videoId).getMetadata();
+        var likedBy = metadata.getList("likedBy", String.class, new ArrayList<>());
+        var dislikedBy = metadata.getList("dislikedBy", String.class, new ArrayList<>());
+
+        dislikedBy.add(user.getId());
+        likedBy.remove(user.getId());
+
+        // Remove duplicates
+        metadata.put("dislikeBy", new HashSet<>(dislikedBy));
+        metadata.put("likeBy", likedBy);
+
+        fileService.updateMetadata(videoId, metadata);
     }
 }

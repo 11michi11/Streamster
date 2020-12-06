@@ -1,6 +1,7 @@
 package com.streamster.videoservice.controller
 
 import com.streamster.videoservice.ServicesConfig
+import com.streamster.videoservice.repository.FilesRepository
 import com.streamster.videoservice.repository.UserRepository
 import com.streamster.videoservice.service.FileService
 import com.streamster.videoservice.service.ProxyService
@@ -297,6 +298,11 @@ class VideoControllerTest extends Specification {
         @Bean
         UserRepository userRepository() {
             return detachedMockFactory.Stub(UserRepository)
+        }
+
+        @Bean
+        FilesRepository filesRepository() {
+            return detachedMockFactory.Stub(FilesRepository)
         }
     }
 }
