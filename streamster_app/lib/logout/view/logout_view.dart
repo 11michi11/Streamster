@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
-import 'package:streamster_app/logout/logout_event.dart';
-import 'package:streamster_app/logout/logout_state.dart';
-
-import 'logout_bloc.dart';
+import '../bloc/logout_bloc.dart';
+import '../bloc/logout_event.dart';
+import '../bloc/logout_state.dart';
 
 class Logout extends StatelessWidget {
   final UserRepository userRepository;

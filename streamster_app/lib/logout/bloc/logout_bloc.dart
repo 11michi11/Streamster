@@ -1,6 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/common/common.dart';
-
 import 'logout_event.dart';
 import 'logout_state.dart';
 

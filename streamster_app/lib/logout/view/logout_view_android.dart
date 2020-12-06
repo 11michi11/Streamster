@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:streamster_app/logout/logout_view.dart';
+import 'logout_view.dart';
 
 class LogoutButton extends Logout {
   @override
