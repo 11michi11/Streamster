@@ -1,7 +1,6 @@
 package com.streamster.searchservice.service;
 
 import com.mongodb.client.gridfs.GridFSFindIterable;
-import com.streamster.searchservice.model.RecommendedVideo;
 import com.streamster.searchservice.model.User;
 import com.streamster.searchservice.model.view.VideoView;
 import com.streamster.searchservice.repository.NeoRepository;
@@ -49,9 +48,9 @@ public class SearchService {
     }
 
     private List<String> getRecommendedVideoIds(String userId) {
-        Iterable<RecommendedVideo> recommendations = this.neoRepository.getRecommendedVideos(userId);
-        return StreamSupport.stream(recommendations.spliterator(), false)
-                .map(RecommendedVideo::getVideoId).collect(Collectors.toList());
+        var videos = this.neoRepository.getRecommendedVideos(userId);
+        return StreamSupport.stream(videos.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     private List<VideoView> findAll(List<String> videoIds) {
