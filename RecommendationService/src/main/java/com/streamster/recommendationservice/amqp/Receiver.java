@@ -6,16 +6,14 @@ import com.streamster.commons.amqp.Message;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Log4j2
 @RabbitListener(queues = "recommendation")
 public class Receiver {
 
-    private final MessageDispatcher dispatcher;
-
-    public Receiver(MessageDispatcher dispatcher) {
-        this.dispatcher = dispatcher;
-    }
+    @Autowired
+    private MessageDispatcher dispatcher;
 
     @RabbitHandler
     public void receive(String serializedMessage) {

@@ -1,6 +1,7 @@
 package com.streamster.recommendationservice.model.nodes;
 
 import com.streamster.recommendationservice.model.User;
+import com.streamster.recommendationservice.model.actions.DislikeAction;
 import com.streamster.recommendationservice.model.actions.LikeAction;
 import com.streamster.recommendationservice.model.actions.SearchAction;
 import com.streamster.recommendationservice.model.actions.WatchAction;
@@ -40,6 +41,9 @@ public class UserNode {
     @Relationship(type = "LikesVideo")
     public Set<LikeAction> likeActions;
 
+    @Relationship(type = "DislikesVideo")
+    public Set<DislikeAction> dislikeActions;
+
     @Relationship(type = "SearchesVideo")
     public Set<SearchAction> searchActions;
 
@@ -49,6 +53,7 @@ public class UserNode {
         this.videos = new HashSet<>();
         this.watchActions = new HashSet<>();
         this.likeActions = new HashSet<>();
+        this.dislikeActions = new HashSet<>();
         this.searchActions = new HashSet<>();
     }
 
@@ -58,6 +63,10 @@ public class UserNode {
 
     public void addLikeAction(LikeAction likeAction) {
         this.likeActions.add(likeAction);
+    }
+
+    public void addDislikeAction(DislikeAction dislikeAction) {
+        this.dislikeActions.add(dislikeAction);
     }
 
     public void addSearchAction(SearchAction searchAction) {

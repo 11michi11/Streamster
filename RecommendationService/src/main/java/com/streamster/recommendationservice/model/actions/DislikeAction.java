@@ -10,8 +10,8 @@ import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@RelationshipEntity(type = "LikesVideo")
-public class LikeAction {
+@RelationshipEntity(type = "DislikesVideo")
+public class DislikeAction {
     @Id
     @GeneratedValue
     private Long id;
@@ -20,11 +20,11 @@ public class LikeAction {
     @EndNode
     private VideoNode video;
     @Property
-    private final int priority = 1;
+    private final int priority = -5;
     @Property
     private final String time = LocalDate.now().toString();
 
-    public LikeAction(UserNode user, VideoNode video) {
+    public DislikeAction(UserNode user, VideoNode video) {
         this.user = user;
         this.video = video;
     }

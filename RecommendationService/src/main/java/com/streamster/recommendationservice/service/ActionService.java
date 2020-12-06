@@ -1,6 +1,8 @@
 package com.streamster.recommendationservice.service;
 
 import com.streamster.commons.amqp.payload.CreatedVideoAction;
+import com.streamster.commons.amqp.payload.PreferencesForRecommendations;
+import com.streamster.recommendationservice.model.actions.DislikeAction;
 import com.streamster.recommendationservice.model.actions.LikeAction;
 import com.streamster.recommendationservice.model.actions.SearchAction;
 import com.streamster.recommendationservice.model.actions.WatchAction;
@@ -8,7 +10,9 @@ import com.streamster.recommendationservice.model.nodes.*;
 import com.streamster.recommendationservice.repository.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -22,34 +26,20 @@ public class ActionService {
     private final SearchTermNeoRepository searchTermNeoRepository;
     private final TagNeoRepository tagNeoRepository;
     private final StudyProgramNeoRepository studyProgramNeoRepository;
+    private final LengthIntervalNeoRepository lengthIntervalNeoRepository;
 
     public ActionService(UserNeoRepository userNeoRepository, VideoNeoRepository videoNeoRepository,
                          SearchTermNeoRepository searchTermNeoRepository, TagNeoRepository tagNeoRepository,
-                         StudyProgramNeoRepository studyProgramNeoRepository) {
+                         StudyProgramNeoRepository studyProgramNeoRepository, LengthIntervalNeoRepository lengthIntervalNeoRepository) {
         this.userNeoRepository = userNeoRepository;
         this.videoNeoRepository = videoNeoRepository;
         this.searchTermNeoRepository = searchTermNeoRepository;
         this.tagNeoRepository = tagNeoRepository;
         this.studyProgramNeoRepository = studyProgramNeoRepository;
+        this.lengthIntervalNeoRepository = lengthIntervalNeoRepository;
     }
 
-//    public void addAction(ActionDTO action, String userEmail) {
-//        var user = this.userRepository.findByEmail(userEmail)
-//                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + userEmail));
-//        var neoUser = this.userNeoRepository.findByName(user.getFirstName());
-//        if (neoUser == null) {
-//            neoUser = UserNode.fromUser(user);
-//        }
-//        var neoVideo = this.videoNeoRepository.findByVideoId(action.getPayload());
-//        if (neoVideo == null) {
-//            throw new NoSuchElementException("Cannot be found video with id:" + action.getPayload());
-//        }
-//        if (action.getActionType() == ActionType.WATCH) {
-//            neoUser.addWatchAction(new WatchAction(neoUser, neoVideo));
-//        }
-//        this.neoRepository.save(neoUser);
-//    }
-
+    @Transactional
     public void addWatchAction(com.streamster.commons.amqp.payload.WatchAction watchAction) {
         var neoUser = getOrCreateUserNode(watchAction.getUserId(), watchAction.getUserId());
         var neoVideo = getVideoNode(watchAction.getVideoId());
@@ -57,6 +47,7 @@ public class ActionService {
         this.userNeoRepository.save(neoUser);
     }
 
+    @Transactional
     public void addLikeAction(com.streamster.commons.amqp.payload.LikeAction likeAction) {
         var neoUser = getOrCreateUserNode(likeAction.getUserId(), likeAction.getUserId());
         var neoVideo = getVideoNode(likeAction.getVideoId());
@@ -64,6 +55,7 @@ public class ActionService {
         this.userNeoRepository.save(neoUser);
     }
 
+    @Transactional
     public void addSearchAction(com.streamster.commons.amqp.payload.SearchAction searchAction) {
         var neoUser = getOrCreateUserNode(searchAction.getUserId(), searchAction.getUserId());
         var neoSearchTerm = getOrCreateSearchTermNode(searchAction.getSearchTerm());
@@ -71,6 +63,7 @@ public class ActionService {
         this.userNeoRepository.save(neoUser);
     }
 
+    @Transactional
     public void addCreatedVideoAction(CreatedVideoAction createdVideoAction) {
         var neoUser =
                 getOrCreateUserNode(createdVideoAction.getUserId(), createdVideoAction.getUserId());
@@ -84,6 +77,36 @@ public class ActionService {
         neoVideo.setStudyPrograms(neoStudyPrograms);
 
         neoUser.addCreatedVideo(neoVideo);
+        this.userNeoRepository.save(neoUser);
+    }
+
+    @Transactional
+    public void addDislikeAction(com.streamster.commons.amqp.payload.DislikeAction dislikeAction) {
+        var neoUser = getOrCreateUserNode(dislikeAction.getUserId(), dislikeAction.getUserId());
+        var neoVideo = getVideoNode(dislikeAction.getVideoId());
+        neoUser.addDislikeAction(new DislikeAction(neoUser, neoVideo));
+        this.userNeoRepository.save(neoUser);
+    }
+
+    @Transactional
+    public void updatePreferences(PreferencesForRecommendations preferences) {
+        var neoUser = getOrCreateUserNode(preferences.getUserId(),preferences.getUserId());
+        if(preferences.getTags().isEmpty()){
+            neoUser.setPreferredTags(new HashSet<>());
+        } else {
+            neoUser.setPreferredTags(getOrCreateTagNodes(preferences.getTags()));
+        }
+
+        if(preferences.getStudyPrograms().isEmpty()){
+            neoUser.setPreferredStudyPrograms(new HashSet<>());
+        } else {
+            neoUser.setPreferredStudyPrograms(getOrCreateStudyProgramNodes(preferences.getStudyPrograms()));
+        }
+
+        var neoInterval = getOrCreateLengthIntervalNode(preferences.getLengthFrom(),
+                preferences.getLengthTo());
+        neoUser.setPreferredLengthInterval(neoInterval);
+
         this.userNeoRepository.save(neoUser);
     }
 
@@ -131,5 +154,13 @@ public class ActionService {
             }
             return studyProgramNode;
         }).collect(Collectors.toSet());
+    }
+
+    private LengthIntervalNode getOrCreateLengthIntervalNode(int from, int to) {
+        var neoInterval = this.lengthIntervalNeoRepository.findByInterval(from,to);
+        if (neoInterval == null) {
+            neoInterval = new LengthIntervalNode(from,to);
+        }
+        return neoInterval;
     }
 }
