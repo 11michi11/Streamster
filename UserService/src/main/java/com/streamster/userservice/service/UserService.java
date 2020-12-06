@@ -14,9 +14,11 @@ import java.util.NoSuchElementException;
 public class UserService {
 
     final UserRepository userRepository;
+    final ProxyService proxyService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ProxyService proxyService) {
         this.userRepository = userRepository;
+        this.proxyService = proxyService;
     }
 
     public void register(User user) {
@@ -62,6 +64,9 @@ public class UserService {
 
         user.setPreferences(preferences);
         userRepository.save(user);
+        // TODO: change to userId instead of user.getFirstName()
+        proxyService.updatePreferencesForRecommendations(preferences.getTags(), preferences.getStudyPrograms(),
+                preferences.getMinLength(), preferences.getMaxLength(), user.getFirstName());
     }
 
     public Preferences getUserPreferences(String userId) {

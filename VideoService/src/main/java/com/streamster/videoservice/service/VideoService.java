@@ -37,6 +37,8 @@ public class VideoService {
         String fileId = fileService.store(file, metadata);
         // Update user service
         proxyService.addVideoToUser(fileId, user.getId());
+        // TODO: to change when dummy data is ready .. change to user.getId()
+        proxyService.addVideoToRecommendations(metadata, user.getFirstName());
         return fileId;
     }
 
@@ -49,6 +51,14 @@ public class VideoService {
                 .findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
         return this.fileService.getByAuthor(currentUser.getId());
+    }
+
+    public void addWatchAction(String email, String videoId) {
+        var currentUser = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
+        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
+        this.proxyService.addWatchedVideoAction(videoId,currentUser.getFirstName());
     }
 
     public void likeVideo(String videoId, String userEmail) {
