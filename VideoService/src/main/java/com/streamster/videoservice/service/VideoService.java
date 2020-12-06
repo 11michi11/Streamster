@@ -58,7 +58,7 @@ public class VideoService {
                 .findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
         // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
-        this.proxyService.addWatchedVideoAction(videoId,currentUser.getFirstName());
+        this.proxyService.addWatchedVideoAction(videoId, currentUser.getFirstName());
     }
 
     public void likeVideo(String videoId, String userEmail) {
@@ -77,6 +77,9 @@ public class VideoService {
         metadata.put("dislikedBy", dislikedBy);
 
         fileService.updateMetadata(videoId, metadata);
+
+        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
+        this.proxyService.addLikedVideoAction(videoId, user.getFirstName());
     }
 
     public void dislikeVideo(String videoId, String userEmail) {
@@ -95,5 +98,8 @@ public class VideoService {
         metadata.put("likeBy", likedBy);
 
         fileService.updateMetadata(videoId, metadata);
+
+        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
+        this.proxyService.addDislikedVideoAction(videoId, user.getFirstName());
     }
 }
