@@ -22,6 +22,9 @@ public class VideoView {
     private String language;
     private String authorId;
     private String authorName;
+    private Long length;
+    private List<String> likedBy;
+    private List<String> dislikedBy;
 
     public static VideoView fromGridFSFile(GridFSFile file) {
         Document metaData = file.getMetadata();
@@ -31,11 +34,15 @@ public class VideoView {
         return new VideoView(file.getId().asObjectId().getValue().toString(),
                 metaData.getString("title"),
                 metaData.getString("description"),
-                metaData.getList("tags", String.class, Collections.EMPTY_LIST),
-                metaData.getList("studyPrograms", String.class, Collections.EMPTY_LIST),
+                metaData.getList("tags", String.class, Collections.emptyList()),
+                metaData.getList("studyPrograms", String.class, Collections.emptyList()),
                 metaData.getString("thumbnail"),
                 metaData.getString("language"),
                 metaData.getString("authorId"),
-                metaData.getString("authorName"));
+                metaData.getString("authorName"),
+                metaData.getLong("length"),
+                metaData.getList("likedBy", String.class, Collections.emptyList()),
+                metaData.getList("dislikedBy", String.class, Collections.emptyList())
+        );
     }
 }
