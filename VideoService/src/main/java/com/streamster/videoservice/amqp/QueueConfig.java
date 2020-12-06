@@ -17,6 +17,10 @@ public class QueueConfig {
         return new Queue("video");
     }
 
+    @Bean
+    public Queue recommendation() {
+        return new Queue("recommendation");
+    }
 
     @Bean
     public Receiver receiver() {

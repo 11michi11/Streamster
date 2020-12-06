@@ -4,6 +4,8 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://streamster:${MONGO_PASSWORD}@streamster.mysoh.gcp.mongodb.net/streamster
+    neo4j:
+      uri: bolt://neo4j:${NEO_PASSWORD}@35.228.122.172:7687
   rabbitmq:
     addresses: amqps://usungdnh:${RABBIT_PASSWORD}@kangaroo.rmq.cloudamqp.com/usungdnh
 

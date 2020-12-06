@@ -45,6 +45,13 @@ public class VideoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/{videoId}/watch")
+    public ResponseEntity<String> addWatchAction(Principal principal,
+                                         @PathVariable String videoId) {
+        this.videoService.addWatchAction(principal.getName(),videoId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @GetMapping("/currentUser")
     public ResponseEntity<List<VideoView>> getVideosOfCurrentUser(Principal principal) {
         List<GridFSFile> userVideos = this.videoService.getVideosByUser(principal.getName());

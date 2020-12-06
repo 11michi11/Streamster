@@ -74,11 +74,9 @@ public class UserController {
     }
 
     @PostMapping("/{userId}/preferences")
-    ResponseEntity<String> updateUserPreferences(@PathVariable String userId, @RequestBody Preferences preferences,
+    ResponseEntity<String> updateUserPreferences(@PathVariable String userId, @Valid @RequestBody Preferences preferences,
                                                  Principal principal) {
         userService.updateUserPreferences(preferences, principal.getName(), userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-
 }
