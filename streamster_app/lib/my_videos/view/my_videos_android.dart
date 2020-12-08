@@ -1,18 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:streamster_app/common/app_config.dart';
 import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_bloc.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_event.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_state.dart';
 import 'package:streamster_app/my_videos/model/video_item.dart';
 import 'package:streamster_app/my_videos/repository/my_videos_repository.dart';
-import 'package:streamster_app/watch_video/view/video_page.dart';
+import 'package:streamster_app/watch_video/watch_video.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
-import '../../main.dart';
 
 class MyVideosAndroid extends StatefulWidget {
   final MyVideosState state;
@@ -87,7 +85,8 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
                             videoItem.studyPrograms,
                             videoItem.tags,
                             videoItem.language,
-                            '${RestClient.videoUrl}/${videoItem.id}'),
+                            '${RestClient.videoUrl}/${videoItem.id}',
+                            videoItem.id),
                       ),
                     );
                   },

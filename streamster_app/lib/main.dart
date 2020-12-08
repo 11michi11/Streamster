@@ -133,7 +133,7 @@ class App extends StatelessWidget {
         '/preferences': (context) => PreferencesPage(
           preferencesRepository: preferencesRepository,
           userRepository: userRepository,
-            )
+            ),
       },
       initialRoute: '/login',
     );

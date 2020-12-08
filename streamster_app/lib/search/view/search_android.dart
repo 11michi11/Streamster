@@ -4,10 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:streamster_app/common/app_config.dart';
 import 'package:streamster_app/common/service/rest_client.dart';
 import 'package:streamster_app/my_videos/model/video_item.dart';
-import 'package:streamster_app/watch_video/view/video_page.dart';
+import 'package:streamster_app/watch_video/watch_video.dart';
 
 import '../search.dart';
 
@@ -116,7 +115,8 @@ class _SearchAndroidState extends State<SearchAndroid> {
                                   videoItem.studyPrograms,
                                   videoItem.tags,
                                   videoItem.language,
-                                  '${RestClient.videoUrl}/${videoItem.id}'),
+                                  '${RestClient.videoUrl}/${videoItem.id}',
+                                  videoItem.id),
                             ),
                           );
                         },

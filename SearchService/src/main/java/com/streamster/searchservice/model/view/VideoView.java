@@ -20,7 +20,7 @@ public class VideoView {
     private String language;
     private String authorId;
     private String authorName;
-    private Long length;
+    private int length;
 
     public VideoView(GridFSFile file) {
         Document metaData = file.getMetadata();
@@ -36,6 +36,6 @@ public class VideoView {
         this.language = metaData.getString("language");
         this.authorId = metaData.getString("authorId");
         this.authorName = metaData.getString("authorName");
-        this.length = metaData.getLong("length");
+        this.length = metaData.getInteger("length");
     }
 }
