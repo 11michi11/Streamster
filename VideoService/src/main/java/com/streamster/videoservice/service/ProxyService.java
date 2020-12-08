@@ -39,9 +39,9 @@ public class ProxyService {
         messageSender.sendToRecommendationService(message);
     }
 
-    public void addVideoToRecommendations(Document metadata, String userId) {
+    public void addVideoToRecommendations(Document metadata, String userId, String fileId) {
         var message = new Message<>(new CreatedVideoAction(
-                metadata.getString("videoId"),
+                fileId,
                 metadata.getString("title"),
                 metadata.getString("description"),
                 new HashSet<>(metadata.getList("tags", String.class)),

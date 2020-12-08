@@ -38,7 +38,7 @@ public class VideoService {
         // Update user service
         proxyService.addVideoToUser(fileId, user.getId());
         // TODO: to change when dummy data is ready .. change to user.getId()
-        proxyService.addVideoToRecommendations(metadata, user.getFirstName());
+        proxyService.addVideoToRecommendations(metadata, user.getFirstName(), fileId);
         return fileId;
     }
 
