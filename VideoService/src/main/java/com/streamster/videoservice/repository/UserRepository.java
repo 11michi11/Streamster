@@ -1,7 +1,7 @@
 package com.streamster.videoservice.repository;
 
 
-import com.streamster.videoservice.model.User;
+import com.streamster.commons.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

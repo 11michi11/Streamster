@@ -1,7 +1,7 @@
 package com.streamster.searchservice.service;
 
 import com.mongodb.client.gridfs.GridFSFindIterable;
-import com.streamster.searchservice.model.User;
+import com.streamster.commons.model.User;
 import com.streamster.searchservice.model.view.VideoView;
 import com.streamster.searchservice.repository.NeoRepository;
 import com.streamster.searchservice.repository.UserRepository;

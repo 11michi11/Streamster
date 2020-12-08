@@ -28,7 +28,7 @@ public class VideoController {
         this.videoService = videoService;
     }
 
-    @PreAuthorize("hasAuthority(T(com.streamster.videoservice.model.SystemRoleType).TEACHER)")
+    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).TEACHER)")
     @PostMapping("/upload")
     public ResponseEntity<String> upload(Principal principal,
                                          @RequestParam("video") MultipartFile file,

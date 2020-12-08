@@ -1,7 +1,7 @@
 package com.streamster.searchservice.repository;
 
 
-import com.streamster.searchservice.model.User;
+import com.streamster.commons.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.Optional;

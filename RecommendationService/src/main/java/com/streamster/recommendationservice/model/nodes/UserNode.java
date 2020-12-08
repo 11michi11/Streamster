@@ -1,6 +1,6 @@
 package com.streamster.recommendationservice.model.nodes;
 
-import com.streamster.recommendationservice.model.User;
+import com.streamster.commons.model.User;
 import com.streamster.recommendationservice.model.actions.DislikeAction;
 import com.streamster.recommendationservice.model.actions.LikeAction;
 import com.streamster.recommendationservice.model.actions.SearchAction;

@@ -1,6 +1,6 @@
 package com.streamster.recommendationservice.security;
 
-import com.streamster.recommendationservice.model.User;
+import com.streamster.commons.model.User;
 import com.streamster.recommendationservice.repository.UserRepository;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;

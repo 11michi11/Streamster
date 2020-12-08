@@ -1,6 +1,6 @@
 package com.streamster.videoservice.security;
 
-import com.streamster.videoservice.model.User;
+import com.streamster.commons.model.User;
 import com.streamster.videoservice.repository.UserRepository;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
