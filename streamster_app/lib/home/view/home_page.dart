@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
 import 'package:streamster_app/home/bloc/home_bloc.dart';
 import 'package:streamster_app/home/bloc/home_state.dart';
-import 'file:///C:/Users/micha/Desktop/Streamster/streamster_app/lib/logout/bloc/logout_bloc.dart';
+import 'package:streamster_app/logout/bloc/logout_bloc.dart';
 import 'package:streamster_app/search/repository/search_repository.dart';
 
 import 'home_form_android.dart';

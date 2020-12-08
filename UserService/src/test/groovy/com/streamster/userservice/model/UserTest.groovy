@@ -1,7 +1,8 @@
 package com.streamster.userservice.model
 
+import com.streamster.commons.model.User
 import com.streamster.userservice.UserServiceApplication
-import com.streamster.userservice.model.dto.RegistrationDTO
+import com.streamster.commons.model.dto.RegistrationDTO
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
