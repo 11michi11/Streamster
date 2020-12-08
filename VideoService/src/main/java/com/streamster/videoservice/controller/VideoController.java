@@ -37,21 +37,6 @@ public class VideoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping("/testUpload/{email}")
-    public ResponseEntity<String> testUpload(@PathVariable String email,
-                                         @RequestParam("video") MultipartFile file,
-                                         @Valid @RequestPart VideoMetadataDTO metadata) {
-        this.videoService.uploadVideo(file, email, metadata.toDocument());
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PostMapping("/{videoId}/watch")
-    public ResponseEntity<String> addWatchAction(Principal principal,
-                                         @PathVariable String videoId) {
-        this.videoService.addWatchAction(principal.getName(),videoId);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
     @GetMapping("/currentUser")
     public ResponseEntity<List<VideoView>> getVideosOfCurrentUser(Principal principal) {
         List<GridFSFile> userVideos = this.videoService.getVideosByUser(principal.getName());
@@ -60,9 +45,15 @@ public class VideoController {
     }
 
     @DeleteMapping("/{videoId}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteVideo(@PathVariable String videoId) {
         this.videoService.delete(videoId);
         return new ResponseEntity<>("Video has been deleted", HttpStatus.OK);
+    }
+
+    @PostMapping("/{videoId}/watch")
+    public ResponseEntity<String> addWatchAction(Principal principal,
+                                                 @PathVariable String videoId) {
+        this.videoService.addWatchAction(principal.getName(), videoId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

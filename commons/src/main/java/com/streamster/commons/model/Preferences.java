@@ -1,4 +1,4 @@
-package com.streamster.userservice.model;
+package com.streamster.commons.model;
 
 import lombok.Data;
 

@@ -60,10 +60,10 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
-    public void addWatchAction(String email, String searchTerm) {
+    public void addSearchAction(String email, String searchTerm) {
         User currentUser = getUserByEmail(email);
         // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
-        this.proxyService.addSearchAction(searchTerm,currentUser.getFirstName());
+        this.proxyService.addSearchAction(searchTerm, currentUser.getFirstName());
     }
 
     private User getUserByEmail(String email) {

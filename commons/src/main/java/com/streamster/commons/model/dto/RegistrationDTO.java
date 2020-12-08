@@ -1,4 +1,4 @@
-package com.streamster.userservice.model.dto;
+package com.streamster.commons.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

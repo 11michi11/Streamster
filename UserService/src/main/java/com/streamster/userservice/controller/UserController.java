@@ -1,10 +1,10 @@
 package com.streamster.userservice.controller;
 
-import com.streamster.userservice.model.Preferences;
-import com.streamster.userservice.model.SystemRoleType;
-import com.streamster.userservice.model.User;
-import com.streamster.userservice.model.dto.RegistrationDTO;
-import com.streamster.userservice.model.view.UserView;
+import com.streamster.commons.model.Preferences;
+import com.streamster.commons.model.SystemRoleType;
+import com.streamster.commons.model.User;
+import com.streamster.commons.model.dto.RegistrationDTO;
+import com.streamster.commons.model.view.UserView;
 import com.streamster.userservice.repository.UserRepository;
 import com.streamster.userservice.service.UserService;
 import lombok.extern.log4j.Log4j2;

@@ -18,15 +18,4 @@ public class MessageSender {
         this.template.convertAndSend(recommendation.getName(), message.toJson());
     }
 
-//    @Scheduled(fixedDelay = 1000, initialDelay = 500)
-//    public void send() {
-//        Message message = new Message<>(Action.NEW_VIDEO, "Hello");
-//        this.template.convertAndSend(user.getName(), message.toJson());
-//        System.out.println(" [x] Sent '" + message.toJson() + "'");
-//    }
-
-//    public void sendToUserService(Message message) {
-//        this.template.convertAndSend(user.getName(), message.toJson());
-//    }
-
 }

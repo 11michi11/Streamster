@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+// TODO Is this class used anywhere?
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

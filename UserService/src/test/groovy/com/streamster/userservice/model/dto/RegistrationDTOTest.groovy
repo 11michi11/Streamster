@@ -1,6 +1,6 @@
 package com.streamster.userservice.model.dto
 
-
+import com.streamster.commons.model.dto.RegistrationDTO
 import spock.lang.Specification
 
 import javax.validation.ConstraintViolation
