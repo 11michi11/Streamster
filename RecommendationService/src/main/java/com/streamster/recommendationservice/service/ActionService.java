@@ -2,10 +2,7 @@ package com.streamster.recommendationservice.service;
 
 import com.streamster.commons.amqp.payload.CreatedVideoAction;
 import com.streamster.commons.amqp.payload.PreferencesForRecommendations;
-import com.streamster.recommendationservice.model.actions.DislikeAction;
-import com.streamster.recommendationservice.model.actions.LikeAction;
-import com.streamster.recommendationservice.model.actions.SearchAction;
-import com.streamster.recommendationservice.model.actions.WatchAction;
+import com.streamster.recommendationservice.model.actions.*;
 import com.streamster.recommendationservice.model.nodes.*;
 import com.streamster.recommendationservice.repository.*;
 import lombok.extern.log4j.Log4j2;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -91,21 +89,30 @@ public class ActionService {
     @Transactional
     public void updatePreferences(PreferencesForRecommendations preferences) {
         var neoUser = getOrCreateUserNode(preferences.getUserId(),preferences.getUserId());
-        if(preferences.getTags().isEmpty()){
-            neoUser.setPreferredTags(new HashSet<>());
+        if(!preferences.getTags().isEmpty()){
+            var neoTags = getOrCreateTagNodes(preferences.getTags());
+            Set<TagPreference> neoTagPreferences = neoTags.stream()
+                    .map(tag -> new TagPreference(neoUser,tag))
+                    .collect(Collectors.toSet());
+            neoUser.setPreferredTags(neoTagPreferences);
         } else {
-            neoUser.setPreferredTags(getOrCreateTagNodes(preferences.getTags()));
+            neoUser.setPreferredTags(new HashSet<>());
         }
 
-        if(preferences.getStudyPrograms().isEmpty()){
-            neoUser.setPreferredStudyPrograms(new HashSet<>());
+        if(!preferences.getStudyPrograms().isEmpty()){
+            var neoStudyPrograms = getOrCreateStudyProgramNodes(preferences.getStudyPrograms());
+            Set<StudyProgramPreference> neoStudyProgramPreferences =
+                    neoStudyPrograms.stream()
+                            .map(studyProgram -> new StudyProgramPreference(neoUser,studyProgram))
+                            .collect(Collectors.toSet());
+            neoUser.setPreferredStudyPrograms(neoStudyProgramPreferences);
         } else {
-            neoUser.setPreferredStudyPrograms(getOrCreateStudyProgramNodes(preferences.getStudyPrograms()));
+            neoUser.setPreferredStudyPrograms(new HashSet<>());
         }
 
         var neoInterval = getOrCreateLengthIntervalNode(preferences.getLengthFrom(),
                 preferences.getLengthTo());
-        neoUser.setPreferredLengthInterval(neoInterval);
+        neoUser.setPreferredLengthInterval(new LengthIntervalPreference(neoUser,neoInterval));
 
         this.userNeoRepository.save(neoUser);
     }
