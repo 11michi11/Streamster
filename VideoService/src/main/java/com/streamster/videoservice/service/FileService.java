@@ -1,6 +1,7 @@
 package com.streamster.videoservice.service;
 
 import com.mongodb.client.gridfs.model.GridFSFile;
+import com.streamster.videoservice.repository.FilesRepository;
 import lombok.SneakyThrows;
 import org.apache.tomcat.util.http.fileupload.FileUploadException;
 import org.bson.Document;
@@ -20,10 +21,12 @@ import java.util.NoSuchElementException;
 @Service
 public class FileService {
     private final GridFsTemplate gridFsTemplate;
+    private final FilesRepository filesRepository;
 
     @Autowired
-    public FileService(GridFsTemplate gridFsTemplate) {
+    public FileService(GridFsTemplate gridFsTemplate, FilesRepository filesRepository) {
         this.gridFsTemplate = gridFsTemplate;
+        this.filesRepository = filesRepository;
     }
 
     public GridFSFile find(String fileId) {
@@ -63,5 +66,15 @@ public class FileService {
 
     public void delete(String fileId) {
         gridFsTemplate.delete(new Query(Criteria.where("_id").is(fileId)));
+    }
+
+    public void updateMetadata(String videoId, Document metadata) {
+        filesRepository.findById(videoId)
+                .ifPresentOrElse(video -> {
+                    video.setMetadata(metadata);
+                    filesRepository.save(video);
+                }, () -> {
+                    throw new NoSuchElementException("There is no video with id: " + videoId);
+                });
     }
 }

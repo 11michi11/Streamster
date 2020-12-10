@@ -1,9 +1,7 @@
 package com.streamster.videoservice.service;
 
 import com.streamster.commons.amqp.Message;
-import com.streamster.commons.amqp.payload.CreatedVideoAction;
-import com.streamster.commons.amqp.payload.WatchAction;
-import com.streamster.commons.amqp.payload.NewVideo;
+import com.streamster.commons.amqp.payload.*;
 import com.streamster.videoservice.amqp.MessageSender;
 import lombok.extern.log4j.Log4j2;
 import org.bson.Document;
@@ -31,9 +29,19 @@ public class ProxyService {
         messageSender.sendToRecommendationService(message);
     }
 
-    public void addVideoToRecommendations(Document metadata, String userId) {
+    public void addLikedVideoAction(String videoID, String userID) {
+        var message = new Message<>(new LikeAction(videoID, userID));
+        messageSender.sendToRecommendationService(message);
+    }
+
+    public void addDislikedVideoAction(String videoID, String userID) {
+        var message = new Message<>(new DislikeAction(videoID, userID));
+        messageSender.sendToRecommendationService(message);
+    }
+
+    public void addVideoToRecommendations(Document metadata, String userId, String fileId) {
         var message = new Message<>(new CreatedVideoAction(
-                metadata.getString("videoId"),
+                fileId,
                 metadata.getString("title"),
                 metadata.getString("description"),
                 new HashSet<>(metadata.get("tags", new HashSet<String>().getClass())),

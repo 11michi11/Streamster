@@ -1,9 +1,12 @@
 package com.streamster.searchservice.service
 
+import org.spockframework.spring.StubBeans
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import spock.lang.Specification
+import com.streamster.searchservice.service.ProxyService
 
+@StubBeans(ProxyService)
 @SpringBootTest
 class SearchServiceTest extends Specification {
 
