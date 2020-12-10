@@ -1,6 +1,7 @@
 package com.streamster.userservice.model;
 
 import com.streamster.userservice.model.dto.RegistrationDTO;
+import com.streamster.userservice.model.dto.RegistrationWithPreferencesDTO;
 import com.streamster.userservice.model.view.UserView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -34,8 +35,13 @@ public class User {
     private SystemRoleType systemRole;
     private List<GroupRole> groupRoles;
 
-    public User(String firstName, String lastName, String password, String email, String avatar,
-                SystemRoleType systemRole, List<GroupRole> groupRoles) {
+    public User(String firstName,
+                String lastName,
+                String password,
+                String email,
+                String avatar,
+                SystemRoleType systemRole,
+                List<GroupRole> groupRoles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -45,6 +51,26 @@ public class User {
         this.groupRoles = groupRoles;
     }
 
+    public User(String firstName,
+                String lastName,
+                String password,
+                String email,
+                String avatar,
+                SystemRoleType systemRole,
+                List<GroupRole> groupRoles,
+                Preferences preferences,
+                SystemRoleType systemRoleType) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.avatar = avatar;
+        this.systemRole = systemRole;
+        this.groupRoles = groupRoles;
+        this.preferences = preferences;
+        this.systemRole = systemRoleType;
+    }
+
     public void addVideo(String videoID) {
         videoIds.add(videoID);
     }
@@ -52,6 +78,11 @@ public class User {
     public static User fromRegistrationDTO(RegistrationDTO dto) {
         return new User(dto.getFirstName(), dto.getLastName(), dto.getPassword(), dto.getEmail(), dto.getAvatar(),
                 SystemRoleType.STUDENT, Collections.emptyList());
+    }
+
+    public static User fromRegistrationDTO(RegistrationWithPreferencesDTO dto) {
+        return new User(dto.getFirstName(), dto.getLastName(), dto.getPassword(), dto.getEmail(), dto.getAvatar(),
+                SystemRoleType.STUDENT, Collections.emptyList(), dto.getPreferences(), dto.getSystemRole());
     }
 
     public UserView toUserView() {

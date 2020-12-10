@@ -4,6 +4,7 @@ import com.streamster.userservice.model.Preferences;
 import com.streamster.userservice.model.SystemRoleType;
 import com.streamster.userservice.model.User;
 import com.streamster.userservice.model.dto.RegistrationDTO;
+import com.streamster.userservice.model.dto.RegistrationWithPreferencesDTO;
 import com.streamster.userservice.model.view.UserView;
 import com.streamster.userservice.repository.UserRepository;
 import com.streamster.userservice.service.UserService;
@@ -54,6 +55,12 @@ public class UserController {
 
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody RegistrationDTO registrationDTO) {
+        userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
+        return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/registerWithPreferences")
+    ResponseEntity<String> register(@Valid @RequestBody RegistrationWithPreferencesDTO registrationDTO) {
         userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
         return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
     }

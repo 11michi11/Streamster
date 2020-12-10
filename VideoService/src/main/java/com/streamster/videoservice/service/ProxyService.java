@@ -36,9 +36,9 @@ public class ProxyService {
                 metadata.getString("videoId"),
                 metadata.getString("title"),
                 metadata.getString("description"),
-                new HashSet<>(metadata.getList("tags",String.class)),
-                new HashSet<>(metadata.getList("studyPrograms",String.class)),
-                metadata.getInteger("length"),
+                new HashSet<>(metadata.get("tags",new HashSet<String>().getClass())),
+                new HashSet<>(metadata.get("studyPrograms",new HashSet<String>().getClass())),
+                metadata.getLong("length"),
                 userId
         ));
         messageSender.sendToRecommendationService(message);
