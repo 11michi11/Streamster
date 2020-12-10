@@ -1,8 +1,8 @@
-package com.streamster.userservice.model;
+package com.streamster.commons.model;
 
-import com.streamster.userservice.model.dto.RegistrationDTO;
 import com.streamster.userservice.model.dto.RegistrationWithPreferencesDTO;
-import com.streamster.userservice.model.view.UserView;
+import com.streamster.commons.model.dto.RegistrationDTO;
+import com.streamster.commons.model.view.UserView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

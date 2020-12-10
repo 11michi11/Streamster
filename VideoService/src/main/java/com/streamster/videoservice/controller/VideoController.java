@@ -28,28 +28,13 @@ public class VideoController {
         this.videoService = videoService;
     }
 
-    @PreAuthorize("hasAuthority(T(com.streamster.videoservice.model.SystemRoleType).TEACHER)")
+    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).TEACHER)")
     @PostMapping("/upload")
     public ResponseEntity<String> upload(Principal principal,
                                          @RequestParam("video") MultipartFile file,
                                          @Valid @RequestPart VideoMetadataDTO metadata) {
         this.videoService.uploadVideo(file, principal.getName(), metadata.toDocument());
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PostMapping("/testUpload/{email}")
-    public ResponseEntity<String> testUpload(@PathVariable String email,
-                                         @RequestParam("video") MultipartFile file,
-                                         @Valid @RequestPart VideoMetadataDTO metadata) {
-        this.videoService.uploadVideo(file, email, metadata.toDocument());
-        return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PostMapping("/{videoId}/watch")
-    public ResponseEntity<String> addWatchAction(Principal principal,
-                                         @PathVariable String videoId) {
-        this.videoService.addWatchAction(principal.getName(),videoId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/currentUser")
@@ -60,9 +45,15 @@ public class VideoController {
     }
 
     @DeleteMapping("/{videoId}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteVideo(@PathVariable String videoId) {
         this.videoService.delete(videoId);
         return new ResponseEntity<>("Video has been deleted", HttpStatus.OK);
+    }
+
+    @PostMapping("/{videoId}/watch")
+    public ResponseEntity<String> addWatchAction(Principal principal,
+                                                 @PathVariable String videoId) {
+        this.videoService.addWatchAction(principal.getName(), videoId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,8 +1,8 @@
 package com.streamster.userservice.service;
 
-import com.streamster.userservice.model.Preferences;
-import com.streamster.userservice.model.SystemRoleType;
-import com.streamster.userservice.model.User;
+import com.streamster.commons.model.Preferences;
+import com.streamster.commons.model.SystemRoleType;
+import com.streamster.commons.model.User;
 import com.streamster.userservice.repository.UserRepository;
 import lombok.SneakyThrows;
 import org.springframework.dao.DuplicateKeyException;
@@ -67,11 +67,5 @@ public class UserService {
         // TODO: change to userId instead of user.getFirstName()
         proxyService.updatePreferencesForRecommendations(preferences.getTags(), preferences.getStudyPrograms(),
                 preferences.getMinLength(), preferences.getMaxLength(), user.getFirstName());
-    }
-
-    public Preferences getUserPreferences(String userId) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new NoSuchElementException("Cannot be found user with id: " + userId));
-        return user.getPreferences();
     }
 }

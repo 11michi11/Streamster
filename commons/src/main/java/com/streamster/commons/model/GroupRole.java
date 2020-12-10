@@ -1,4 +1,4 @@
-package com.streamster.videoservice.model;
+package com.streamster.commons.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

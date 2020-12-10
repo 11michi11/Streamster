@@ -1,8 +1,8 @@
-package com.streamster.userservice.model.view;
+package com.streamster.commons.model.view;
 
-import com.streamster.userservice.model.GroupRole;
-import com.streamster.userservice.model.Preferences;
-import com.streamster.userservice.model.SystemRoleType;
+import com.streamster.commons.model.GroupRole;
+import com.streamster.commons.model.Preferences;
+import com.streamster.commons.model.SystemRoleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
