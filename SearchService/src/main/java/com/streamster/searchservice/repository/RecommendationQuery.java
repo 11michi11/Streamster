@@ -137,7 +137,7 @@ public class RecommendationQuery {
                     +collect(videoFromSearch)
                     as videosFromSearch,sv
                 UNWIND videosFromSearch as videoFromSearch
-                WITH videoFromSearch,sv.priority as priorityFromSearch
+                WITH videoFromSearch,sv,sv.priority-duration.InMonths(date(sv.time),date()).months as priorityFromSearch
                 WHERE priorityFromSearch > 0
                 WITH videoFromSearch,Sum(priorityFromSearch) as priorityFromSearch
                 RETURN collect(DISTINCT {video:videoFromSearch,priority:priorityFromSearch}) as videosFromSearch
