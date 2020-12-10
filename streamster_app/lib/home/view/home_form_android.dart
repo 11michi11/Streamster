@@ -5,6 +5,7 @@ import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
 import 'package:streamster_app/logout/view/logout_view.dart';
 import 'package:streamster_app/search/search.dart';
+import 'package:streamster_app/watch_video/view/video_android.dart';
 
 class HomeFormAndroid extends StatefulWidget {
 
