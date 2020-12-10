@@ -2,6 +2,7 @@ from Client import Client
 from UserGenerator import UserGenerator
 from VideoGenerator import VideoGenerator
 from Video import Video
+import random
 
 system_role_teacher = 'TEACHER'
 system_role_student = 'STUDENT'
@@ -39,12 +40,16 @@ for metadata in generated_metadata_civil:
 print('GENERATED ' + str(len(videoList)) + ' VIDEOS')
 
 users = user_generator.generate_users(system_role_teacher)
-#
-# for user in users:
-# Client.createUser(users[0])
+
+for user in users:
+    Client.createUser(user)
 
 for video in videoList:
-    Client.uploadVideo(video, 'matej@email.com')
+    user = random.choice(users)
+    Client.uploadVideo(video, user.email[0])
+
+
+
 
 
 

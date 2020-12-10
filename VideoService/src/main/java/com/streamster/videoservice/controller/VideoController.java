@@ -37,6 +37,15 @@ public class VideoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).TEACHER)")
+    @PostMapping("/testUpload/{email}")
+    public ResponseEntity<String> upload(Principal principal,
+                                         @RequestParam("video") MultipartFile file,
+                                         @Valid @RequestPart VideoMetadataDTO metadata, @PathVariable String email) {
+        this.videoService.uploadVideo(file, email, metadata.toDocument());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @GetMapping("/currentUser")
     public ResponseEntity<List<VideoView>> getVideosOfCurrentUser(Principal principal) {
         List<GridFSFile> userVideos = this.videoService.getVideosByUser(principal.getName());
@@ -54,6 +63,13 @@ public class VideoController {
     public ResponseEntity<String> addWatchAction(Principal principal,
                                                  @PathVariable String videoId) {
         this.videoService.addWatchAction(principal.getName(), videoId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{videoId}/testWatch/{email}")
+    public ResponseEntity<String> addWatchAction(Principal principal,
+                                                 @PathVariable String videoId, @PathVariable String email) {
+        this.videoService.addWatchAction(email, videoId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
