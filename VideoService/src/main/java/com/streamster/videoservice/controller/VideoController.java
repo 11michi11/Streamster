@@ -37,6 +37,14 @@ public class VideoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    @PostMapping("/testUpload/{email}")
+    public ResponseEntity<String> upload(Principal principal,
+                                         @RequestParam("video") MultipartFile file,
+                                         @Valid @RequestPart VideoMetadataDTO metadata, @PathVariable String email) {
+        this.videoService.uploadVideo(file, email, metadata.toDocument());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
     @GetMapping("/currentUser")
     public ResponseEntity<List<VideoView>> getVideosOfCurrentUser(Principal principal) {
         List<GridFSFile> userVideos = this.videoService.getVideosByUser(principal.getName());
@@ -59,6 +67,18 @@ public class VideoController {
     @PostMapping("/{videoId}/dislike")
     public ResponseEntity<String> dislikeVideo(@PathVariable String videoId, Principal principal) {
         videoService.dislikeVideo(videoId, principal.getName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{videoId}/like/{email}")
+    public ResponseEntity<String> likeVideo(@PathVariable String videoId, Principal principal, @PathVariable String email) {
+        videoService.likeVideo(videoId, email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{videoId}/dislike/{email}")
+    public ResponseEntity<String> dislikeVideo(@PathVariable String videoId, Principal principal, @PathVariable String email) {
+        videoService.dislikeVideo(videoId, email);
         return ResponseEntity.ok().build();
     }
 
