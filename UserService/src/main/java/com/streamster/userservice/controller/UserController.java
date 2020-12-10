@@ -4,7 +4,7 @@ import com.streamster.commons.model.Preferences;
 import com.streamster.commons.model.SystemRoleType;
 import com.streamster.commons.model.User;
 import com.streamster.commons.model.dto.RegistrationDTO;
-import com.streamster.userservice.model.dto.RegistrationWithPreferencesDTO;
+import com.streamster.commons.model.dto.RegistrationWithPreferencesDTO;
 import com.streamster.commons.model.view.UserView;
 import com.streamster.userservice.repository.UserRepository;
 import com.streamster.userservice.service.UserService;

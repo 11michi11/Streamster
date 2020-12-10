@@ -1,7 +1,7 @@
-package com.streamster.userservice.model.dto;
+package com.streamster.commons.model.dto;
 
-import com.streamster.userservice.model.Preferences;
-import com.streamster.userservice.model.SystemRoleType;
+import com.streamster.commons.model.Preferences;
+import com.streamster.commons.model.SystemRoleType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

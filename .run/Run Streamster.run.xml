@@ -1,10 +1,10 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run Streamster" type="CompoundRunConfigurationType">
-    <toRun name="RecommendationServiceApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="VideoServiceApplication" type="SpringBootApplicationConfigurationType" />
-    <toRun name="UserServiceApplication (1)" type="SpringBootApplicationConfigurationType" />
-    <toRun name="ApiGatewayApplication (1)" type="SpringBootApplicationConfigurationType" />
-    <toRun name="SearchServiceApplication (1)" type="SpringBootApplicationConfigurationType" />
-    <method v="2" />
+    <toRun name="RecommendationServiceApplication" type="SpringBootApplicationConfigurationType"/>
+    <toRun name="ApiGatewayApplication" type="SpringBootApplicationConfigurationType"/>
+    <toRun name="UserServiceApplication" type="SpringBootApplicationConfigurationType"/>
+    <toRun name="SearchServiceApplication" type="SpringBootApplicationConfigurationType"/>
+    <toRun name="VideoServiceApplication" type="SpringBootApplicationConfigurationType"/>
+    <method v="2"/>
   </configuration>
 </component>

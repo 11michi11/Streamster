@@ -25,9 +25,6 @@ class UploadVideoRepository {
     request.files
         .add(http.MultipartFile.fromBytes('video', bytes, filename: filename,contentType: MediaType.parse("multipart/form-data")));
 
-//    metadata = new VideoMetadata("My new title", "This is a short description", ["Java","C#","Pascal"],
-//        ["GBE","ICT"], DummyThumbnail.getThumbnail(), "English", 150);
-
     request.files.add(http.MultipartFile.fromString("metadata", convert.jsonEncode(metadata.toJson()),contentType:MediaType.parse("application/json")));
 
     var result = await restClient.client.send(request);
