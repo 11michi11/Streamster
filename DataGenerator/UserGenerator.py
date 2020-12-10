@@ -62,7 +62,10 @@ class UserGenerator:
 
         for image in images:
             with open(image_path + image, "rb") as file:
-                encoded_string = base64.b64encode(file.read())
+                encoded_image = base64.b64encode(file.read())
+                encoded_string = str(encoded_image)
+                encoded_string = encoded_string[2:]
+                encoded_string = encoded_string[:-1]
                 encoded_images.append(encoded_string)
         return encoded_images
 

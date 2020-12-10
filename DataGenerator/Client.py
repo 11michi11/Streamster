@@ -7,6 +7,7 @@ from AuthHelper import AuthHelper
 base_url = 'http://localhost:8080/'
 create_user_url = base_url + 'user-service/users/registerWithPreferences'
 upload_video_url = base_url + 'video-service/videos/testUpload'
+watch_video_url = base_url + 'video-service/videos/'
 file_path = 'data.txt'
 video_path = '../videos/'
 auth_helper = AuthHelper(base_url)
@@ -21,7 +22,7 @@ class Client:
             'lastName': user.lastName[0],
             'email': user.email[0],
             'password': user.password[0],
-            'avatar': base64.b64encode(user.avatar[0]).decode(),
+            'avatar': user.avatar[0],
             'systemRole': user.systemRole[0],
             'preferences': {
                 'studyPrograms': user.preferences.studyProgram[0],
@@ -30,7 +31,6 @@ class Client:
                 'maxLength': user.preferences.maxLength,
             }
         }
-        print(data['preferences'])
 
         f = open(file_path, "a")
         f.write(str(data))
@@ -55,7 +55,7 @@ class Client:
             'description': video.metadata.description[0],
             'tags': video.metadata.tags[0],
             'studyPrograms': video.metadata.studyProgram[0],
-            'thumbnail': base64.b64encode(video.metadata.thumbnail).decode(),
+            'thumbnail': video.metadata.thumbnail,
             'language': video.metadata.language[0],
             'length': video.metadata.duration[0],
         }
@@ -78,3 +78,6 @@ class Client:
             print(response.json())
         else:
             print(f'successfully uploaded video {video.metadata.title} for user {user_email}')
+
+
+
