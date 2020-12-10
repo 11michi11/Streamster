@@ -19,11 +19,11 @@ public class CreatedVideoAction extends Payload {
     private String description;
     private Set<String> tags;
     private Set<String> studyPrograms;
-    private Long length;
+    private Integer length;
     private String userId;
 
     public CreatedVideoAction(String videoId, String title, String description, Set<String> tags,
-                              Set<String> studyPrograms, Long length, String userId) {
+                              Set<String> studyPrograms, Integer length, String userId) {
         super(Action.NEW_VIDEO);
         this.videoId = videoId;
         this.title = title;
