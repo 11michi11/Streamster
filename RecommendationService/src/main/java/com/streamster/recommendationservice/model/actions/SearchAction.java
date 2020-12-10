@@ -20,7 +20,7 @@ public class SearchAction {
     @EndNode
     private SearchTermNode searchTerm;
     @Property
-    private final int priority = 10;
+    private final int priority = 12;
     @Property
     private final String time = LocalDate.now().toString();
 
