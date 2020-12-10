@@ -7,6 +7,7 @@ public class RecommendationQuery {
             WITH user,collect(createdVideo.videoId) as createdVideoIds
             OPTIONAL MATCH (user)-[wv:WatchesVideo]->(watchedVideo:Video)
             WITH user,collect({watchedVideo:watchedVideo,wv:wv}) as watchedVideos, collect(watchedVideo.videoId)+createdVideoIds as videoIdsToExclude
+            WITH user,watchedVideos,CASE WHEN videoIdsToExclude = [] THEN [null] ELSE videoIdsToExclude END AS videoIdsToExclude\s
             UNWIND videoIdsToExclude as videoIdToExclude
             WITH user, watchedVideos, collect(DISTINCT videoIdToExclude) as videoIdsToExclude
                         
@@ -129,21 +130,17 @@ public class RecommendationQuery {
                     CASE node:Tag WHEN true THEN node ELSE null END AS tagFromSearch,
                     CASE node:StudyProgram WHEN true THEN node ELSE null END AS spFromSearch
             	
-                CALL {
-                	WITH videoFromSearch,tagFromSearch,spFromSearch,sv
-            		OPTIONAL MATCH (videoFromSearchSP:Video)-[:HasStudyProgram]->(spFromSearch)
-             		OPTIONAL MATCH (videoFromSearchTag:Video)-[:HasTag]->(tagFromSearch)
-                    WITH collect(DISTINCT videoFromSearchSP)
-                    	+collect(DISTINCT videoFromSearchTag)
-                        +collect(videoFromSearch)
-                        as videosFromSearch,sv
-                    UNWIND videosFromSearch as videoFromSearch
-            		WITH videoFromSearch,sv.priority as priorityFromSearch
-            		WHERE priorityFromSearch > 0
-            		WITH videoFromSearch,Sum(priorityFromSearch) as priorityFromSearch
-                	RETURN collect(DISTINCT {video:videoFromSearch,priority:priorityFromSearch}) as videosFromSearch
-            	}
-                RETURN videosFromSearch
+                OPTIONAL MATCH (videoFromSearchSP:Video)-[:HasStudyProgram]->(spFromSearch)
+                OPTIONAL MATCH (videoFromSearchTag:Video)-[:HasTag]->(tagFromSearch)
+                WITH collect(DISTINCT videoFromSearchSP)
+                    +collect(DISTINCT videoFromSearchTag)
+                    +collect(videoFromSearch)
+                    as videosFromSearch,sv
+                UNWIND videosFromSearch as videoFromSearch
+                WITH videoFromSearch,sv.priority as priorityFromSearch
+                WHERE priorityFromSearch > 0
+                WITH videoFromSearch,Sum(priorityFromSearch) as priorityFromSearch
+                RETURN collect(DISTINCT {video:videoFromSearch,priority:priorityFromSearch}) as videosFromSearch
             }
                         
             WITH videosFromStudyProgram

@@ -1,14 +1,12 @@
 package com.streamster.recommendationservice.model.nodes;
 
-import com.streamster.commons.model.User;
-import com.streamster.recommendationservice.model.actions.DislikeAction;
-import com.streamster.recommendationservice.model.actions.LikeAction;
-import com.streamster.recommendationservice.model.actions.SearchAction;
-import com.streamster.recommendationservice.model.actions.WatchAction;
+import com.streamster.recommendationservice.model.actions.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.neo4j.ogm.annotation.*;
+import org.neo4j.ogm.annotation.Id;
+import org.neo4j.ogm.annotation.NodeEntity;
+import org.neo4j.ogm.annotation.Relationship;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -27,13 +25,13 @@ public class UserNode {
     public Set<VideoNode> videos;
 
     @Relationship(type = "PrefersTag")
-    public Set<TagNode> preferredTags;
+    public Set<TagPreference> preferredTags;
 
     @Relationship(type = "PrefersStudyProgram")
-    public Set<StudyProgramNode> preferredStudyPrograms;
+    public Set<StudyProgramPreference> preferredStudyPrograms;
 
-    @Relationship(type = "PrefersLengthInterval")
-    public LengthIntervalNode preferredLengthInterval;
+    @Relationship(type = "PrefersLength")
+    public LengthIntervalPreference preferredLengthInterval;
 
     @Relationship(type = "WatchesVideo")
     public Set<WatchAction> watchActions;
@@ -79,9 +77,5 @@ public class UserNode {
         // TODO: to remove when dummy data is ready
         if(this.videos == null) this.videos = new HashSet<>();
         this.videos.add(videoNode);
-    }
-
-    public static UserNode fromUser(User user) {
-        return new UserNode(user.getId(),user.getFirstName());
     }
 }
