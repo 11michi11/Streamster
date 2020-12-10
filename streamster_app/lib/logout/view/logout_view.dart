@@ -17,22 +17,26 @@ class LogoutButtonWidget extends StatelessWidget {
         listener: (context, state) {
           handleState(state, context);
         },
-        child: ButtonTheme(
-          minWidth: 180,
-          height: 60,
-          child: ListTile(
-            title: Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: Text('Log out',
-                  style: TextStyle(
-                      fontSize: 15,
-                      fontFamily: 'BalooTammudu',
-                      color: Colors.brown)),
-            ),
-            onTap: () {
-              BlocProvider.of<LogoutBloc>(context).add(LogoutUser());
-            },
-          ),
+        child: BlocBuilder<LogoutBloc, LogoutState>(
+          builder: (context, state) {
+            return ButtonTheme(
+              minWidth: 180,
+              height: 60,
+              child: ListTile(
+                title: Padding(
+                  padding: EdgeInsets.only(top: 8),
+                  child: Text('Log out',
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontFamily: 'BalooTammudu',
+                          color: Colors.brown)),
+                ),
+                onTap: () {
+                  BlocProvider.of<LogoutBloc>(context).add(LogoutUser());
+                },
+              ),
+            );
+          },
         ),
       ),
     );

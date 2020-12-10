@@ -176,8 +176,10 @@ class VideoGenerator:
     def get_thumbnail():
         with open(image_path + 'thumbnail.jpg', "rb") as file:
             thumbnail = base64.b64encode(file.read())
-
-        return thumbnail
+            encoded_string = str(thumbnail)
+            encoded_string = encoded_string[2:]
+            encoded_string = encoded_string[:-1]
+        return encoded_string
 
     @staticmethod
     def generate_language():
