@@ -87,8 +87,8 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
                             videos[index].studyPrograms,
                             videos[index].tags,
                             videos[index].language,
-                            '${RestClient.videoUrl}/${videos[index].id}'
-                            videoItem.id),
+                            '${RestClient.videoUrl}/${videos[index].id}',
+                            videos[index].id),
                       ),
                     );
                   },
