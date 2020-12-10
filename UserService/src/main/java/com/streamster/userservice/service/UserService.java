@@ -21,9 +21,9 @@ public class UserService {
         this.proxyService = proxyService;
     }
 
-    public void register(User user) {
+    public User register(User user) {
         try {
-            this.userRepository.save(user);
+            return this.userRepository.save(user);
         } catch (DuplicateKeyException ex) {
             throw new DuplicateKeyException("Given email is already used in the system");
         }

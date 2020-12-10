@@ -25,6 +25,13 @@ public class SearchController {
         return ResponseEntity.ok(videos);
     }
 
+    @GetMapping("/testSearch/{email}")
+    public ResponseEntity<List<VideoView>> searchByTerm(Principal principal, @RequestParam("searchTerm") String searchTerm, @PathVariable String email) {
+        List<VideoView> videos = searchService.searchByTerm(searchTerm);
+        searchService.addSearchAction(email, searchTerm);
+        return ResponseEntity.ok(videos);
+    }
+
     @GetMapping("/recommendations")
     public ResponseEntity<List<VideoView>> getRecommendedVideoIds(Principal principal) {
         var recommendedVideos = this.searchService.getRecommendedVideos(principal.getName());

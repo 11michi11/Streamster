@@ -37,7 +37,6 @@ public class VideoController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).TEACHER)")
     @PostMapping("/testUpload/{email}")
     public ResponseEntity<String> upload(Principal principal,
                                          @RequestParam("video") MultipartFile file,
@@ -57,6 +56,30 @@ public class VideoController {
     public ResponseEntity<String> deleteVideo(@PathVariable String videoId) {
         this.videoService.delete(videoId);
         return new ResponseEntity<>("Video has been deleted", HttpStatus.OK);
+    }
+
+    @PostMapping("/{videoId}/like")
+    public ResponseEntity<String> likeVideo(@PathVariable String videoId, Principal principal) {
+        videoService.likeVideo(videoId, principal.getName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{videoId}/dislike")
+    public ResponseEntity<String> dislikeVideo(@PathVariable String videoId, Principal principal) {
+        videoService.dislikeVideo(videoId, principal.getName());
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{videoId}/like/{email}")
+    public ResponseEntity<String> likeVideo(@PathVariable String videoId, Principal principal, @PathVariable String email) {
+        videoService.likeVideo(videoId, email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{videoId}/dislike/{email}")
+    public ResponseEntity<String> dislikeVideo(@PathVariable String videoId, Principal principal, @PathVariable String email) {
+        videoService.dislikeVideo(videoId, email);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{videoId}/watch")

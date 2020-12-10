@@ -61,7 +61,8 @@ public class UserController {
 
     @PostMapping("/registerWithPreferences")
     ResponseEntity<String> register(@Valid @RequestBody RegistrationWithPreferencesDTO registrationDTO) {
-        userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
+        User user = userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
+        userService.updateUserPreferences(user.getPreferences(), user.getEmail(), user.getId());
         return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
     }
 

@@ -8,7 +8,7 @@ import 'package:streamster_app/my_videos/bloc/my_videos_event.dart';
 import 'package:streamster_app/my_videos/bloc/my_videos_state.dart';
 import 'package:streamster_app/my_videos/model/video_item.dart';
 import 'package:streamster_app/my_videos/repository/my_videos_repository.dart';
-import 'package:streamster_app/watch_video/view/video_page.dart';
+import 'package:streamster_app/watch_video/watch_video.dart';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -87,7 +87,8 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
                             videos[index].studyPrograms,
                             videos[index].tags,
                             videos[index].language,
-                            '${RestClient.videoUrl}/${videos[index].id}'),
+                            '${RestClient.videoUrl}/${videos[index].id}',
+                            videos[index].id),
                       ),
                     );
                   },

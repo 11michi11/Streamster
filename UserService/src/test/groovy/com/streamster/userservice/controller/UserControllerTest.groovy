@@ -2,6 +2,8 @@ package com.streamster.userservice.controller
 
 import com.streamster.userservice.repository.UserRepository
 import com.streamster.userservice.service.UserService
+import com.streamster.userservice.service.ProxyService
+import org.spockframework.spring.StubBeans
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -21,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
+@StubBeans(ProxyService)
 @WebMvcTest(controllers = [UserController])
 @WebAppConfiguration
 class UserControllerTest extends Specification {

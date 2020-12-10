@@ -1,11 +1,13 @@
 package com.streamster.videoservice.controller
 
 import com.streamster.videoservice.ServicesConfig
+import com.streamster.videoservice.repository.FilesRepository
 import com.streamster.videoservice.repository.UserRepository
 import com.streamster.videoservice.service.FileService
 import com.streamster.videoservice.service.ProxyService
 import com.streamster.videoservice.service.VideoService
 import org.spockframework.spring.SpringBean
+import org.spockframework.spring.StubBeans
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.context.TestConfiguration
@@ -25,6 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
+@StubBeans(ProxyService)
 @WebMvcTest(controllers = [VideoController])
 @WebAppConfiguration
 class VideoControllerTest extends Specification {
@@ -297,6 +300,11 @@ class VideoControllerTest extends Specification {
         @Bean
         UserRepository userRepository() {
             return detachedMockFactory.Stub(UserRepository)
+        }
+
+        @Bean
+        FilesRepository filesRepository() {
+            return detachedMockFactory.Stub(FilesRepository)
         }
     }
 }

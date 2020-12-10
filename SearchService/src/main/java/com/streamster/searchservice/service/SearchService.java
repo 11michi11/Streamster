@@ -36,7 +36,7 @@ public class SearchService {
         GridFSFindIterable files = gridFsTemplate.find(query);
 
         return StreamSupport.stream(files.spliterator(), false)
-                .map(VideoView::new)
+                .map(VideoView::fromGridFSFile)
                 .collect(Collectors.toList());
     }
 
@@ -56,7 +56,7 @@ public class SearchService {
     private List<VideoView> findAll(List<String> videoIds) {
         GridFSFindIterable files = gridFsTemplate.find(new Query(Criteria.where("_id").in(videoIds)));
         return StreamSupport.stream(files.spliterator(), false)
-                .map(VideoView::new)
+                .map(VideoView::fromGridFSFile)
                 .collect(Collectors.toList());
     }
 

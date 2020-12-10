@@ -20,6 +20,7 @@ class RestClient {
   static final uploadUrl = Uri.parse("$baseUrl/video-service/videos/upload");
   static final searchUrl = Uri.parse("$baseUrl/search-service/search");
   static final videoUrl = Uri.parse("$baseUrl/video-service/streaming");
+  static final feedbackLikeUrl = Uri.parse("$baseUrl/video-service/videos/");
 
   Client client;
 
