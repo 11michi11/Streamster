@@ -29,9 +29,6 @@ jib {
 			password = dockerPassword
 		}
 	}
-	container{
-		jvmFlags = ['-Dspring.profiles.active=prod', '--enable-preview']
-	}
 }
 repositories {
 	mavenCentral()

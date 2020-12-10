@@ -1,31 +1,27 @@
 package com.streamster.recommendationservice.model.actions;
 
+import com.streamster.recommendationservice.model.nodes.StudyProgramNode;
 import com.streamster.recommendationservice.model.nodes.UserNode;
-import com.streamster.recommendationservice.model.nodes.VideoNode;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.neo4j.ogm.annotation.*;
 
-import java.time.LocalDate;
-
 @NoArgsConstructor
 @AllArgsConstructor
-@RelationshipEntity(type = "WatchesVideo")
-public class WatchAction {
+@RelationshipEntity(type = "PrefersStudyProgram")
+public class StudyProgramPreference {
     @Id
     @GeneratedValue
     private Long id;
     @StartNode
     private UserNode user;
     @EndNode
-    private VideoNode video;
+    private StudyProgramNode studyProgram;
     @Property
-    private final int priority = 12;
-    @Property
-    private final String time = LocalDate.now().toString();
+    private final int priority = 25;
 
-    public WatchAction(UserNode user, VideoNode video) {
+    public StudyProgramPreference(UserNode user, StudyProgramNode studyProgram) {
         this.user = user;
-        this.video = video;
+        this.studyProgram = studyProgram;
     }
 }
