@@ -23,6 +23,7 @@ class UserRepository {
       var response = await restClient.client.get(RestClient.getUserUrl);
 
       if (response.statusCode == 200) {
+
         var body = json.decode(response.body);
 
         user = mapUserFromBody(body);

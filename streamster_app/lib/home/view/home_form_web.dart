@@ -36,9 +36,7 @@ class _HomeFormWebState extends State<HomeFormWeb> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Logout(
-        userRepository: userRepository,
-      ),
+      child: LogoutButtonWidget(),
     );
   }
 }

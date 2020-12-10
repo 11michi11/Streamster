@@ -68,7 +68,7 @@ public class ActionService {
         var neoUser =
                 getOrCreateUserNode(createdVideoAction.getUserId(), createdVideoAction.getUserId());
         var neoVideo = new VideoNode(createdVideoAction.getVideoId(), createdVideoAction.getTitle(),
-                createdVideoAction.getDescription(), createdVideoAction.getLength());
+                createdVideoAction.getDescription(), Math.toIntExact(createdVideoAction.getLength()));
 
         var neoTags = getOrCreateTagNodes(createdVideoAction.getTags());
         neoVideo.setTags(neoTags);

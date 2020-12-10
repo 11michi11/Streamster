@@ -55,7 +55,7 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
           setState(() {
             if (state.videos.length > 0) {
               videos = state.videos;
-              videoItem = state.videos.first;
+              //videoItem = state.videos.first;
               encodedAvatar = state.user.avatar;
             } else {
               Scaffold.of(context).showSnackBar(SnackBar(
@@ -80,14 +80,14 @@ class _MyVideosAndroidState extends State<MyVideosAndroid> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => VideoPage(
-                            videoItem.title,
+                            videos[index].title,
                             encodedAvatar,
-                            videoItem.authorName,
-                            videoItem.description,
-                            videoItem.studyPrograms,
-                            videoItem.tags,
-                            videoItem.language,
-                            '${RestClient.videoUrl}/${videoItem.id}'),
+                            videos[index].authorName,
+                            videos[index].description,
+                            videos[index].studyPrograms,
+                            videos[index].tags,
+                            videos[index].language,
+                            '${RestClient.videoUrl}/${videos[index].id}'),
                       ),
                     );
                   },

@@ -136,6 +136,7 @@ class RegisterButton extends StatelessWidget {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           color: Colors.brown,
           onPressed: () {
+
             if (state.status != RegistrationStatus.loading) {
               onRegisterButtonPressed(avatar);
             }

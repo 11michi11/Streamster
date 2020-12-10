@@ -10,7 +10,7 @@ images = [image_file for image_file in listdir(image_path) if isfile(join(image_
 
 class UserGenerator:
 
-    def generate_users(self):
+    def generate_users(self, system_role):
         print('--------------- GENERATING USERS -----------------')
 
         user_list = []
@@ -22,7 +22,7 @@ class UserGenerator:
             email = self.generate_email()
             password = self.generate_password()
             preferences = self.generate_preferences()
-            user = User(first_name, last_name, email, password, avatar, preferences)
+            user = User(first_name, last_name, email, password, avatar, system_role, preferences)
             user_list.append(user)
 
         print('GENERATED ' + str(len(user_list)) + ' USERS')
@@ -32,7 +32,8 @@ class UserGenerator:
         study_programs = []
         tags = []
         # generate preferred video length
-        video_length = self.generate_preferred_length()
+        video_min_length = self.generate_preferred_min_length()
+        video_max_length = self.generate_preferred_max_length()
 
         # generate preferred study programs
         random_size = random.randint(1, 3)
@@ -52,7 +53,7 @@ class UserGenerator:
             if preferred_tag not in tags:
                 tags.append(preferred_tag)
 
-        preferences = Preferences(study_programs, tags, video_length)
+        preferences = Preferences(study_programs, tags, video_min_length, video_max_length)
         return preferences
 
     @staticmethod
@@ -98,9 +99,9 @@ class UserGenerator:
 
     @staticmethod
     def generate_password():
-        passwords = ['Password!123', 'Password!321']
+        passwords = 'Password1234'
 
-        return random.choice(passwords)
+        return passwords
 
     @staticmethod
     def generate_preferred_study_program():
@@ -119,8 +120,13 @@ class UserGenerator:
         return random.choice(tags)
 
     @staticmethod
-    def generate_preferred_length():
-        random_length = random.randint(60, 7200)
+    def generate_preferred_max_length():
+        random_length = random.randint(300, 7200)
+        return random_length
+
+    @staticmethod
+    def generate_preferred_min_length():
+        random_length = random.randint(60, 240)
         return random_length
 
 

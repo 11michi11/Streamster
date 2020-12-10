@@ -1,51 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:streamster_app/common/repository/user_repository.dart';
 import '../bloc/logout_bloc.dart';
 import '../bloc/logout_event.dart';
 import '../bloc/logout_state.dart';
 
-class Logout extends StatelessWidget {
-  final UserRepository userRepository;
-
-  Logout({Key key, @required this.userRepository}) : super(key: key);
+class LogoutButtonWidget extends StatelessWidget {
+  LogoutButtonWidget();
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LogoutBloc, LogoutState>(
-      listener: (context, state) {
-        handleState(state, context);
+    return BlocProvider<LogoutBloc>(
+      create: (context) {
+        return LogoutBloc();
       },
-      child: logoutButton(context),
-    );
-  }
-
-  Widget logoutButton(BuildContext context) {
-    return ButtonTheme(
-      minWidth: 180,
-      height: 60,
-      child: FlatButton(
-        shape: RoundedRectangleBorder(
-            side: BorderSide(color: Colors.brown),
-            borderRadius: BorderRadius.circular(18.0)),
-        color: Colors.white,
-        onPressed: () {
-          onLogoutButtonPressed(context);
+      child: BlocListener<LogoutBloc, LogoutState>(
+        listener: (context, state) {
+          handleState(state, context);
         },
-        child: Padding(
-          padding: const EdgeInsets.only(top: 9.0),
-          child: Text('Logout',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontFamily: 'BalooTammudu',
-                  color: Colors.brown)),
+        child: ButtonTheme(
+          minWidth: 180,
+          height: 60,
+          child: ListTile(
+            title: Padding(
+              padding: EdgeInsets.only(top: 8),
+              child: Text('Log out',
+                  style: TextStyle(
+                      fontSize: 15,
+                      fontFamily: 'BalooTammudu',
+                      color: Colors.brown)),
+            ),
+            onTap: () {
+              BlocProvider.of<LogoutBloc>(context).add(LogoutUser());
+            },
+          ),
         ),
       ),
     );
-  }
-
-  void onLogoutButtonPressed(BuildContext context) {
-    BlocProvider.of<LogoutBloc>(context).add(LogoutUser());
   }
 
   void handleState(LogoutState state, BuildContext context) {
