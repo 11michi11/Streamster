@@ -44,8 +44,8 @@ public class ProxyService {
                 fileId,
                 metadata.getString("title"),
                 metadata.getString("description"),
-                new HashSet<>(metadata.getList("tags", String.class)),
-                new HashSet<>(metadata.getList("studyPrograms", String.class)),
+                new HashSet<>(metadata.get("tags", new HashSet<String>().getClass())),
+                new HashSet<>(metadata.get("studyPrograms", new HashSet<String>().getClass())),
                 metadata.getInteger("length"),
                 userId
         ));

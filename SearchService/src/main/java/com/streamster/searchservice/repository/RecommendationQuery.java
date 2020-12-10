@@ -3,33 +3,44 @@ package com.streamster.searchservice.repository;
 public class RecommendationQuery {
     final static String value = """
             MATCH (user:User{name:$username})
+            OPTIONAL MATCH (user)-[cv:CreatesVideo]->(createdVideo:Video)
+            WITH user,collect(createdVideo.videoId) as createdVideoIds
+            OPTIONAL MATCH (user)-[wv:WatchesVideo]->(watchedVideo:Video)
+            WITH user,collect({watchedVideo:watchedVideo,wv:wv}) as watchedVideos, collect(watchedVideo.videoId)+createdVideoIds as videoIdsToExclude
+            WITH user,watchedVideos,CASE WHEN videoIdsToExclude = [] THEN [null] ELSE videoIdsToExclude END AS videoIdsToExclude\s
+            UNWIND videoIdsToExclude as videoIdToExclude
+            WITH user, watchedVideos, collect(DISTINCT videoIdToExclude) as videoIdsToExclude
+                        
             CALL {
-            \tWITH user
-            \tMATCH (user)-[psp:PrefersStudyProgram]->(sp:StudyProgram)
-            \tMATCH (sp)<-[:HasStudyProgram]-(videoFromStudyProgram:Video)
-            \tRETURN collect({video:videoFromStudyProgram,priority:psp.priority}) as videosFromStudyProgram
+            	WITH user
+            	MATCH (user)-[psp:PrefersStudyProgram]->(sp:StudyProgram)
+            	MATCH (sp)<-[:HasStudyProgram]-(videoFromStudyProgram:Video)
+            	RETURN collect({video:videoFromStudyProgram,priority:psp.priority}) as videosFromStudyProgram
             }
             CALL {
-            \tWITH user
+            	WITH user
                 MATCH (user)-[pt:PrefersTag]->(tag:Tag)
                 MATCH (tag)<-[:HasTag]-(videoFromTag:Video)
                 RETURN collect({video:videoFromTag,priority:pt.priority}) as videosFromTag
             }
             CALL {
-            \tWITH user
+            	WITH user
                 MATCH (user)-[pl:PrefersLength]->(interval:LengthInterval)
-            \tMATCH (videoFromLength:Video)\s
-                \tWHERE (NOT EXISTS (interval.to) OR interval.to >= videoFromLength.length)\s
-                    \t\tAND (NOT EXISTS (interval.from) OR interval.from <= videoFromLength.length)
-            \tRETURN collect({video:videoFromLength,priority:pl.priority}) as videosFromLength
+            	MATCH (videoFromLength:Video)\s
+                	WHERE (NOT EXISTS (interval.to) OR interval.to >= videoFromLength.length)\s
+                    		AND (NOT EXISTS (interval.from) OR interval.from <= videoFromLength.length)
+            	RETURN collect({video:videoFromLength,priority:pl.priority}) as videosFromLength
             }
             CALL {
-            \tWITH user
-                MATCH (user)-[wv:WatchesVideo]->(watchedVideo:Video)
+            	WITH user,watchedVideos,videoIdsToExclude
+            	UNWIND watchedVideos as watchedVideo
+            	WITH user, watchedVideo.watchedVideo as watchedVideo, watchedVideo.wv as wv, videoIdsToExclude
                 MATCH (watchedVideo)-[:HasStudyProgram]->(spFromWatch:StudyProgram)
                 MATCH (watchedVideo)-[:HasTag]->(tagFromWatch:Tag)
-                OPTIONAL MATCH (videoFromWatchSP:Video)-[:HasStudyProgram]->(spFromWatch) WHERE NOT watchedVideo.videoId = videoFromWatchSP.videoId
-                OPTIONAL MATCH (videoFromWatchTag:Video)-[:HasTag]->(tagFromWatch) WHERE NOT watchedVideo.videoId = videoFromWatchTag.videoId
+                OPTIONAL MATCH (videoFromWatchSP:Video)-[:HasStudyProgram]->(spFromWatch)\s
+                	WHERE NOT videoFromWatchSP.videoId IN videoIdsToExclude
+                OPTIONAL MATCH (videoFromWatchTag:Video)-[:HasTag]->(tagFromWatch)\s
+                	WHERE NOT videoFromWatchTag.videoId IN videoIdsToExclude
                 WITH collect(DISTINCT videoFromWatchSP)
                     +collect(DISTINCT videoFromWatchTag)\s
                         as videosFromWatch,wv
@@ -41,7 +52,7 @@ public class RecommendationQuery {
                 RETURN collect(DISTINCT {video:videoFromWatch,priority:priorityFromWatch}) as videosFromWatch
             }
             CALL {
-            \tWITH user
+            	WITH user
                 MATCH (user)-[lv:LikesVideo]->(likedVideo:Video)
                 MATCH (likedVideo)-[:HasStudyProgram]->(spFromLike:StudyProgram)
                 MATCH (likedVideo)-[:HasTag]->(tagFromLike:Tag)
@@ -58,7 +69,7 @@ public class RecommendationQuery {
                 RETURN collect(DISTINCT {video:videoFromLike,priority:priorityFromLike}) as videosFromLike
             }
             CALL {
-            \tWITH user
+            	WITH user
                 MATCH (user)-[dv:DislikesVideo]->(dislikedVideo:Video)
                 MATCH (dislikedVideo)-[:HasStudyProgram]->(spFromDislike:StudyProgram)
                 MATCH (dislikedVideo)-[:HasTag]->(tagFromDislike:Tag)
@@ -75,7 +86,7 @@ public class RecommendationQuery {
                 RETURN collect(DISTINCT {video:videoFromDislike,priority:priorityFromDislike}) as videosFromDislike
             }
             CALL {
-            \tWITH user
+            	WITH user
                 MATCH (user)-[cpv:CommentsPositiveVideo]->(commentedPosVideo:Video)
                 MATCH (commentedPosVideo)-[:HasStudyProgram]->(spFromCommentPos:StudyProgram)
                 MATCH (commentedPosVideo)-[:HasTag]->(tagFromCommentPos:Tag)
@@ -92,7 +103,7 @@ public class RecommendationQuery {
                 RETURN collect(DISTINCT {video:videoFromCommentPos,priority:priorityFromCommentPos}) as videosFromCommentPositive
             }
             CALL {
-            \tWITH user
+            	WITH user
                 MATCH (user)-[cnv:CommentsNegativeVideo]->(commentedNegVideo:Video)
                 MATCH (commentedNegVideo)-[:HasStudyProgram]->(spFromCommentNeg:StudyProgram)
                 MATCH (commentedNegVideo)-[:HasTag]->(tagFromCommentNeg:Tag)
@@ -109,44 +120,43 @@ public class RecommendationQuery {
                 RETURN collect(DISTINCT {video:videoFromCommentNeg,priority:priorityFromCommentNeg}) as videosFromCommentNegative
             }
             CALL {
-            \tWITH user
-            \tMATCH (user)-[sv:SearchesVideo]->(searchTerm:SearchTerm)
-            \tCALL db.index.fulltext.queryNodes("search", searchTerm.name) YIELD node, score
-            \tWITH\s
+            	WITH user
+            	MATCH (user)-[sv:SearchesVideo]->(searchTerm:SearchTerm)
+            	CALL db.index.fulltext.queryNodes("search", searchTerm.name) YIELD node, score
+            	WITH\s
                     score,
                     sv,
                     CASE node:Video WHEN true THEN node ELSE null END AS videoFromSearch,
                     CASE node:Tag WHEN true THEN node ELSE null END AS tagFromSearch,
                     CASE node:StudyProgram WHEN true THEN node ELSE null END AS spFromSearch
-            \t
-                CALL {
-                \tWITH videoFromSearch,tagFromSearch,spFromSearch,sv
-            \t\tOPTIONAL MATCH (videoFromSearchSP:Video)-[:HasStudyProgram]->(spFromSearch)
-             \t\tOPTIONAL MATCH (videoFromSearchTag:Video)-[:HasTag]->(tagFromSearch)
-                    WITH collect(DISTINCT videoFromSearchSP)
-                    \t+collect(DISTINCT videoFromSearchTag)
-                        +collect(videoFromSearch)
-                        as videosFromSearch,sv
-                    UNWIND videosFromSearch as videoFromSearch
-            \t\tWITH videoFromSearch,sv.priority as priorityFromSearch
-            \t\tWHERE priorityFromSearch > 0
-            \t\tWITH videoFromSearch,Sum(priorityFromSearch) as priorityFromSearch
-                \tRETURN collect(DISTINCT {video:videoFromSearch,priority:priorityFromSearch}) as videosFromSearch
-            \t}
-                RETURN videosFromSearch
+            	
+                OPTIONAL MATCH (videoFromSearchSP:Video)-[:HasStudyProgram]->(spFromSearch)
+                OPTIONAL MATCH (videoFromSearchTag:Video)-[:HasTag]->(tagFromSearch)
+                WITH collect(DISTINCT videoFromSearchSP)
+                    +collect(DISTINCT videoFromSearchTag)
+                    +collect(videoFromSearch)
+                    as videosFromSearch,sv
+                UNWIND videosFromSearch as videoFromSearch
+                WITH videoFromSearch,sv.priority as priorityFromSearch
+                WHERE priorityFromSearch > 0
+                WITH videoFromSearch,Sum(priorityFromSearch) as priorityFromSearch
+                RETURN collect(DISTINCT {video:videoFromSearch,priority:priorityFromSearch}) as videosFromSearch
             }
-
+                        
             WITH videosFromStudyProgram
-            \t+videosFromTag
-            \t+videosFromLength
+            	+videosFromTag
+            	+videosFromLength
                 +videosFromWatch
                 +videosFromLike
                 +videosFromDislike
-            \t+videosFromCommentPositive
-            \t+videosFromCommentNegative
+            	+videosFromCommentPositive
+            	+videosFromCommentNegative
                 +videosFromSearch
-                as videos
-            UNWIND videos as v
+                as videos,
+                videoIdsToExclude
+            UNWIND videos as v\s
+            WITH v,videoIdsToExclude
+            WHERE NOT v.video.videoId IN videoIdsToExclude
             WITH v.video.videoId as videoId, Sum(v.priority) as priority ORDER BY priority DESC, videoId ASC
-            RETURN videoId as videoId,priority as priority""";
+            RETURN videoId""";
 }

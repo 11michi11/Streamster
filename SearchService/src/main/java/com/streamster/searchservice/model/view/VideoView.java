@@ -22,7 +22,7 @@ public class VideoView {
     private String language;
     private String authorId;
     private String authorName;
-    private Long length;
+    private Integer length;
     private List<String> likedBy;
     private List<String> dislikedBy;
 
@@ -40,7 +40,7 @@ public class VideoView {
                 metaData.getString("language"),
                 metaData.getString("authorId"),
                 metaData.getString("authorName"),
-                metaData.getLong("length"),
+                metaData.getInteger("length"),
                 metaData.getList("likedBy", String.class, Collections.emptyList()),
                 metaData.getList("dislikedBy", String.class, Collections.emptyList())
         );

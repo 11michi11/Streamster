@@ -1,8 +1,7 @@
 package com.streamster.searchservice.service;
 
 import com.mongodb.client.gridfs.GridFSFindIterable;
-import com.streamster.searchservice.model.RecommendedVideo;
-import com.streamster.searchservice.model.User;
+import com.streamster.commons.model.User;
 import com.streamster.searchservice.model.view.VideoView;
 import com.streamster.searchservice.repository.NeoRepository;
 import com.streamster.searchservice.repository.UserRepository;
@@ -49,9 +48,9 @@ public class SearchService {
     }
 
     private List<String> getRecommendedVideoIds(String userId) {
-        Iterable<RecommendedVideo> recommendations = this.neoRepository.getRecommendedVideos(userId);
-        return StreamSupport.stream(recommendations.spliterator(), false)
-                .map(RecommendedVideo::getVideoId).collect(Collectors.toList());
+        var videos = this.neoRepository.getRecommendedVideos(userId);
+        return StreamSupport.stream(videos.spliterator(), false)
+                .collect(Collectors.toList());
     }
 
     private List<VideoView> findAll(List<String> videoIds) {
@@ -61,10 +60,10 @@ public class SearchService {
                 .collect(Collectors.toList());
     }
 
-    public void addWatchAction(String email, String searchTerm) {
+    public void addSearchAction(String email, String searchTerm) {
         User currentUser = getUserByEmail(email);
         // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
-        this.proxyService.addSearchAction(searchTerm,currentUser.getFirstName());
+        this.proxyService.addSearchAction(searchTerm, currentUser.getFirstName());
     }
 
     private User getUserByEmail(String email) {

@@ -1,7 +1,7 @@
 package com.streamster.userservice.security;
 
 
-import com.streamster.userservice.model.SystemRoleType;
+import com.streamster.commons.model.SystemRoleType;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;

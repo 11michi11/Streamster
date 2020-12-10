@@ -40,8 +40,8 @@ public class RestResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
     List<ValidationError> methodArgumentNotValidExceptionHandler(
-            MethodArgumentNotValidException e) {
-        return e.getBindingResult().getFieldErrors().stream()
+            MethodArgumentNotValidException ex) {
+        return ex.getBindingResult().getFieldErrors().stream()
                 .map(x -> new ValidationError(x.getField(), x.getDefaultMessage()))
                 .collect(Collectors.toList());
     }

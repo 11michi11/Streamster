@@ -28,7 +28,7 @@ public class VideoMetadataDTO {
     private String thumbnail;
     private String language;
     @NotNull
-    private Long length;
+    private Integer length;
 
     public Document toDocument() {
         Document document = new Document();

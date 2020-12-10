@@ -20,7 +20,7 @@ public class LikeAction {
     @EndNode
     private VideoNode video;
     @Property
-    private final int priority = 1;
+    private final int priority = 6;
     @Property
     private final String time = LocalDate.now().toString();
 

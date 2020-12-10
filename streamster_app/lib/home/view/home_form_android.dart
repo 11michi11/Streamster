@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
-import 'package:streamster_app/logout/logout_view_android.dart';
+import 'package:streamster_app/logout/view/logout_view.dart';
 import 'package:streamster_app/search/search.dart';
-import 'package:streamster_app/watch_video/view/video_page.dart';
 
 class HomeFormAndroid extends StatefulWidget {
 
@@ -151,7 +150,7 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
                   Navigator.of(context).pushNamed('/preferences');
                 },
               ),
-              LogoutButton()
+              LogoutButtonWidget()
             ],
           ),
         ),

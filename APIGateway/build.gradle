@@ -29,9 +29,6 @@ jib {
 			password = dockerPassword
 		}
 	}
-	container{
-		jvmFlags = ['-Dspring.profiles.active=prod', '--enable-preview']
-	}
 }
 repositories {
 	mavenCentral()
@@ -55,14 +52,6 @@ dependencies {
 	testCompile platform("org.spockframework:spock-bom:2.0-M3-groovy-2.5")
 	testCompile "org.spockframework:spock-core"
 	testCompile group: 'org.spockframework', name: 'spock-spring', version: '2.0-M3-groovy-2.5'
-}
-
-tasks.withType(JavaCompile) {
-	options.compilerArgs += '--enable-preview'
-}
-
-tasks.withType(Test) {
-	jvmArgs += "--enable-preview"
 }
 
 dependencyManagement {

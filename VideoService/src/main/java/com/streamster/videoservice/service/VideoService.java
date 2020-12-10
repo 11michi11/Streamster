@@ -35,6 +35,7 @@ public class VideoService {
         metadata.put("authorName", user.getFirstName() + " " + user.getLastName());
         // Store file to the GridFS
         String fileId = fileService.store(file, metadata);
+        metadata.put("videoId", fileId);
         // Update user service
         proxyService.addVideoToUser(fileId, user.getId());
         // TODO: to change when dummy data is ready .. change to user.getId()

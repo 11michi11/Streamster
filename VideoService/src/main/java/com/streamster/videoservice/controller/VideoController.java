@@ -28,20 +28,13 @@ public class VideoController {
         this.videoService = videoService;
     }
 
-    @PreAuthorize("hasAuthority(T(com.streamster.videoservice.model.SystemRoleType).TEACHER)")
+    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).TEACHER)")
     @PostMapping("/upload")
     public ResponseEntity<String> upload(Principal principal,
                                          @RequestParam("video") MultipartFile file,
                                          @Valid @RequestPart VideoMetadataDTO metadata) {
         this.videoService.uploadVideo(file, principal.getName(), metadata.toDocument());
         return new ResponseEntity<>(HttpStatus.CREATED);
-    }
-
-    @PostMapping("/{videoId}/watch")
-    public ResponseEntity<String> addWatchAction(Principal principal,
-                                         @PathVariable String videoId) {
-        this.videoService.addWatchAction(principal.getName(),videoId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/currentUser")
@@ -52,7 +45,6 @@ public class VideoController {
     }
 
     @DeleteMapping("/{videoId}")
-//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteVideo(@PathVariable String videoId) {
         this.videoService.delete(videoId);
         return new ResponseEntity<>("Video has been deleted", HttpStatus.OK);
@@ -68,5 +60,19 @@ public class VideoController {
     public ResponseEntity<String> dislikeVideo(@PathVariable String videoId, Principal principal) {
         videoService.dislikeVideo(videoId, principal.getName());
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{videoId}/watch")
+    public ResponseEntity<String> addWatchAction(Principal principal,
+                                                 @PathVariable String videoId) {
+        this.videoService.addWatchAction(principal.getName(), videoId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/{videoId}/testWatch/{email}")
+    public ResponseEntity<String> addWatchAction(Principal principal,
+                                                 @PathVariable String videoId, @PathVariable String email) {
+        this.videoService.addWatchAction(email, videoId);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

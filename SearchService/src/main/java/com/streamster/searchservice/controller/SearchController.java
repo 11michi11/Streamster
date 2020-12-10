@@ -21,7 +21,7 @@ public class SearchController {
     @GetMapping("/search")
     public ResponseEntity<List<VideoView>> searchByTerm(Principal principal, @RequestParam("searchTerm") String searchTerm) {
         List<VideoView> videos = searchService.searchByTerm(searchTerm);
-        searchService.addWatchAction(principal.getName(),searchTerm);
+        searchService.addSearchAction(principal.getName(), searchTerm);
         return ResponseEntity.ok(videos);
     }
 

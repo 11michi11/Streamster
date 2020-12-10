@@ -1,10 +1,11 @@
 package com.streamster.userservice.controller;
 
-import com.streamster.userservice.model.Preferences;
-import com.streamster.userservice.model.SystemRoleType;
-import com.streamster.userservice.model.User;
-import com.streamster.userservice.model.dto.RegistrationDTO;
-import com.streamster.userservice.model.view.UserView;
+import com.streamster.commons.model.Preferences;
+import com.streamster.commons.model.SystemRoleType;
+import com.streamster.commons.model.User;
+import com.streamster.commons.model.dto.RegistrationDTO;
+import com.streamster.commons.model.dto.RegistrationWithPreferencesDTO;
+import com.streamster.commons.model.view.UserView;
 import com.streamster.userservice.repository.UserRepository;
 import com.streamster.userservice.service.UserService;
 import lombok.extern.log4j.Log4j2;
@@ -55,6 +56,13 @@ public class UserController {
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody RegistrationDTO registrationDTO) {
         userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
+        return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
+    }
+
+    @PostMapping("/registerWithPreferences")
+    ResponseEntity<String> register(@Valid @RequestBody RegistrationWithPreferencesDTO registrationDTO) {
+        User user = userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
+        userService.updateUserPreferences(user.getPreferences(), user.getEmail(), user.getId());
         return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
     }
 

@@ -20,7 +20,7 @@ public class WatchAction {
     @EndNode
     private VideoNode video;
     @Property
-    private final int priority = 8;
+    private final int priority = 12;
     @Property
     private final String time = LocalDate.now().toString();
 

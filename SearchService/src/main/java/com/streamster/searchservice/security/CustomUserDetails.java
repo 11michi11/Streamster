@@ -1,7 +1,7 @@
 package com.streamster.searchservice.security;
 
 
-import com.streamster.searchservice.model.User;
+import com.streamster.commons.model.User;
 import com.streamster.searchservice.repository.UserRepository;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
