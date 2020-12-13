@@ -9,11 +9,24 @@ class VideoPage extends StatelessWidget {
   final String description;
   final List<String> studyPrograms;
   final List<String> tags;
+  final List<String> likedBy;
+  final List<String> dislikedBy;
   final String language;
   final String url;
   final String videoId;
 
-  VideoPage(this.videoTitle, this.avatar, this.author, this.description, this.studyPrograms, this.tags, this.language, this.url, this.videoId);
+  VideoPage(
+      this.videoTitle,
+      this.avatar,
+      this.author,
+      this.description,
+      this.studyPrograms,
+      this.tags,
+      this.language,
+      this.url,
+      this.videoId,
+      this.likedBy,
+      this.dislikedBy);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +39,8 @@ class VideoPage extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: VideoForm(videoTitle, avatar, author, description, studyPrograms, tags, language, url, videoId),
+      body: VideoForm(videoTitle, avatar, author, description, studyPrograms,
+          tags, language, url, videoId, likedBy, dislikedBy),
     );
   }
 }

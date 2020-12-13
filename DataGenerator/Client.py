@@ -1,5 +1,4 @@
 import json
-import base64
 import requests
 
 from AuthHelper import AuthHelper
@@ -16,7 +15,7 @@ auth_helper = AuthHelper(base_url)
 class Client:
 
     @staticmethod
-    def createUser(user):
+    def create_user(user):
         data = {
             'firstName': user.firstName[0],
             'lastName': user.lastName[0],
@@ -32,9 +31,9 @@ class Client:
             }
         }
 
-        f = open(file_path, "a")
-        f.write(str(data))
-        f.close()
+        # f = open(file_path, "a")
+        # f.write(str(data))
+        # f.close()
 
         token = auth_helper.get_access_token()
         headers = {
@@ -42,14 +41,14 @@ class Client:
             'Authorization': f'Bearer {token}'
         }
         response = requests.post(create_user_url, data=json.dumps(data), headers=headers)
-        if response.status_code is not 201:
+        if response.status_code != 201:
             print(response.status_code)
             print(response.json())
         else:
             print(f'successfully user {user.email[0]}')
 
     @staticmethod
-    def uploadVideo(video, user_email):
+    def upload_video(video, user_email):
         metadata = {
             'title': video.metadata.title[0],
             'description': video.metadata.description[0],
@@ -72,12 +71,29 @@ class Client:
             'Authorization': f'Bearer {token}'
         }
 
-        response = requests.post(upload_video_url + '/' + user_email, data=body, headers=headers)
-        if response.status_code is not 201:
-            print(response.status_code)
-            print(response.json())
-        else:
-            print(f'successfully uploaded video {video.metadata.title} for user {user_email}')
+        # response = requests.post(upload_video_url + '/' + user_email, data=body, headers=headers)
+        # if response.status_code is not 201:
+        #     print(response.status_code)
+        #     print(response.json())
+        # else:
+        #     print(f'successfully uploaded video {video.metadata.title} for user {user_email}')
 
+    @staticmethod
+    def send_action(action, user, videos=[], search_terms=[]):
+        token = auth_helper.get_access_token()
+        headers = {
+            'Authorization': f'Bearer {token}'
+        }
 
-
+        if action == 'like':
+            for video in videos:
+                requests.post(base_url + f'video-service/videos/{video}/like/{user}', headers=headers)
+        elif action == 'dislike':
+            for video in videos:
+                requests.post(base_url + f'video-service/videos/{video}/dislike/{user}', headers=headers)
+        elif action == 'watch':
+            for video in videos:
+                requests.post(base_url + f'video-service/videos/{video}/dislike/{user}', headers=headers)
+        elif action == 'search':
+            for search_term in search_terms:
+                requests.post(base_url + f'search-service/testSearch/{user}?searchTerm={search_term}', headers=headers)

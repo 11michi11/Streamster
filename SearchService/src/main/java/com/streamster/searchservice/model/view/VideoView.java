@@ -31,6 +31,14 @@ public class VideoView {
         if (metaData == null) {
             throw new MissingFormatArgumentException("Metadata cannot be found for fileId: " + file.getId());
         }
+
+        int length;
+        try {
+            length = metaData.getInteger("length");
+        } catch (ClassCastException e) {
+            length = Math.toIntExact(metaData.getLong("length"));
+        }
+
         return new VideoView(file.getId().asObjectId().getValue().toString(),
                 metaData.getString("title"),
                 metaData.getString("description"),
@@ -40,7 +48,7 @@ public class VideoView {
                 metaData.getString("language"),
                 metaData.getString("authorId"),
                 metaData.getString("authorName"),
-                metaData.getInteger("length"),
+                length,
                 metaData.getList("likedBy", String.class, Collections.emptyList()),
                 metaData.getList("dislikedBy", String.class, Collections.emptyList())
         );

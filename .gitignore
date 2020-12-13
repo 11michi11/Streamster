@@ -16,3 +16,5 @@ out/
 /imdb/
 
 keyfile.json
+/venv/
+/videos/

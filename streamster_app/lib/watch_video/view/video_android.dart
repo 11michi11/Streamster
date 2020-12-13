@@ -15,12 +15,24 @@ class VideoFormAndroid extends StatefulWidget {
   final String description;
   final List<String> studyPrograms;
   final List<String> tags;
+  final List<String> likedBy;
+  final List<String> dislikedBy;
   final String language;
   final String url;
   final String videoId;
 
-  VideoFormAndroid(this.videoTitle, this.avatar, this.author, this.description,
-      this.studyPrograms, this.tags, this.language, this.url, this.videoId)
+  VideoFormAndroid(
+      this.videoTitle,
+      this.avatar,
+      this.author,
+      this.description,
+      this.studyPrograms,
+      this.tags,
+      this.language,
+      this.url,
+      this.videoId,
+      this.likedBy,
+      this.dislikedBy)
       : super();
 
   @override
@@ -111,14 +123,18 @@ class _VideoFormAndroidState extends State<VideoFormAndroid> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            LikeWidget(feedbackRepository: repository,videoId: widget.videoId),
+            LikeWidget(feedbackRepository: repository,
+                videoId: widget.videoId,
+                likedBy: widget.likedBy,
+                dislikedBy: widget.dislikedBy),
             FlatButton(onPressed: () {
               Scaffold.of(context).showSnackBar(SnackBar(
                 content: Text('Comments are not implemented'),
                 backgroundColor: Colors.blueGrey,
               ));
             },
-            child: Icon(Icons.comment_outlined, color: Colors.brown,size: 36))
+                child: Icon(
+                    Icons.comment_outlined, color: Colors.brown, size: 36))
           ],
         )
       ],

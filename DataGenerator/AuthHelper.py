@@ -8,7 +8,7 @@ class AuthHelper:
         self.token = ''
 
     def get_access_token(self):
-        if self.token is not '':
+        if self.token != '':
             return self.token
         else:
             headers = {
@@ -24,7 +24,7 @@ class AuthHelper:
             }
             request_url = self.base_url + 'user-service/oauth/token'
             response = requests.post(request_url, data=form, headers=headers)
-            if response.status_code is not 200:
+            if response.status_code != 200:
                 print(response.json())
             else:
                 self.token = response.json()['access_token']
