@@ -1,11 +1,9 @@
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
 import 'package:streamster_app/logout/view/logout_view.dart';
+import 'package:streamster_app/recommendations/recommendations.dart';
 import 'package:streamster_app/search/search.dart';
-import 'package:streamster_app/watch_video/view/video_android.dart';
 
 class HomeFormAndroid extends StatefulWidget {
 
@@ -22,18 +20,11 @@ class HomeFormAndroid extends StatefulWidget {
 class _HomeFormAndroidState extends State<HomeFormAndroid> {
   final UserRepository userRepository;
   final SearchRepository searchRepository;
+  RecommendationsRepository recommendationsRepository = new RecommendationsRepository();
   String avatarEncoded;
   String userName = '';
 
-  /*
-   * TEST DATA
-   * */
-  List<String> studyPrograms = new List();
-
-  _HomeFormAndroidState(this.userRepository, this.searchRepository) {
-    studyPrograms.add('Software engineering');
-    studyPrograms.add('GBE');
-  }
+  _HomeFormAndroidState(this.userRepository, this.searchRepository);
 
   void getUserData() async {
     var user = await userRepository.getUserDetails();
@@ -155,12 +146,55 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
             ],
           ),
         ),
-      //TODO - design home page
-      body: BlocProvider(
-        create: (context) {
-          return SearchBloc(searchRepository: searchRepository);
-        },
-        child: SearchForm(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: ButtonTheme(
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  side: BorderSide(color: Colors.brown),
+                ),
+                color: Colors.white,
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/search');
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 7.0),
+                      child: Icon(Icons.search, color: Colors.brown),
+                    ),
+                    SizedBox(width: 10),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Text('search',
+                          style: TextStyle(
+                              fontSize: 20,
+                              fontFamily: 'BalooTammudu',
+                              color: Colors.brown)),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          //RECOMMENDATIONS
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Text('recommendations',
+                style: TextStyle(
+                    fontSize: 20,
+                    fontFamily: 'BalooTammuduBold',
+                    color: Colors.brown)),
+          ),
+          Expanded(
+            child: RecommendationsPage(recommendationsRepository: recommendationsRepository, userRepository: userRepository,)
+          )
+        ],
       ),
     );
   }

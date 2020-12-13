@@ -61,10 +61,8 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
       opacity: 0.4,
       child: Container(
         decoration: BoxDecoration(
-            //color: Colors.black26,
             borderRadius: BorderRadius.circular(20.0),
             border: Border.all(color: Colors.black26)),
-        // color: Colors.black26,
         width: MediaQuery.of(context).size.width * 0.85,
         height: 50,
         child: Column(
@@ -164,9 +162,11 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
         },
         items: <String>[
           'GBE',
-          'Software engineering',
-          'Mechanical Engineering',
-          'Civil Engineering'
+          'ICT',
+          'ME',
+          'CE',
+          'MM',
+          'VCE'
         ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -296,11 +296,40 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
         content: Text('Maximum length must be bigger then minimum'),
         backgroundColor: Colors.red,
       ));
-    } else {
+    } //else {
+      // var programs = new List();
+      // for(var studyProgram in studyPrograms) {
+      //   var program = setStudyProgram(studyProgram);
+      //   programs.add(program);
+    //  }
+
+    print(studyPrograms);
       BlocProvider.of<PreferencesBloc>(context)
           .add(SavePreferences(
           tags, studyPrograms, (_currentMinSliderValue * 60).toInt(),
           (_currentMaxSliderValue * 60).toInt()));
     }
   }
-}
+
+  String setStudyProgram(String selectedProgram) {
+    switch (selectedProgram) {
+      case ('Global Business Engineering'):
+        return 'GBE';
+        break;
+      case ('Software Engineering'):
+        return 'ICT';
+        break;
+      case ('Mechanical Engineering'):
+        return 'ME';
+      case ('Civil Engineering'):
+        return 'CE';
+      case ('Marketing Management'):
+        return 'MM';
+      case ('Value Chain'):
+        return 'VCE';
+      default:
+        return null;
+    }
+  }
+
+

@@ -36,6 +36,11 @@ class UploadVideoForm extends StatelessWidget {
         content: Text('Uploading'),
         backgroundColor: Colors.orange,
       ));
+      }
+      else if(state.status == UploadVideoStatus.error) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('error: ${state.error}'),
+          backgroundColor: Colors.red));
     }
   }
 }
