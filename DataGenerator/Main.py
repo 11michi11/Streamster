@@ -42,14 +42,8 @@ print('GENERATED ' + str(len(videoList)) + ' VIDEOS')
 users = user_generator.generate_users(system_role_teacher)
 
 for user in users:
-    Client.createUser(user)
+    Client.create_user(user[0])
 
 for video in videoList:
     user = random.choice(users)
-    Client.uploadVideo(video, user.email[0])
-
-
-
-
-
-
+    Client.upload_video(video, user.email[0])
