@@ -9,19 +9,20 @@ abstract class FeedbackEvent extends Equatable {
 class LikeEvent extends FeedbackEvent {
 
   final String videoId;
+  final List<String> likedBy;
 
-  LikeEvent(this.videoId);
+  LikeEvent(this.videoId, this.likedBy);
 
   @override
   List<Object> get props => [videoId];
-
 }
 
 class DislikeEvent extends FeedbackEvent {
 
   final String videoId;
+  final List<String> dislikedBy;
 
-  DislikeEvent(this.videoId);
+  DislikeEvent(this.videoId, this.dislikedBy);
 
   @override
   List<Object> get props => [videoId];

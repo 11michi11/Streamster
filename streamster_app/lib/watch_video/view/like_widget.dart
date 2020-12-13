@@ -7,15 +7,22 @@ import 'package:streamster_app/watch_video/repository/feedback_repository.dart';
 class LikeWidget extends StatefulWidget {
   final FeedbackRepository feedbackRepository;
   final String videoId;
+  final List<String> likedBy;
+  final List<String> dislikedBy;
 
-  const LikeWidget({Key key, this.feedbackRepository, this.videoId}) : super(key: key);
+  const LikeWidget(
+      {Key key,
+      this.feedbackRepository,
+      this.videoId,
+      this.likedBy,
+      this.dislikedBy})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _LikeWidgetState();
 }
 
 class _LikeWidgetState extends State<LikeWidget> {
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -31,7 +38,7 @@ class _LikeWidgetState extends State<LikeWidget> {
                 child: FlatButton(
                     onPressed: () {
                       BlocProvider.of<FeedbackBloc>(context)
-                          .add(new LikeEvent(widget.videoId));
+                          .add(new LikeEvent(widget.videoId, widget.likedBy));
 
                       Scaffold.of(context).showSnackBar(SnackBar(
                         content: Text('Liked'),
