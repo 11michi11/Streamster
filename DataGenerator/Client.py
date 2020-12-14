@@ -31,10 +31,6 @@ class Client:
             }
         }
 
-        # f = open(file_path, "a")
-        # f.write(str(data))
-        # f.close()
-
         token = auth_helper.get_access_token()
         headers = {
             'Content-Type': 'application/json',
@@ -71,12 +67,12 @@ class Client:
             'Authorization': f'Bearer {token}'
         }
 
-        # response = requests.post(upload_video_url + '/' + user_email, data=body, headers=headers)
-        # if response.status_code is not 201:
-        #     print(response.status_code)
-        #     print(response.json())
-        # else:
-        #     print(f'successfully uploaded video {video.metadata.title} for user {user_email}')
+        response = requests.post(upload_video_url + '/' + user_email, data=body, headers=headers)
+        if response.status_code != 201:
+            print(response.status_code)
+            print(response.json())
+        else:
+            print(f'successfully uploaded video {video.metadata.title} for user {user_email}')
 
     @staticmethod
     def send_action(action, user, videos=[], search_terms=[]):

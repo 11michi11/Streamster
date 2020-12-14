@@ -23,7 +23,7 @@ import spock.lang.Specification
 import spock.mock.DetachedMockFactory
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup
 
@@ -258,7 +258,7 @@ class VideoControllerTest extends Specification {
 
     @WithMockUser(authorities = ['TEACHER'])
     def "test upload validation invalid metadata invalid thumbnail"() {
-        when:
+        given:
         def json = "{\n" +
                 "    \"title\": \"My video\",\n" +
                 "    \"description\": \"This is my new video\",\n" +
@@ -270,6 +270,7 @@ class VideoControllerTest extends Specification {
                 "}"
         def metadata = new MockMultipartFile("metadata", "", MediaType.APPLICATION_JSON_VALUE,
                 json.getBytes());
+        when:
         def results = mvc.perform(multipart("/videos/upload")
                 .file(video)
                 .file(metadata)
