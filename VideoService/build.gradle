@@ -71,14 +71,6 @@ dependencies {
 	compile project(":commons")
 }
 
-tasks.withType(JavaCompile) {
-	options.compilerArgs += '--enable-preview'
-}
-
-tasks.withType(Test) {
-	jvmArgs += "--enable-preview"
-}
-
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
