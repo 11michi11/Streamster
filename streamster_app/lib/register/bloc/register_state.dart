@@ -19,6 +19,8 @@ class RegisterState extends Equatable {
 
   const RegisterState.error(String message) : this._(status: RegistrationStatus.error, error: message);
 
+  const RegisterState.emailAlreadyUsed() : this._(status: RegistrationStatus.emailAlreadyUsed);
+
   @override
   List<Object> get props => [status, error];
 

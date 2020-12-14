@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/common/model/image_custom.dart';
 import 'package:streamster_app/upload_video/bloc/upload_video_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/upload_video/model/video.dart';
 import 'package:streamster_app/upload_video/model/video_metadata.dart';
-
 import '../upload_video.dart';
 
 class UploadButton extends StatelessWidget {
@@ -66,8 +66,8 @@ class UploadButton extends StatelessWidget {
   onUploadButtonPressed(String title, List<String> tags,
       List<String> studyPrograms, String description, String language) {
     if (!isEmpty()) {
-      if (validateVideoExtension(video.videoExtension)) {
         if (validateThumbnailSize(thumbnail.imageSize)) {
+          var programs = setStudyPrograms(studyPrograms);
           BlocProvider.of<UploadVideoBloc>(context).add(UploadVideo(
               video.fileName,
               video.videoData,
@@ -75,31 +75,30 @@ class UploadButton extends StatelessWidget {
                   title,
                   description,
                   tags,
-                  studyPrograms,
+                  programs,
                   thumbnail?.imageEncoded ?? null,
                   language,
                   video.videoLength)));
         }
-      }
     }
   }
 
   bool isEmpty() {
     if (title.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Title is empty'),
+        content: Text('Title must be specified'),
         backgroundColor: Colors.red,
       ));
       return true;
     } else if (tags.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Tags are empty'),
+        content: Text('At least one tag must be specified'),
         backgroundColor: Colors.red,
       ));
       return true;
     } else if (studyPrograms.isEmpty) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Study programs are empty'),
+        content: Text('At least one study program must be specified'),
         backgroundColor: Colors.red,
       ));
       return true;
@@ -109,24 +108,15 @@ class UploadButton extends StatelessWidget {
         backgroundColor: Colors.red,
       ));
       return true;
+    } else if (thumbnail == null) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('No thumbnail uploaded'),
+        backgroundColor: Colors.red,
+      ));
+      return true;
     } else {
       return false;
     }
-  }
-
-  bool validateVideoExtension(String videoExtension) {
-//    // TODO
-//    var validExtensions = [".mp4"];
-//    if (validExtensions.contains(videoExtension))
-//      return true;
-//    else {
-//      Scaffold.of(context).showSnackBar(SnackBar(
-//        content: Text('Video file format "$videoExtension" is not supported'),
-//        backgroundColor: Colors.red,
-//      ));
-//      return false;
-//    }
-    return true;
   }
 
   bool validateThumbnailSize(int imageSize) {
@@ -140,6 +130,36 @@ class UploadButton extends StatelessWidget {
         backgroundColor: Colors.red,
       ));
       return false;
+    }
+  }
+
+  List<String> setStudyPrograms(studyPrograms) {
+    List<String> programs = new List();
+
+    for(var studyProgram in studyPrograms) {
+      var program = convertStudyProgram(studyProgram);
+      programs.add(program);
+    }
+
+    return programs;
+  }
+
+  String convertStudyProgram(program) {
+    switch (program) {
+      case 'Global Business Engineering':
+        return StudyPrograms.GBE.program;
+      case 'Software Engineering':
+        return StudyPrograms.ICT.program;
+      case 'Mechanical Engineering':
+        return StudyPrograms.ME.program;
+      case 'Civil Engineering':
+        return StudyPrograms.CE.program;
+      case 'Marketing Management':
+        return StudyPrograms.MM.program;
+      case 'Value Chain':
+        return StudyPrograms.VCE.program;
+      default:
+        return null;
     }
   }
 }

@@ -1,11 +1,8 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:streamster_app/register/register.dart';
 import '../bloc/register_bloc.dart';
 import '../bloc/register_state.dart';
-import 'package:universal_html/prefer_universal/html.dart' as html;
 import '../repository/register_repository.dart';
 
 class RegisterForm extends StatefulWidget {
@@ -40,12 +37,23 @@ class _RegisterFormState extends State<RegisterForm> {
         content: Text('$state.error'),
         backgroundColor: Colors.red,
       ));
-    } else if (state.status == RegistrationStatus.success) {
+    }
+    else if (state.status == RegistrationStatus.emailAlreadyUsed) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('This email is already being used'),
+        backgroundColor: Colors.red,
+      ));
+    }else if (state.status == RegistrationStatus.success) {
       Scaffold.of(context).showSnackBar(SnackBar(
         content: Text('success'),
         backgroundColor: Colors.green,
       ));
       Navigator.of(context).pushNamed('/login');
+    } else if (state.status == RegistrationStatus.loading) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Text('registering ...'),
+        backgroundColor: Colors.blueGrey,
+      ));
     }
   }
 }

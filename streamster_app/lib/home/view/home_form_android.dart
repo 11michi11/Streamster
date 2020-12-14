@@ -23,11 +23,12 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
   RecommendationsRepository recommendationsRepository = new RecommendationsRepository();
   String avatarEncoded;
   String userName = '';
+  User user;
 
   _HomeFormAndroidState(this.userRepository, this.searchRepository);
 
   void getUserData() async {
-    var user = await userRepository.getUserDetails();
+    user = await userRepository.getUserDetails();
     print(user.toString());
     setState(() {
       avatarEncoded = user.avatar;
@@ -85,24 +86,26 @@ class _HomeFormAndroidState extends State<HomeFormAndroid> {
                   Navigator.of(context).pushNamed('/home');
                 },
               ),
-              ListTile(
-                title: Row(
-                  children: [
-                    Icon(Icons.file_upload, color: Colors.brown),
-                    SizedBox(width: 15),
-                    Padding(
-                      padding: EdgeInsets.only(top: 8),
-                      child: Text('Upload Video',
-                          style: TextStyle(
-                              fontSize: 15,
-                              fontFamily: 'BalooTammudu',
-                              color: Colors.brown)),
-                    ),
-                  ],
+              Container(
+                child: user.systemRole == SystemRole.student ? null : ListTile(
+                  title: Row(
+                    children: [
+                      Icon(Icons.file_upload, color: Colors.brown),
+                      SizedBox(width: 15),
+                      Padding(
+                        padding: EdgeInsets.only(top: 8),
+                        child: Text('Upload Video',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontFamily: 'BalooTammudu',
+                                color: Colors.brown)),
+                      ),
+                    ],
+                  ),
+                  onTap: () {
+                    Navigator.of(context).pushNamed('/uploadVideo');
+                  },
                 ),
-                onTap: () {
-                  Navigator.of(context).pushNamed('/uploadVideo');
-                },
               ),
               ListTile(
                 title: Row(
