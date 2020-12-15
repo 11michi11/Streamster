@@ -22,10 +22,8 @@ class RecommendationsAndroid extends StatefulWidget {
 
 class _RecommendationsAndroidState extends State<RecommendationsAndroid> {
   RecommendationsStatus _status;
-  VideoItem videoItem;
   List<VideoItem> videos = new List();
   List<User> users = new List();
-  String encodedAvatar;
 
   @override
   void initState() {
