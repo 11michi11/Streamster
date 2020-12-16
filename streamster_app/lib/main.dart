@@ -75,7 +75,7 @@ void main({String env}) async {
       ),
       BlocProvider<RecommendationsBloc>(
           create: (context) {
-            return RecommendationsBloc(recommendationsRepository: recommendationsRepository);
+            return RecommendationsBloc(recommendationsRepository: recommendationsRepository, userRepository: userRepository);
           })
 
     ],
@@ -120,6 +120,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'FilmMaster',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
@@ -144,7 +145,7 @@ class App extends StatelessWidget {
           preferencesRepository: preferencesRepository,
           userRepository: userRepository,
             ),
-        '/recommendations': (context) => RecommendationsPage(recommendationsRepository: recommendationsRepository) //Recommendations
+        '/recommendations': (context) => RecommendationsPage(recommendationsRepository: recommendationsRepository, userRepository: userRepository) //Recommendations
       },
       initialRoute: '/login',
     );
