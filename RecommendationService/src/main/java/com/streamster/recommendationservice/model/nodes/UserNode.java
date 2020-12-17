@@ -56,10 +56,12 @@ public class UserNode {
     }
 
     public void addWatchAction(WatchAction watchAction) {
+        if (this.watchActions == null) this.watchActions = new HashSet<>();
         this.watchActions.add(watchAction);
     }
 
     public void addLikeAction(LikeAction likeAction) {
+        if (this.likeActions == null) this.likeActions = new HashSet<>();
         this.likeActions.add(likeAction);
     }
 
@@ -68,12 +70,12 @@ public class UserNode {
     }
 
     public void addSearchAction(SearchAction searchAction) {
-        if(this.searchActions == null) this.searchActions = new HashSet<>();
+        if (this.searchActions == null) this.searchActions = new HashSet<>();
         this.searchActions.add(searchAction);
     }
 
     public void addCreatedVideo(VideoNode videoNode) {
-        if(this.videos == null) this.videos = new HashSet<>();
+        if (this.videos == null) this.videos = new HashSet<>();
         this.videos.add(videoNode);
     }
 }

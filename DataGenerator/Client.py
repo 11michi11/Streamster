@@ -31,10 +31,6 @@ class Client:
             }
         }
 
-        # f = open(file_path, "a")
-        # f.write(str(data))
-        # f.close()
-
         token = auth_helper.get_access_token()
         headers = {
             'Content-Type': 'application/json',
@@ -43,15 +39,18 @@ class Client:
         response = requests.post(create_user_url, data=json.dumps(data), headers=headers)
         if response.status_code != 201:
             print(response.status_code)
-            print(response.json())
+            print(response.content)
         else:
             print(f'successfully user {user.email[0]}')
 
     @staticmethod
     def upload_video(video, user_email):
+
         metadata = {
-            'title': video.metadata.title[0],
-            'description': video.metadata.description[0],
+            'title': type(video.metadata.title[0]) is tuple if video.metadata.title[0].join("") else
+            video.metadata.title[0],
+            'description': type(video.metadata.description[0]) is tuple if video.metadata.description[0].join("") else
+            video.metadata.description[0],
             'tags': video.metadata.tags[0],
             'studyPrograms': video.metadata.studyProgram[0],
             'thumbnail': video.metadata.thumbnail,
@@ -70,13 +69,15 @@ class Client:
             'Content-Type': content_type,
             'Authorization': f'Bearer {token}'
         }
+        request_url = upload_video_url + '/' + str(user_email)
 
-        # response = requests.post(upload_video_url + '/' + user_email, data=body, headers=headers)
-        # if response.status_code is not 201:
-        #     print(response.status_code)
-        #     print(response.json())
-        # else:
-        #     print(f'successfully uploaded video {video.metadata.title} for user {user_email}')
+        response = requests.post(request_url, data=body, headers=headers)
+        if response.status_code != 201:
+            print(response.status_code)
+            print(response.content)
+            print(request_url)
+        else:
+            print(f'successfully uploaded video {video.metadata.title} for user {user_email}')
 
     @staticmethod
     def send_action(action, user, videos=[], search_terms=[]):
@@ -93,7 +94,7 @@ class Client:
                 requests.post(base_url + f'video-service/videos/{video}/dislike/{user}', headers=headers)
         elif action == 'watch':
             for video in videos:
-                requests.post(base_url + f'video-service/videos/{video}/dislike/{user}', headers=headers)
+                requests.post(base_url + f'video-service/videos/{video}/testWatch/{user}', headers=headers)
         elif action == 'search':
             for search_term in search_terms:
-                requests.post(base_url + f'search-service/testSearch/{user}?searchTerm={search_term}', headers=headers)
+                requests.get(base_url + f'search-service/testSearch/{user}?searchTerm={search_term}', headers=headers)

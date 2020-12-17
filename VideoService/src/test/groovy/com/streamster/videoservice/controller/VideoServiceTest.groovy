@@ -1,23 +1,18 @@
 package com.streamster.videoservice.controller
 
-import com.streamster.videoservice.model.SystemRoleType
-import com.streamster.videoservice.model.User
+import com.streamster.commons.model.SystemRoleType
+import com.streamster.commons.model.User
 import com.streamster.videoservice.repository.FilesRepository
 import com.streamster.videoservice.repository.UserRepository
 import com.streamster.videoservice.service.ProxyService
 import com.streamster.videoservice.service.VideoService
 import org.bson.Document
-import org.spockframework.spring.SpringBean
 import org.spockframework.spring.StubBeans
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.context.TestConfiguration
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.springframework.context.annotation.Bean
 import org.springframework.http.MediaType
 import org.springframework.mock.web.MockMultipartFile
 import spock.lang.Specification
-import spock.mock.DetachedMockFactory
 
 @StubBeans(ProxyService)
 @SpringBootTest
@@ -82,7 +77,7 @@ class VideoServiceTest extends Specification {
     private User createTestUser() {
         def userOptional = userRepository.findByEmail("john.test@email.com")
         if (userOptional.isEmpty()) {
-            def user = new User(null, "John", "Test", "password",
+            def user = new User("John", "Test", "password",
                     "john.test@email.com", "avatar", SystemRoleType.TEACHER, Collections.emptyList())
             return userRepository.save(user)
         }

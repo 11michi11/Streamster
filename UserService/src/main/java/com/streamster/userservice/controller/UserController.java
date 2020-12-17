@@ -55,7 +55,9 @@ public class UserController {
 
     @PostMapping("/register")
     ResponseEntity<String> register(@Valid @RequestBody RegistrationDTO registrationDTO) {
+        log.info("Register started");
         userService.register(User.fromRegistrationDTO(registrationDTO.encryptPassword()));
+        log.info("Register finished");
         return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
     }
 

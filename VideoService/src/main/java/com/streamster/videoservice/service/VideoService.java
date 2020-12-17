@@ -92,8 +92,8 @@ public class VideoService {
         likedBy.remove(user.getId());
 
         // Remove duplicates
-        metadata.put("dislikeBy", new HashSet<>(dislikedBy));
-        metadata.put("likeBy", likedBy);
+        metadata.put("dislikedBy", new HashSet<>(dislikedBy));
+        metadata.put("likedBy", likedBy);
 
         fileService.updateMetadata(videoId, metadata);
 

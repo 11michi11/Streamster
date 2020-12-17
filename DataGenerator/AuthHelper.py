@@ -19,7 +19,7 @@ class AuthHelper:
             form = {
                 'grant_type': 'password',
                 'username': 'matej@email.com',
-                'password': 'password',
+                'password': 'Password1234',
                 'scope': ''
             }
             request_url = self.base_url + 'user-service/oauth/token'
