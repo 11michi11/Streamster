@@ -138,7 +138,7 @@ class VideoGenerator:
                 if tag not in tags:
                     tags.append(tag)
 
-            metadata = Metadata(mechanic_title, description, mechanical_eng,
+            metadata = Metadata(mechanic_title, description, [mechanical_eng],
                                 tags, self.generate_duration(), language, thumbnail)
             metadata_list.append(metadata)
 
@@ -194,18 +194,20 @@ class VideoGenerator:
     def title_ict_java():
         titles = ['Java Object Programming', 'Java for Android', 'Java Spring Boot', 'Java 2020 What is new',
                   'Java Master clean code', 'How to master Java', 'Java Security API', 'Java for beginners',
-                  'Java for advance programmers', 'How to learn programming in Java', 'Java RMI', 'Java Threads',
-                  'Java Patterns', 'JavaFX', 'Solid principles with Java', 'Java Swing', 'How was Java made',
-                  'Creator of Java', 'Web Services in Java', 'SOAP with Java', 'REST with Java']
+                  'Java for advance programmers', 'How to learn programming in Java']
+        # 'Java RMI', 'Java Threads',
+        #           'Java Patterns', 'JavaFX', 'Solid principles with Java', 'Java Swing', 'How was Java made',
+        #           'Creator of Java', 'Web Services in Java', 'SOAP with Java', 'REST with Java']
         return titles
 
     @staticmethod
     def title_ict_mobile():
         titles = ['Mobile dev 2020', 'What is new in Flutter', 'Flutter cross-platform dev', 'Android development',
                   'Kotlin for Android', 'Why is Flutter better than React Native', 'Why not to use React Native',
-                  'Dart for beginners', 'Flutter Widgets Tutorial', 'How to make responsive design in Flutter',
-                  'Responsive Android', 'Type of layout for Android', 'Android Jetpack',
-                  'Future of Android development', 'Will cross-platform development take over native applications?']
+                  'Dart for beginners', 'Flutter Widgets Tutorial']
+        # 'How to make responsive design in Flutter',
+        #           'Responsive Android', 'Type of layout for Android', 'Android Jetpack',
+        #           'Future of Android development', 'Will cross-platform development take over native applications?']
         return titles
 
     @staticmethod
@@ -213,9 +215,11 @@ class VideoGenerator:
         titles = ['Uncle Bob - Clean Code', 'My Programming Journey', 'Fingerprint-based ATM system',
                   'Image encryption using AES algorithm', 'Credit card fraud detection', 'AI shopping system',
                   'Camera motion sensor system', 'Bug tracker', 'Smart health prediction system',
-                  'Software piracy protection systems', 'Bitcoin and Cryptocurrency', 'Algorythm and Data Structures',
-                  'EMBEDDED Systems 2020', 'Micro-Services architecture', 'Android task monitoring',
-                  'Reverse engineering - What is important to know', 'Basic network security', 'Encryption and Security']
+                  'Software piracy protection systems']
+        # 'Bitcoin and Cryptocurrency', 'Algorythm and Data Structures',
+        # 'EMBEDDED Systems 2020', 'Micro-Services architecture', 'Android task monitoring',
+        # 'Reverse engineering - What is important to know', 'Basic network security',
+        # 'Encryption and Security']
         return titles
 
     @staticmethod
@@ -224,12 +228,13 @@ class VideoGenerator:
                   'Biomechanics', 'Combustion and Energy Systems', 'Design and Manufacturing', 'Dynamics and Control',
                   'Materials and Structures', 'Vibrations, Acoustics and Fluid-Structure Interactions',
                   '3 Axis Digital Accelerometer', '3D Solar cells4 Stroke Engines', '4-Wheel Independent Suspension',
-                  '6 stroke engineAblative Materials', 'Abrasive Blast Cleaning', 'Abrasive Etching', 'Accelerometer',
-                  'Acoustic finite elements', 'Advanced Ferryboat Technologies',
-                  'Adaptive compensation of DTV induced brake judder', 'Adaptive Cruise Control',
-                  'Adaptive Light pattern', 'Advanced Airbags for more protection',
-                  'Advanced Battery and Fuel Cell Development for Electric Vehicles', 'Advanced Composite Materials',
-                  'Advanced Cooling Systems', 'Advanced Energy Conversion Systems']
+                  '6 stroke engineAblative Materials']
+        # 'Abrasive Blast Cleaning', 'Abrasive Etching', 'Accelerometer',
+        #           'Acoustic finite elements', 'Advanced Ferryboat Technologies',
+        #           'Adaptive compensation of DTV induced brake judder', 'Adaptive Cruise Control',
+        #           'Adaptive Light pattern', 'Advanced Airbags for more protection',
+        #           'Advanced Battery and Fuel Cell Development for Electric Vehicles', 'Advanced Composite Materials',
+        #           'Advanced Cooling Systems', 'Advanced Energy Conversion Systems']
 
         return titles
 
@@ -240,12 +245,12 @@ class VideoGenerator:
                   'Social Media Marketing', 'Consumer behaviour on Airtel', 'A Study on Online Marketing',
                   'Study of consumer behavior in Automotive industry',
                   'Marketing through social media and bookmarking sites',
-                  'Effectiveness of Online Classifieds Website',
-                  'Emergence of E-Commerce - A brief history - Indian scenario',
-                  'A study on Future of BPO', 'A competitive analysis and study in Indian Telecom Sector',
-                  'A study on customer satisfaction towards Ventura Pumps',
-                  'Radio as a promotional tool an exploratory study',
-                  'Effectiveness of Retailing Mix in Big Bazaar', 'A project report on Apollo tyres brand image']
+                  'Effectiveness of Online Classifieds Website']
+        # 'Emergence of E-Commerce - A brief history - Indian scenario',
+        # 'A study on Future of BPO', 'A competitive analysis and study in Indian Telecom Sector',
+        # 'A study on customer satisfaction towards Ventura Pumps',
+        # 'Radio as a promotional tool an exploratory study',
+        # 'Effectiveness of Retailing Mix in Big Bazaar', 'A project report on Apollo tyres brand image']
 
         return titles
 
@@ -254,10 +259,11 @@ class VideoGenerator:
         titles = ['Building Design and Drawing', 'Building Technology',
                   'Construction Management and Quantity Surveying',
                   'Economics and Management', 'Environmental Engineering', 'Environmental Studies in Civil Engineering',
-                  'Functional Design of Buildings', 'Geomatics', 'Geosciences', 'Geotechnology', 'Mechanics of Fluids',
-                  'Mechanics of Solids', 'Open Channel Hydraulics and Hydrology', 'Structural Analysis',
-                  'Structural Design',
-                  'Surveying', 'Transportation Engineering', 'Water Resources Engineering']
+                  'Functional Design of Buildings']
+        # 'Geomatics', 'Geosciences', 'Geotechnology', 'Mechanics of Fluids',
+        #           'Mechanics of Solids', 'Open Channel Hydraulics and Hydrology', 'Structural Analysis',
+        #           'Structural Design',
+        #           'Surveying', 'Transportation Engineering', 'Water Resources Engineering']
 
         return titles
 
@@ -300,27 +306,23 @@ class VideoGenerator:
 
     @staticmethod
     def description_mechanics():
-        description = ['Mechanical engineering is an engineering branch that combines engineering physics and '
-                       'mathematics principles with materials science to design, analyze, manufacture, and maintain '
-                       'mechanical systems. ... It is the branch of engineering that involves the design, production, '
-                       'and operation of machinery.']
+        description = 'Mechanical engineering is an engineering branch that combines engineering physics and ' \
+                      'mathematics principles with materials science to design, analyze, manufacture, and maintain ' \
+                      'mechanical systems. ... It is the branch of engineering that involves the design, production, ' \
+                      'and operation of machinery.'
         return description
 
     @staticmethod
     def description_marketing():
-        description = ['Marketing refers to activities a company undertakes to promote the buying or selling of a '
-                       'product or service. Marketing includes advertising, selling, and delivering products to '
-                       'consumers or other businesses. Some marketing is done by affiliates on behalf of a company.']
+        description = 'Marketing refers to activities a company undertakes to promote the buying or selling of a ' \
+                      'product or service. Marketing includes advertising, selling, and delivering products to ' \
+                      'consumers or other businesses. Some marketing is done by affiliates on behalf of a company.'
         return description
 
     @staticmethod
     def description_civil():
-        description = ['Civil engineers design major transportation projects. Civil engineers conceive, design, '
-                       'build, supervise, operate, construct and maintain infrastructure projects and systems in the '
-                       'public and private sector, including roads, buildings, airports, tunnels, dams, bridges, '
-                       'and systems for water supply and sewage treatment.']
+        description = 'Civil engineers design major transportation projects. Civil engineers conceive, design, ' \
+                      'build, supervise, operate, construct and maintain infrastructure projects and systems in the ' \
+                      'public and private sector, including roads, buildings, airports, tunnels, dams, bridges, ' \
+                      'and systems for water supply and sewage treatment.'
         return description
-
-
-
-

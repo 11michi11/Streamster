@@ -46,4 +46,9 @@ for user in users:
 
 for video in videoList:
     user = random.choice(users)
-    Client.upload_video(video, random.choice(users))
+    Client.upload_video(video, random.choice(users).email[0])
+
+# Client.upload_video(videoList[0], "matej@email.com")
+#
+# Client.create_user(users[0])
+# Client.upload_video(videoList[0], users[0].email[0])
