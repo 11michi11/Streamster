@@ -42,8 +42,7 @@ public class SearchService {
 
     public List<VideoView> getRecommendedVideos(String email) {
         User currentUser = getUserByEmail(email);
-        // TODO: to change to currentUser.getId() when dummy data is ready
-        var videoIds = getRecommendedVideoIds(currentUser.getFirstName());
+        var videoIds = getRecommendedVideoIds(currentUser.getId());
         return findAll(videoIds);
     }
 
@@ -62,8 +61,7 @@ public class SearchService {
 
     public void addSearchAction(String email, String searchTerm) {
         User currentUser = getUserByEmail(email);
-        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
-        this.proxyService.addSearchAction(searchTerm, currentUser.getFirstName());
+        this.proxyService.addSearchAction(searchTerm, currentUser.getId());
     }
 
     private User getUserByEmail(String email) {

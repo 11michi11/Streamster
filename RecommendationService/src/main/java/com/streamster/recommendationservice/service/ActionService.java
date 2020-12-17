@@ -88,7 +88,7 @@ public class ActionService {
 
     @Transactional
     public void updatePreferences(PreferencesForRecommendations preferences) {
-        var neoUser = getOrCreateUserNode(preferences.getUserId(),preferences.getUserId());
+        var neoUser = getOrCreateUserNode(preferences.getUserId(),preferences.getName());
         if(!preferences.getTags().isEmpty()){
             var neoTags = getOrCreateTagNodes(preferences.getTags());
             Set<TagPreference> neoTagPreferences = neoTags.stream()
@@ -118,13 +118,7 @@ public class ActionService {
     }
 
     private UserNode getOrCreateUserNode(String userId, String name) {
-        // TODO: to change findById()
-        var user = this.userNeoRepository.findByName(name);
-        if (user == null) {
-            // TODO: to remove +ID
-            user = new UserNode(userId+"ID", name);
-        }
-        return user;
+        return this.userNeoRepository.findById(userId).orElse(new UserNode(userId, name));
     }
 
     private VideoNode getVideoNode(String videoId) {

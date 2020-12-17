@@ -19,8 +19,8 @@ public class ProxyService {
     }
 
     public void updatePreferencesForRecommendations(Set<String> tags, Set<String> studyPrograms, int lengthFrom,
-                                                    int lengthTo, String userId) {
-        var message = new Message<>(new PreferencesForRecommendations(tags, studyPrograms, lengthFrom, lengthTo, userId));
+                                                    int lengthTo, String userId, String name) {
+        var message = new Message<>(new PreferencesForRecommendations(tags, studyPrograms, lengthFrom, lengthTo, userId, name));
         messageSender.sendToRecommendationService(message);
     }
 }

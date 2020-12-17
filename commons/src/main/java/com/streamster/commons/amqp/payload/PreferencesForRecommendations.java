@@ -19,14 +19,16 @@ public class PreferencesForRecommendations extends Payload {
     private int lengthFrom;
     private int lengthTo;
     private String userId;
+    private String name;
 
-    public PreferencesForRecommendations(Set<String> tags, Set<String> studyPrograms, int lengthFrom, int lengthTo, String userId) {
+    public PreferencesForRecommendations(Set<String> tags, Set<String> studyPrograms, int lengthFrom, int lengthTo, String userId, String name) {
         super(Action.UPDATE_PREFERENCES);
         this.tags = tags;
         this.studyPrograms = studyPrograms;
         this.lengthFrom = lengthFrom;
         this.lengthTo = lengthTo;
         this.userId = userId;
+        this.name = name;
     }
 
     @Override
