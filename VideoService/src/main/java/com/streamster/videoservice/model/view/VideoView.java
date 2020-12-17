@@ -31,14 +31,12 @@ public class VideoView {
         if (metaData == null) {
             throw new MissingFormatArgumentException("Metadata cannot be found for fileId: " + file.getId());
         }
-
         int length;
         try {
             length = metaData.getInteger("length");
         } catch (ClassCastException e) {
             length = Math.toIntExact(metaData.getLong("length"));
         }
-
         return new VideoView(file.getId().asObjectId().getValue().toString(),
                 metaData.getString("title"),
                 metaData.getString("description"),

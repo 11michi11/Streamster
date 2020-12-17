@@ -25,10 +25,10 @@ public class VideoNode {
 
     private int length;
 
-    @Relationship(type = "hasTag")
+    @Relationship(type = "HasTag")
     public Set<TagNode> tags;
 
-    @Relationship(type = "hasStudyPrograms")
+    @Relationship(type = "HasStudyPrograms")
     public Set<StudyProgramNode> studyPrograms;
 
     public VideoNode(String videoId, String title, String description, int length) {

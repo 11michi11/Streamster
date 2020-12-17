@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/common/repository/user_repository.dart';
 
 import '../preferences.dart';
@@ -61,10 +62,8 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
       opacity: 0.4,
       child: Container(
         decoration: BoxDecoration(
-            //color: Colors.black26,
             borderRadius: BorderRadius.circular(20.0),
             border: Border.all(color: Colors.black26)),
-        // color: Colors.black26,
         width: MediaQuery.of(context).size.width * 0.85,
         height: 50,
         child: Column(
@@ -163,10 +162,12 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
           });
         },
         items: <String>[
-          'GBE',
-          'Software engineering',
-          'Mechanical Engineering',
-          'Civil Engineering'
+          StudyPrograms.GBE.name,
+          StudyPrograms.ICT.name,
+          StudyPrograms.ME.name,
+          StudyPrograms.CE.name,
+          StudyPrograms.MM.name,
+          StudyPrograms.VCE.name
         ].map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -255,25 +256,28 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
                   _currentMaxSliderValue = value;
                 });
               }),
-          ButtonTheme(
-            minWidth: 150,
-            height: 30,
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20.0),
-                side: BorderSide(color: Colors.black54),
-              ),
-              color: Colors.white,
-              onPressed: () {
-                savePreferences();
-              },
-              child: Padding(
-                padding: const EdgeInsets.only(top: 10),
-                child: Text('Save',
-                    style: TextStyle(
-                        fontSize: 17,
-                        fontFamily: 'BalooTammudu',
-                        color: Colors.black54)),
+          Padding(
+            padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+            child: ButtonTheme(
+              minWidth: 200,
+              height: 60,
+              child: FlatButton(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  side: BorderSide(color: Colors.brown),
+                ),
+                color: Colors.white,
+                onPressed: () {
+                  savePreferences();
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text('save',
+                      style: TextStyle(
+                          fontSize: 21,
+                          fontFamily: 'BalooTammudu',
+                          color: Colors.brown)),
+                ),
               ),
             ),
           )
@@ -296,11 +300,45 @@ class _PreferencesAndroidState extends State<PreferencesAndroid> {
         content: Text('Maximum length must be bigger then minimum'),
         backgroundColor: Colors.red,
       ));
-    } else {
-      BlocProvider.of<PreferencesBloc>(context)
+    }
+    var programs = setStudyPrograms(studyPrograms);
+    print(programs);
+
+    BlocProvider.of<PreferencesBloc>(context)
           .add(SavePreferences(
-          tags, studyPrograms, (_currentMinSliderValue * 60).toInt(),
+          tags, programs, (_currentMinSliderValue * 60).toInt(),
           (_currentMaxSliderValue * 60).toInt()));
     }
+
+    List<String> setStudyPrograms(studyPrograms) {
+        List<String> programs = new List();
+
+        for(var studyProgram in studyPrograms) {
+          var program = convertStudyProgram(studyProgram);
+          programs.add(program);
+        }
+
+        return programs;
+    }
+
+    String convertStudyProgram(program) {
+      switch(program) {
+        case 'Global Business Engineering':
+          return StudyPrograms.GBE.program;
+        case 'Software Engineering':
+          return StudyPrograms.ICT.program;
+        case 'Mechanical Engineering':
+          return StudyPrograms.ME.program;
+        case 'Civil Engineering':
+          return StudyPrograms.CE.program;
+        case 'Marketing Management':
+          return StudyPrograms.MM.program;
+        case 'Value Chain':
+          return StudyPrograms.VCE.program;
+        default:
+          return null;
+      }
+    }
   }
-}
+
+

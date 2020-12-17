@@ -170,23 +170,20 @@ class _AdminFormAndroidState extends State<AdminFormAndroid> {
     super.initState();
   }
 
-  // TODO - handle all states
   void handleState(AdminState state) {
     switch (state.status) {
       case AdminStatus.success:
+        print('SUCCESS');
         setState(() {
           users = state.users;
         });
-        print("state set in form web");
-        break;
-      case AdminStatus.error:
-        // TODO: Handle this case.
-        break;
-      case AdminStatus.loading:
-        // TODO: Handle this case.
         break;
       case AdminStatus.updateSuccessful:
-        print('update successful');
+        getUsers();
+        Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text('User roles has been updated'),
+          backgroundColor: Colors.blueGrey,
+        ));
         break;
       default:
         break;

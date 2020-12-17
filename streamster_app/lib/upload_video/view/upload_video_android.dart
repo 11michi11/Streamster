@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:streamster_app/common/common.dart';
 import 'package:streamster_app/register/register.dart';
 import 'package:streamster_app/upload_video/model/video.dart';
-import 'package:streamster_app/upload_video/model/video_metadata.dart';
 import 'package:streamster_app/upload_video/model/video_picker.dart';
-
 import '../upload_video.dart';
 import 'upload_button.dart';
 
@@ -29,7 +27,7 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
   ImageCustom thumbnail;
   List<String> tags = new List();
   List<String> studyPrograms = new List();
-  String studyProgramsDropdownValue = 'GBE';
+  String studyProgramsDropdownValue;
   String languageDropdownValue = 'English';
 
   onSelectVideoFile() async {
@@ -209,7 +207,13 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
             studyPrograms.insert(0,newValue);
           });
         },
-        items: <String>['GBE', 'Software engineering', 'Mechanical Engineering', 'Civil Engineering']
+        items: <String>[
+          StudyPrograms.GBE.name,
+          StudyPrograms.ICT.name,
+          StudyPrograms.ME.name,
+          StudyPrograms.CE.name,
+          StudyPrograms.MM.name,
+          StudyPrograms.VCE.name]
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -381,11 +385,9 @@ class _UploadVideoAndroidState extends State<UploadVideoAndroid> {
       opacity: 0.4,
       child: Container(
         decoration: BoxDecoration(
-          //color: Colors.black26,
             borderRadius: BorderRadius.circular(20.0),
             border: Border.all(color: Colors.black26)
         ),
-        // color: Colors.black26,
         width: MediaQuery.of(context).size.width * 0.85,
         height: 50,
         child: Expanded(

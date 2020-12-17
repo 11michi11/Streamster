@@ -46,7 +46,7 @@ public class UserController {
         return new ResponseEntity<>(user.toUserView(), HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).ADMIN)")
     @GetMapping
     ResponseEntity<List<UserView>> getAllUsers() {
         List<User> users = userRepository.findAll();
@@ -68,14 +68,14 @@ public class UserController {
         return new ResponseEntity<>("The account was created successfully", HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).ADMIN)")
+    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).ADMIN)")
     @PutMapping("/{userId}/updateSystemRole")
     ResponseEntity<String> updateSystemRole(@PathVariable String userId, @RequestParam SystemRoleType role) {
         userService.updateSystemRole(userId, role);
         return new ResponseEntity<>("The role has been updated", HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority(T(com.streamster.userservice.model.SystemRoleType).TEACHER)")
+    @PreAuthorize("hasAuthority(T(com.streamster.commons.model.SystemRoleType).TEACHER)")
     @PutMapping("/{userId}/videos/{videoId}")
     ResponseEntity<String> addVideoToUser(@PathVariable String userId, @PathVariable String videoId) {
         userService.addVideoToUser(userId, videoId);

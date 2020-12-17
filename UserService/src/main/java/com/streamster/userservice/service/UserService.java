@@ -64,8 +64,7 @@ public class UserService {
 
         user.setPreferences(preferences);
         userRepository.save(user);
-        // TODO: change to userId instead of user.getFirstName()
         proxyService.updatePreferencesForRecommendations(preferences.getTags(), preferences.getStudyPrograms(),
-                preferences.getMinLength(), preferences.getMaxLength(), user.getFirstName());
+                preferences.getMinLength(), preferences.getMaxLength(), user.getId(), user.getFirstName() + " " + user.getLastName());
     }
 }

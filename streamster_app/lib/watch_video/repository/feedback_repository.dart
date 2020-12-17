@@ -13,7 +13,7 @@ class FeedbackRepository {
 
   Future<FeedbackStatus> sendLike({@required String videoId}) async {
     var response = await client.client
-        .get(RestClient.feedbackLikeUrl.toString() + "$videoId/like");
+        .get(RestClient.feedbackUrl.toString() + "$videoId/like");
     if (response.statusCode == 200) {
       return FeedbackStatus.success;
     } else {

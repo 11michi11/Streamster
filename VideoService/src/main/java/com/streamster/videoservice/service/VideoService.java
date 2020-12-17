@@ -38,8 +38,7 @@ public class VideoService {
         metadata.put("videoId", fileId);
         // Update user service
         proxyService.addVideoToUser(fileId, user.getId());
-        // TODO: to change when dummy data is ready .. change to user.getId()
-        proxyService.addVideoToRecommendations(metadata, user.getFirstName(), fileId);
+        proxyService.addVideoToRecommendations(metadata, user.getId(), fileId);
         return fileId;
     }
 
@@ -58,8 +57,7 @@ public class VideoService {
         var currentUser = userRepository
                 .findByEmail(email)
                 .orElseThrow(() -> new NoSuchElementException("Cannot be found user with email: " + email));
-        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
-        this.proxyService.addWatchedVideoAction(videoId, currentUser.getFirstName());
+        this.proxyService.addWatchedVideoAction(videoId, currentUser.getId());
     }
 
     public void likeVideo(String videoId, String userEmail) {
@@ -79,8 +77,7 @@ public class VideoService {
 
         fileService.updateMetadata(videoId, metadata);
 
-        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
-        this.proxyService.addLikedVideoAction(videoId, user.getFirstName());
+        this.proxyService.addLikedVideoAction(videoId, user.getId());
     }
 
     public void dislikeVideo(String videoId, String userEmail) {
@@ -100,7 +97,6 @@ public class VideoService {
 
         fileService.updateMetadata(videoId, metadata);
 
-        // TODO: to change to currentUser.getId() when dummy data is imported to Neo4j
-        this.proxyService.addDislikedVideoAction(videoId, user.getFirstName());
+        this.proxyService.addDislikedVideoAction(videoId, user.getId());
     }
 }

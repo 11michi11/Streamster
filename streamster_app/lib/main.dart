@@ -4,6 +4,7 @@ import 'package:streamster_app/admin/admin.dart';
 import 'package:get_it/get_it.dart';
 import 'package:streamster_app/home/view/home_page.dart';
 import 'package:streamster_app/login/repository/login_repository.dart';
+import 'package:streamster_app/recommendations/recommendations.dart';
 import 'package:streamster_app/register/repository/register_repository.dart';
 import 'package:streamster_app/search/repository/search_repository.dart';
 import 'package:streamster_app/upload_video/bloc/upload_video_bloc.dart';
@@ -34,6 +35,7 @@ void main({String env}) async {
   final myVideosRepository = MyVideosRepository();
   final searchRepository = SearchRepository();
   final preferencesRepository = PreferencesRepository();
+  final recommendationsRepository = RecommendationsRepository();
 
   runApp(MultiBlocProvider(
     providers: [
@@ -71,6 +73,11 @@ void main({String env}) async {
               userRepository: userRepository);
         },
       ),
+      BlocProvider<RecommendationsBloc>(
+          create: (context) {
+            return RecommendationsBloc(recommendationsRepository: recommendationsRepository, userRepository: userRepository);
+          })
+
     ],
     child: App(
       userRepository: userRepository,
@@ -81,6 +88,7 @@ void main({String env}) async {
       myVideosRepository: myVideosRepository,
       searchRepository: searchRepository,
       preferencesRepository: preferencesRepository,
+      recommendationsRepository: recommendationsRepository,
     ),
   ));
 }
@@ -94,6 +102,7 @@ class App extends StatelessWidget {
   final MyVideosRepository myVideosRepository;
   final SearchRepository searchRepository;
   final PreferencesRepository preferencesRepository;
+  final RecommendationsRepository recommendationsRepository;
 
   App({
     Key key,
@@ -105,11 +114,13 @@ class App extends StatelessWidget {
     @required this.myVideosRepository,
     @required this.searchRepository,
     @required this.preferencesRepository,
+    @required this.recommendationsRepository
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'FilmMaster',
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
@@ -129,11 +140,12 @@ class App extends StatelessWidget {
         '/myVideos': (context) => MyVideosPage(
             myVideosRepository: myVideosRepository,
             userRepository: userRepository),
-        '/search': (context) => SearchPage(searchRepository: searchRepository),
-        '/preferences': (context) => PreferencesPage(
+        '/search': (context) => SearchPage(searchRepository: searchRepository), //Search Page
+        '/preferences': (context) => PreferencesPage( // Preferences Page
           preferencesRepository: preferencesRepository,
           userRepository: userRepository,
             ),
+        '/recommendations': (context) => RecommendationsPage(recommendationsRepository: recommendationsRepository, userRepository: userRepository) //Recommendations
       },
       initialRoute: '/login',
     );

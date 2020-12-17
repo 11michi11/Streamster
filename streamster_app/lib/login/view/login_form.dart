@@ -44,7 +44,7 @@ class _LoginFormState extends State<LoginForm> {
       }
     } else if (state.status == LoginStatus.unauthenticated) {
       Scaffold.of(context).showSnackBar(SnackBar(
-        content: Text('Bad credentials'),
+        content: Text('The email or password is incorrect'),
         backgroundColor: Colors.red,
       ));
       //Navigator.of(context).pushReplacementNamed('/home');

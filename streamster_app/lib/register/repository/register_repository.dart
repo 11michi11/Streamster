@@ -7,7 +7,7 @@ enum RegistrationStatus {
   init,
   loading,
   success,
-  emailNotUnique,
+  emailAlreadyUsed,
   error,
 }
 
@@ -35,7 +35,7 @@ class RegisterRepository {
     } else if (response.statusCode == 400 &&
         response.body == "Given email is already used in the system") {
       print("Inserted email is already used in the system.");
-      return RegistrationStatus.emailNotUnique;
+      return RegistrationStatus.emailAlreadyUsed;
     } else {
       return RegistrationStatus.error;
     }

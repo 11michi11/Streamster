@@ -70,13 +70,11 @@ public class UserNode {
     }
 
     public void addSearchAction(SearchAction searchAction) {
-        // TODO: to remove when dummy data is ready
         if (this.searchActions == null) this.searchActions = new HashSet<>();
         this.searchActions.add(searchAction);
     }
 
     public void addCreatedVideo(VideoNode videoNode) {
-        // TODO: to remove when dummy data is ready
         if (this.videos == null) this.videos = new HashSet<>();
         this.videos.add(videoNode);
     }

@@ -26,8 +26,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           avatar: event.image);
       if (response == RegistrationStatus.success) {
         yield RegisterState.success();
-      } else if (response == RegistrationStatus.emailNotUnique) {
-        yield RegisterState.error("Inserted email is already used in the system.");
+      } else if (response == RegistrationStatus.emailAlreadyUsed) {
+        print('Email already used');
+        yield RegisterState.emailAlreadyUsed();
       } else {
         yield RegisterState.error("error");
       }
