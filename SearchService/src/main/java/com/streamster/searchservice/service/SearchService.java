@@ -42,7 +42,7 @@ public class SearchService {
 
     public List<VideoView> getRecommendedVideos(String email) {
         User currentUser = getUserByEmail(email);
-        var videoIds = getRecommendedVideoIds(currentUser.getId());
+        var videoIds = getRecommendedVideoIds(currentUser.getFirstName());
         return findAll(videoIds);
     }
 
